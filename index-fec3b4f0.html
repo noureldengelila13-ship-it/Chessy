@@ -1,0 +1,1275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#141821"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"><meta name="apple-mobile-web-app-title" content="شطرنج جيب"><link rel="icon" type="image/png" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png"><link rel="manifest" href="manifest.webmanifest"><title>شطرنج جيب</title><style>*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+:root{--lt:#f0d9b5;--dk:#b58863;--tx:none}
+body{margin:0;background:radial-gradient(1200px 600px at 50% -10%,#232a3a 0,#141821 60%);color:#eef1f7;font-family:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans Arabic",sans-serif;font-size:16px;min-height:100vh}
+#app{max-width:520px;margin:0 auto;padding:10px 10px 40px}
+button{font-family:inherit;font-size:15px;color:inherit;border:0;cursor:pointer}
+h1{margin:6px 0 2px;font-size:28px}h3.sec{margin:18px 4px 8px;font-size:16px;color:#aab3c8}
+.hero{text-align:center;padding:14px 0 8px;position:relative}.logo{width:76px;height:76px;margin:0 auto;filter:drop-shadow(0 4px 6px rgba(0,0,0,.5))}
+.logo svg{width:100%;height:100%}
+.hero p{color:#aab3c8;margin:0}
+.langbtn{position:absolute;top:6px;inset-inline-end:2px;background:#262c3b;border-radius:20px;padding:7px 12px;font-size:13px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.tile{background:#262c3b;border-radius:16px;padding:16px 10px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center;box-shadow:0 2px 6px rgba(0,0,0,.25)}
+.tile:active{transform:scale(.97)}
+.tile b{font-size:34px}.tile span{font-weight:700}.tile small{color:#9aa4bb;font-size:12px}.tile.wide{grid-column:1/3}
+.big{display:block;width:100%;background:#3fa35b;border-radius:14px;padding:14px;font-weight:700;font-size:17px;margin:12px 0;box-shadow:0 3px 0 #2b7a42}
+.big:active{transform:translateY(2px);box-shadow:0 1px 0 #2b7a42}
+.big.sec2{background:#34405a;box-shadow:0 3px 0 #232c40}
+.big.cont{background:#d98e1f;box-shadow:0 3px 0 #a56a12}
+.lnk{background:none;color:#9aa4bb;display:block;margin:8px auto;text-decoration:underline}
+.foot,.note{color:#8e98b0;font-size:13px;text-align:center;margin:10px 4px}
+.dim{color:#8e98b0;font-size:13px}.center{text-align:center}
+.top{display:flex;align-items:center;gap:10px;margin-bottom:8px}
+.back{background:#2a3144;border-radius:10px;padding:8px 12px}.ttl{font-weight:700;font-size:18px}
+.bots{display:flex;flex-direction:column;gap:8px}
+.bot{display:flex;align-items:center;gap:10px;background:#262c3b;border:2px solid transparent;border-radius:14px;padding:10px 12px}
+.bot.on{border-color:#3fa35b;background:#26392f}.be{font-size:28px}.bi{flex:1;display:flex;flex-direction:column}.bi small{color:#9aa4bb;font-size:12px}
+.rate{background:#12151c;border-radius:10px;padding:4px 10px;font-weight:700;color:#f5c542}
+.seg{display:flex;gap:6px;margin:4px 0}.seg button{flex:1;background:#262c3b;border-radius:10px;padding:10px 4px}.seg button.on{background:#3fa35b}
+.chk{display:flex;gap:8px;align-items:center;margin:12px 4px}
+.boardwrap{position:relative;width:100%;max-width:500px;margin:4px auto}
+.board{display:grid;grid-template-columns:repeat(8,1fr);grid-template-rows:repeat(8,1fr);width:100%;aspect-ratio:1;border-radius:8px;overflow:hidden;user-select:none;touch-action:manipulation;box-shadow:0 6px 18px rgba(0,0,0,.55),0 0 0 3px rgba(0,0,0,.35)}
+.sq{position:relative;display:flex;align-items:center;justify-content:center;min-width:0;min-height:0;overflow:hidden}
+.lt{background:var(--lt)}.dk{background:var(--dk)}
+.lt::before,.dk::before{content:"";position:absolute;inset:0;background-image:var(--tx);pointer-events:none}
+.sq.last{box-shadow:inset 0 0 0 100px rgba(255,214,64,.42)}.sq.sel{box-shadow:inset 0 0 0 100px rgba(80,200,120,.55)}
+.sq.chk{background:radial-gradient(circle,#ff3b30 0,#ff5147 35%,transparent 78%),var(--dk)}
+.sq.mark{box-shadow:inset 0 0 0 100px rgba(52,152,219,.5)}
+.sq.tgt::after{content:"";width:28%;height:28%;border-radius:50%;background:rgba(20,20,20,.28);position:absolute}
+.sq.tcap::after{content:"";position:absolute;inset:4%;border-radius:50%;border:4px solid rgba(20,20,20,.35)}
+.pc{width:100%;height:100%;display:flex;align-items:center;justify-content:center;line-height:1;z-index:1;pointer-events:none}
+.pc svg{width:90%;height:90%;display:block;filter:drop-shadow(0 2px 2px rgba(0,0,0,.45))}
+.pc.gly{font-size:min(9.4vw,46px);justify-content:center}
+.wp{color:#fff;text-shadow:0 0 2px #000,0 0 2px #000,0 1px 1px #000}
+.bp{color:#1a1a1a;text-shadow:0 0 1px #fff8}
+.rot{transform:rotate(180deg)}
+.anim{transition:transform .16s ease-out;z-index:5}
+.rk,.fl{position:absolute;font-size:10px;font-style:normal;opacity:.85;pointer-events:none;z-index:2;font-weight:700}.rk{top:1px;left:2px}.fl{bottom:0;right:3px}
+.sq.lt .rk,.sq.lt .fl{color:var(--dk)}.sq.dk .rk,.sq.dk .fl{color:var(--lt)}
+.arrows{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+.pbar{display:flex;justify-content:space-between;align-items:center;padding:6px 4px}
+.pn{display:flex;flex-direction:column}.caps{min-height:18px;font-size:15px;letter-spacing:-3px;display:flex}
+.cp{font-size:15px;width:17px;height:17px}.cp svg{width:100%;height:100%}
+.cp.gly{width:auto;height:auto}
+.clk{background:#12151c;border-radius:8px;padding:6px 10px;font-variant-numeric:tabular-nums;font-weight:700}.clk.act{background:#3fa35b}
+.turn{text-align:center;color:#c9d1e3;min-height:22px;font-weight:600}
+.ctl{display:flex;gap:6px;margin:8px 0}.ctl button{flex:1;background:#2a3144;border-radius:10px;padding:10px 2px;font-size:14px}
+.mv,.ml{display:flex;flex-wrap:wrap;gap:4px;direction:ltr;justify-content:center;font-size:14px;margin:6px 0}
+.mn{color:#7e889f}.ms,.mc{padding:2px 6px;border-radius:6px;background:#242a39;cursor:pointer}.lastm,.mc.cur{background:#3fa35b}
+.mc i{font-style:normal;font-weight:700;margin-right:2px;font-size:12px}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.65);display:flex;align-items:center;justify-content:center;z-index:50;padding:16px}
+.card{background:#262c3b;border-radius:16px;padding:14px;margin:10px 0;box-shadow:0 4px 14px rgba(0,0,0,.3)}.modal .card{width:100%;max-width:380px;text-align:center}
+.em{font-size:56px}.big-p{font-size:18px;line-height:1.7}
+.promo{display:flex;gap:8px;justify-content:center}.pbtn{background:#b58863;border-radius:12px;width:64px;height:64px}.pbtn .pc{font-size:40px}
+.pg{height:10px;background:#12151c;border-radius:6px;overflow:hidden;margin:12px 0}.pg.flex{flex:1;margin:0}.pg div{height:100%;background:#3fa35b;transition:width .3s}
+.sumrow{display:flex;gap:10px;align-items:center}.acc{background:#262c3b;border-radius:14px;padding:10px 14px;text-align:center}.acc b{font-size:28px;display:block;color:#f5c542}.acc small{color:#9aa4bb}
+.chips{display:flex;flex-wrap:wrap;gap:6px}.chip{border:2px solid;border-radius:20px;padding:2px 10px;font-size:13px}
+.graph{margin:8px 0}.graph svg{width:100%;height:80px;border-radius:8px;display:block}
+.rinfo{border:2px solid #3a4258;border-radius:12px;padding:10px;margin:8px 0;text-align:center}
+.ins{background:#262c3b;border-radius:14px;padding:12px;margin:8px 0}.ins p{margin:6px 0;color:#c9d1e3;line-height:1.6}
+.sm{background:#3fa35b;border-radius:10px;padding:8px 12px;font-size:14px}
+.phs{display:flex;gap:8px}.phs div{flex:1;background:#262c3b;border-radius:12px;padding:10px;text-align:center}.phs b{font-size:22px;display:block}.phs small{color:#9aa4bb}
+.gcard{display:flex;justify-content:space-between;align-items:center;background:#262c3b;border-radius:14px;padding:12px;margin:8px 0}.gcard small{display:block;color:#9aa4bb}
+.xp{background:#262c3b;border-radius:12px;padding:8px 14px;display:inline-block;color:#f5c542;font-weight:700}
+.unit{margin:16px 0}.uh{display:flex;gap:10px;align-items:center}.uh small{display:block;color:#9aa4bb}.ui{font-size:30px;background:#262c3b;border-radius:50%;width:54px;height:54px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.ui svg{width:70%;height:70%}
+.path{display:flex;flex-direction:column;align-items:center;gap:12px;margin:12px 0}
+.node{width:82px;height:82px;border-radius:50%;background:#3b82f6;font-size:22px;font-weight:800;box-shadow:0 6px 0 #1f56b0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.node:active{transform:translateY(4px);box-shadow:0 2px 0 #1f56b0}
+.node small{font-size:10px;font-weight:600;max-width:70px}.node.done{background:#3fa35b;box-shadow:0 6px 0 #2b7a42}
+.opt{display:block;width:100%;background:#34405a;border-radius:12px;padding:14px;margin:8px 0;text-align:start;font-size:16px}.opt.ok{background:#2f8a4d}.opt.no{background:#a63d3d}
+.fb{border-radius:12px;padding:10px;margin:8px 0;line-height:1.6}.fb.good{background:#23402f}.fb.bad{background:#4a2626}.fb.hint{background:#26364d}
+.search{width:100%;background:#262c3b;border:2px solid #34405a;border-radius:12px;padding:12px;color:#fff;font-size:16px;font-family:inherit}
+.cats{display:flex;gap:6px;overflow-x:auto;margin:10px 0;padding-bottom:4px}.cats button{background:#262c3b;border-radius:20px;padding:8px 14px;white-space:nowrap}.cats .on{background:#3fa35b}
+.lcard{display:flex;justify-content:space-between;align-items:center;background:#262c3b;border-radius:14px;padding:12px;margin:8px 0}.lcard small{display:block;color:#9aa4bb}
+.tag{background:#12151c;border-radius:10px;padding:3px 10px;font-size:12px;color:#aab3c8}
+.sub{color:#9aa4bb;margin:0 4px 6px;text-align:start}.ideas{padding-inline-start:20px;line-height:1.8;margin:6px 0}
+.swgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:8px 0}
+.sw{border:2px solid transparent;border-radius:14px;padding:8px 6px;background:#262c3b;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:12px}
+.sw.on{border-color:#3fa35b}
+.swmini{display:grid;grid-template-columns:repeat(4,1fr);width:64px;height:32px;border-radius:6px;overflow:hidden}
+.swmini i{display:block}
+.psets{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:8px 0}
+.pset{border:2px solid transparent;border-radius:14px;padding:10px;background:#262c3b;display:flex;align-items:center;gap:10px}
+.pset.on{border-color:#3fa35b}
+.pset .sam{width:44px;height:44px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,#f0d9b5 50%,#b58863 50%);border-radius:10px}
+.pset .sam svg{width:88%;height:88%}
+.pset .sam .gly{font-size:34px;line-height:1}
+.prevwrap{max-width:230px;margin:10px auto}
+
+.sq.brk{overflow:visible;z-index:6}
+.sq.brk .pc{transform-origin:50% 90%;animation:kbreak 1.5s .5s cubic-bezier(.5,0,.8,.6) forwards}
+.sq.brk.fin .pc{animation:none;transform:translate(8%,28%) rotate(74deg) scale(.88);opacity:.5;filter:grayscale(1) brightness(.55)}
+@keyframes kbreak{0%{transform:none}8%{transform:translateX(-5%) rotate(-5deg)}16%{transform:translateX(5%) rotate(5deg)}24%{transform:translateX(-4%) rotate(-4deg) scale(1.08)}40%{transform:scale(1.1);filter:brightness(1.8)}100%{transform:translate(8%,28%) rotate(74deg) scale(.88);opacity:.5;filter:grayscale(1) brightness(.55)}}
+.crack{position:absolute;inset:-12%;width:124%;height:124%;z-index:7;pointer-events:none;overflow:visible}
+.crack path{fill:none;stroke:#111;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:crk .5s .55s ease-out forwards;filter:drop-shadow(0 0 1px #fff)}
+.crack path:nth-child(2){animation-delay:.65s}.crack path:nth-child(3){animation-delay:.75s}
+@keyframes crk{to{stroke-dashoffset:0}}
+.frag{position:absolute;left:42%;top:42%;width:16%;height:16%;background:linear-gradient(135deg,#9aa0a8,#4b5058);clip-path:polygon(10% 0,100% 25%,80% 100%,0 70%);z-index:8;opacity:0;pointer-events:none;animation:ffly 1.1s var(--d,.9s) cubic-bezier(.2,.7,.4,1) forwards}
+@keyframes ffly{0%{opacity:1;transform:translate(0,0) rotate(0)}70%{opacity:1}100%{opacity:0;transform:translate(var(--x),var(--y)) rotate(var(--r))}}
+.board.shake{animation:bshake .5s .5s linear}
+@keyframes bshake{0%,100%{transform:none}20%{transform:translate(-4px,2px)}40%{transform:translate(4px,-2px)}60%{transform:translate(-3px,-2px)}80%{transform:translate(3px,2px)}}
+.mateT{font-size:30px;font-weight:800;color:#ff6b5e;margin:6px 0;animation:pop .5s ease-out}
+@keyframes pop{0%{transform:scale(.3);opacity:0}70%{transform:scale(1.15)}100%{transform:scale(1);opacity:1}}
+.nm{width:100%;box-sizing:border-box;margin:4px 0 10px;padding:12px;border-radius:12px;border:2px solid #3a4257;background:#1b2030;color:#fff;font-size:16px}
+.rctl{display:flex;gap:8px;justify-content:center;margin:10px 0}.rctl button{flex:1;padding:12px 4px;border-radius:12px;background:#3a4257;color:#fff;font-size:16px}
+.rinfo{text-align:center;margin:8px 0;font-size:15px}.rbadge{display:inline-block;background:#3a4257;border-radius:10px;padding:3px 10px;font-size:13px;margin:4px}
+</style></head>
+<body><div id="err" style="display:none;background:#a33;padding:8px"></div><div id="app"></div><div id="promo"></div>
+<script id="engine-src" type="text/plain">var FILES='abcdefgh', MATE=30000, INF=1e6;
+var VAL={p:100,n:320,b:330,r:500,q:900,k:0};
+var START_FEN='rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+function sqName(i){return FILES[i&7]+(8-(i>>3));}
+function sqIdx(n){return (8-(+n[1]))*8+FILES.indexOf(n[0]);}
+function isW(p){return p!=='.'&&p===p.toUpperCase();}
+function parseFEN(fen){
+  var f=fen.trim().split(/\s+/), b=[], rows=f[0].split('/'), i, ch;
+  for(i=0;i<8;i++){for(var j=0;j<rows[i].length;j++){ch=rows[i][j]; if(/\d/.test(ch)){for(var k=0;k<+ch;k++)b.push('.');}else b.push(ch);}}
+  return {b:b,t:f[1]||'w',c:f[2]||'-',e:(f[3]&&f[3]!=='-')?sqIdx(f[3]):-1,h:+(f[4]||0),n:+(f[5]||1)};
+}
+function toFEN(s){
+  var out=[],r,c,n,p;
+  for(r=0;r<8;r++){var row='';n=0;for(c=0;c<8;c++){p=s.b[r*8+c]; if(p==='.')n++; else{if(n){row+=n;n=0;}row+=p;}} if(n)row+=n; out.push(row);}
+  return out.join('/')+' '+s.t+' '+s.c+' '+(s.e>=0?sqName(s.e):'-')+' '+s.h+' '+s.n;
+}
+function posKey(s){return s.b.join('')+s.t+s.c+(s.e>=0&&epCapturable(s)?s.e:'');}
+function epCapturable(s){
+  var w=s.t==='w',p=w?'P':'p',e=s.e,r=e>>3,c=e&7,pr=w?r+1:r-1;
+  return (c>0&&s.b[pr*8+c-1]===p)||(c<7&&s.b[pr*8+c+1]===p);
+}
+var KN=[[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]];
+var KG=[[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]];
+var DG=[[-1,-1],[-1,1],[1,-1],[1,1]], OR=[[-1,0],[1,0],[0,-1],[0,1]];
+function attackedBy(b,sq,by){
+  var r=sq>>3,c=sq&7,w=by==='w',i,rr,cc,p,d,k;
+  var pr=w?r+1:r-1,pp=w?'P':'p';
+  if(pr>=0&&pr<8){if(c>0&&b[pr*8+c-1]===pp)return true;if(c<7&&b[pr*8+c+1]===pp)return true;}
+  var n=w?'N':'n',kk=w?'K':'k';
+  for(i=0;i<8;i++){rr=r+KN[i][0];cc=c+KN[i][1];if(rr<0||rr>7||cc<0||cc>7)continue;if(b[rr*8+cc]===n)return true;}
+  for(i=0;i<8;i++){rr=r+KG[i][0];cc=c+KG[i][1];if(rr<0||rr>7||cc<0||cc>7)continue;if(b[rr*8+cc]===kk)return true;}
+  var bq=w?'B':'b',rk=w?'R':'r',q=w?'Q':'q';
+  for(d=0;d<4;d++){rr=r+DG[d][0];cc=c+DG[d][1];while(rr>=0&&rr<8&&cc>=0&&cc<8){p=b[rr*8+cc];if(p!=='.'){if(p===bq||p===q)return true;break;}rr+=DG[d][0];cc+=DG[d][1];}}
+  for(d=0;d<4;d++){rr=r+OR[d][0];cc=c+OR[d][1];while(rr>=0&&rr<8&&cc>=0&&cc<8){p=b[rr*8+cc];if(p!=='.'){if(p===rk||p===q)return true;break;}rr+=OR[d][0];cc+=OR[d][1];}}
+  return false;
+}
+function kingSq(b,w){return b.indexOf(w?'K':'k');}
+function inCheck(s){var w=s.t==='w';return attackedBy(s.b,kingSq(s.b,w),w?'b':'w');}
+function attacksFrom(b,sq){
+  var p=b[sq],pl=p.toLowerCase(),w=isW(p),r=sq>>3,c=sq&7,out=[],i,rr,cc,dirs,d;
+  if(pl==='p'){rr=w?r-1:r+1;if(rr>=0&&rr<8){if(c>0)out.push(rr*8+c-1);if(c<7)out.push(rr*8+c+1);}return out;}
+  if(pl==='n'||pl==='k'){dirs=pl==='n'?KN:KG;for(i=0;i<8;i++){rr=r+dirs[i][0];cc=c+dirs[i][1];if(rr>=0&&rr<8&&cc>=0&&cc<8)out.push(rr*8+cc);}return out;}
+  dirs=pl==='b'?DG:pl==='r'?OR:DG.concat(OR);
+  for(d=0;d<dirs.length;d++){rr=r+dirs[d][0];cc=c+dirs[d][1];while(rr>=0&&rr<8&&cc>=0&&cc<8){var q=b[rr*8+cc];out.push(rr*8+cc);if(q!=='.')break;rr+=dirs[d][0];cc+=dirs[d][1];}}
+  return out;
+}
+function genPseudo(s){
+  var b=s.b,w=s.t==='w',ms=[],sq,p,pl,r,c,i,rr,cc,q,to,d,dirs;
+  for(sq=0;sq<64;sq++){
+    p=b[sq];if(p==='.'||isW(p)!==w)continue;
+    pl=p.toLowerCase();r=sq>>3;c=sq&7;
+    if(pl==='p'){
+      var dir=w?-1:1,sr=w?6:1,pr=w?0:7,one=sq+dir*8;
+      var addP=function(f,t,fl){if((t>>3)===pr){['q','r','b','n'].forEach(function(x){ms.push({f:f,t:t,pr:x,fl:fl});});}else ms.push({f:f,t:t,fl:fl});};
+      if(b[one]==='.'){addP(sq,one);if(r===sr&&b[sq+dir*16]==='.')ms.push({f:sq,t:sq+dir*16,fl:'d'});}
+      for(d=-1;d<=1;d+=2){cc=c+d;if(cc<0||cc>7)continue;to=one+d;q=b[to];
+        if(q!=='.'&&isW(q)!==w)addP(sq,to,'x');else if(to===s.e&&q==='.')ms.push({f:sq,t:to,fl:'e'});}
+    } else if(pl==='n'||pl==='k'){
+      dirs=pl==='n'?KN:KG;
+      for(i=0;i<8;i++){rr=r+dirs[i][0];cc=c+dirs[i][1];if(rr<0||rr>7||cc<0||cc>7)continue;to=rr*8+cc;q=b[to];if(q==='.'||isW(q)!==w)ms.push({f:sq,t:to});}
+      if(pl==='k'){
+        var en=w?'b':'w';
+        if(w&&sq===60&&!attackedBy(b,60,en)){
+          if(s.c.indexOf('K')>=0&&b[61]==='.'&&b[62]==='.'&&b[63]==='R'&&!attackedBy(b,61,en)&&!attackedBy(b,62,en))ms.push({f:60,t:62,fl:'K'});
+          if(s.c.indexOf('Q')>=0&&b[59]==='.'&&b[58]==='.'&&b[57]==='.'&&b[56]==='R'&&!attackedBy(b,59,en)&&!attackedBy(b,58,en))ms.push({f:60,t:58,fl:'Q'});
+        }
+        if(!w&&sq===4&&!attackedBy(b,4,en)){
+          if(s.c.indexOf('k')>=0&&b[5]==='.'&&b[6]==='.'&&b[7]==='r'&&!attackedBy(b,5,en)&&!attackedBy(b,6,en))ms.push({f:4,t:6,fl:'K'});
+          if(s.c.indexOf('q')>=0&&b[3]==='.'&&b[2]==='.'&&b[1]==='.'&&b[0]==='r'&&!attackedBy(b,3,en)&&!attackedBy(b,2,en))ms.push({f:4,t:2,fl:'Q'});
+        }
+      }
+    } else {
+      dirs=pl==='b'?DG:pl==='r'?OR:DG.concat(OR);
+      for(d=0;d<dirs.length;d++){rr=r+dirs[d][0];cc=c+dirs[d][1];
+        while(rr>=0&&rr<8&&cc>=0&&cc<8){to=rr*8+cc;q=b[to];
+          if(q==='.')ms.push({f:sq,t:to});else{if(isW(q)!==w)ms.push({f:sq,t:to});break;}
+          rr+=dirs[d][0];cc+=dirs[d][1];}}
+    }
+  }
+  return ms;
+}
+function make(s,m){
+  var b=s.b.slice(),p=b[m.f],cap=b[m.t],w=s.t==='w',c=s.c,e=-1,h=s.h+1;
+  if(p.toLowerCase()==='p'||cap!=='.')h=0;
+  b[m.t]=p;b[m.f]='.';
+  if(m.fl==='e'){b[m.t+(w?8:-8)]='.';h=0;}
+  if(m.pr)b[m.t]=w?m.pr.toUpperCase():m.pr;
+  if(m.fl==='d')e=(m.f+m.t)/2;
+  if(m.fl==='K'){b[m.t-1]=b[m.t+1];b[m.t+1]='.';}
+  if(m.fl==='Q'){b[m.t+1]=b[m.t-2];b[m.t-2]='.';}
+  if(p==='K')c=c.replace('K','').replace('Q','');
+  if(p==='k')c=c.replace('k','').replace('q','');
+  [m.f,m.t].forEach(function(x){if(x===63)c=c.replace('K','');if(x===56)c=c.replace('Q','');if(x===7)c=c.replace('k','');if(x===0)c=c.replace('q','');});
+  if(c==='')c='-';
+  return {b:b,t:w?'b':'w',c:c,e:e,h:h,n:s.n+(w?0:1)};
+}
+function genMoves(s){
+  var w=s.t==='w',en=w?'b':'w';
+  return genPseudo(s).filter(function(m){var ns=make(s,m);return !attackedBy(ns.b,kingSq(ns.b,w),en);});
+}
+function san(s,m,legal){
+  var p=s.b[m.f],pl=p.toLowerCase(),str;
+  if(m.fl==='K')str='O-O';else if(m.fl==='Q')str='O-O-O';
+  else{
+    var cap=s.b[m.t]!=='.'||m.fl==='e';
+    if(pl==='p'){str=(cap?FILES[m.f&7]+'x':'')+sqName(m.t);if(m.pr)str+='='+m.pr.toUpperCase();}
+    else{
+      str=p.toUpperCase();
+      var oth=legal.filter(function(o){return !sameMove(o,m)&&o.t===m.t&&s.b[o.f]===p;});
+      if(oth.length){
+        var sf=oth.some(function(o){return (o.f&7)===(m.f&7);}),sr=oth.some(function(o){return (o.f>>3)===(m.f>>3);});
+        if(!sf)str+=FILES[m.f&7];else if(!sr)str+=(8-(m.f>>3));else str+=sqName(m.f);
+      }
+      if(cap)str+='x';str+=sqName(m.t);
+    }
+  }
+  var ns=make(s,m);
+  if(inCheck(ns))str+=genMoves(ns).length?'+':'#';
+  return str;
+}
+function parseSAN(s,txt){
+  var cl=txt.replace(/[+#!?]/g,'').replace(/0/g,'O'),legal=genMoves(s),i;
+  for(i=0;i<legal.length;i++)if(san(s,legal[i],legal).replace(/[+#]/g,'')===cl)return legal[i];
+  return null;
+}
+function sameMove(a,b){return a&&b&&a.f===b.f&&a.t===b.t&&(a.pr||'')===(b.pr||'');}
+function insufficient(b){
+  var pcs=b.filter(function(x){return x!=='.'&&x.toLowerCase()!=='k';});
+  if(!pcs.length)return true;
+  if(pcs.length===1&&'nb'.indexOf(pcs[0].toLowerCase())>=0)return true;
+  if(pcs.every(function(x){return x.toLowerCase()==='b';})){
+    var cols={};b.forEach(function(x,i){if(x.toLowerCase()==='b')cols[((i>>3)+(i&7))&1]=1;});
+    return Object.keys(cols).length===1;
+  }
+  return false;
+}
+// returns null or {r:'1-0'|'0-1'|'1/2-1/2', why}
+function gameStatus(s,keys){
+  var ms=genMoves(s);
+  if(!ms.length){if(inCheck(s))return {r:s.t==='w'?'0-1':'1-0',why:'مات'};return {r:'1/2-1/2',why:'تعادل بالجمود (Stalemate)'};}
+  if(insufficient(s.b))return {r:'1/2-1/2',why:'تعادل: مفيش مادة كفاية للمات'};
+  if(s.h>=100)return {r:'1/2-1/2',why:'تعادل: قاعدة الـ 50 نقلة'};
+  if(keys){var k=posKey(s),n=0;for(var i=0;i<keys.length;i++)if(keys[i]===k)n++;if(n>=3)return {r:'1/2-1/2',why:'تعادل: تكرار النقلات 3 مرات'};}
+  return null;
+}
+var PST={
+p:[0,0,0,0,0,0,0,0,50,50,50,50,50,50,50,50,10,10,20,30,30,20,10,10,5,5,10,25,25,10,5,5,0,0,0,20,20,0,0,0,5,-5,-10,0,0,-10,-5,5,5,10,10,-20,-20,10,10,5,0,0,0,0,0,0,0,0],
+n:[-50,-40,-30,-30,-30,-30,-40,-50,-40,-20,0,0,0,0,-20,-40,-30,0,10,15,15,10,0,-30,-30,5,15,20,20,15,5,-30,-30,0,15,20,20,15,0,-30,-30,5,10,15,15,10,5,-30,-40,-20,0,5,5,0,-20,-40,-50,-40,-30,-30,-30,-30,-40,-50],
+b:[-20,-10,-10,-10,-10,-10,-10,-20,-10,0,0,0,0,0,0,-10,-10,0,5,10,10,5,0,-10,-10,5,5,10,10,5,5,-10,-10,0,10,10,10,10,0,-10,-10,10,10,10,10,10,10,-10,-10,5,0,0,0,0,5,-10,-20,-10,-10,-10,-10,-10,-10,-20],
+r:[0,0,0,0,0,0,0,0,5,10,10,10,10,10,10,5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,-5,0,0,0,0,0,0,-5,0,0,0,5,5,0,0,0],
+q:[-20,-10,-10,-5,-5,-10,-10,-20,-10,0,0,0,0,0,0,-10,-10,0,5,5,5,5,0,-10,-5,0,5,5,5,5,0,-5,0,0,5,5,5,5,0,-5,-10,5,5,5,5,5,0,-10,-10,0,5,0,0,0,0,-10,-20,-10,-10,-5,-5,-10,-10,-20],
+km:[-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-30,-40,-40,-50,-50,-40,-40,-30,-20,-30,-30,-40,-40,-30,-30,-20,-10,-20,-20,-20,-20,-20,-20,-10,20,20,0,0,0,0,20,20,20,30,10,0,0,10,30,20],
+ke:[-50,-40,-30,-20,-20,-30,-40,-50,-30,-20,-10,0,0,-10,-20,-30,-30,-10,20,30,30,20,-10,-30,-30,-10,30,40,40,30,-10,-30,-30,-10,30,40,40,30,-10,-30,-30,-10,20,30,30,20,-10,-30,-30,-30,0,0,0,0,-30,-30,-50,-30,-30,-30,-30,-30,-30,-50]
+};
+function evalW(s){
+  var b=s.b,sc=0,np=0,i,p,pl,w,v,wb=0,bb=0;
+  var wf=[0,0,0,0,0,0,0,0],bf=[0,0,0,0,0,0,0,0],wp=[],bp=[];
+  for(i=0;i<64;i++){p=b[i];if(p==='.')continue;pl=p.toLowerCase();
+    if(pl!=='p'&&pl!=='k')np+=VAL[pl];
+    if(pl==='p'){if(isW(p)){wp.push(i);wf[i&7]++;}else{bp.push(i);bf[i&7]++;}}}
+  var ph=Math.min(1,np/6400);
+  for(i=0;i<64;i++){
+    p=b[i];if(p==='.')continue;pl=p.toLowerCase();w=isW(p);
+    if(pl==='k'){v=ph*PST.km[w?i:i^56]+(1-ph)*PST.ke[w?i:i^56];}
+    else{v=VAL[pl]+PST[pl][w?i:i^56];
+      if(pl==='b'){if(w)wb++;else bb++;}
+      else if(pl==='r'){var f=i&7;
+        if(!wf[f]&&!bf[f])v+=14;else if(w&&!wf[f])v+=7;else if(!w&&!bf[f])v+=7;}
+    }
+    sc+=w?v:-v;
+  }
+  if(wb>1)sc+=30;if(bb>1)sc-=30;
+  var j,f2,rw,pass,q2,bi,adv,eg=1.7-ph;
+  for(j=0;j<wp.length;j++){i=wp[j];f2=i&7;rw=i>>3;
+    if(wf[f2]>1)sc-=10;
+    if((f2===0||!wf[f2-1])&&(f2===7||!wf[f2+1]))sc-=8;
+    pass=true;for(q2=0;q2<bp.length;q2++){bi=bp[q2];if(((bi&7)-f2>=-1&&(bi&7)-f2<=1)&&(bi>>3)<rw){pass=false;break;}}
+    if(pass){adv=6-rw;sc+=Math.round((6+adv*adv*2.6)*eg);}
+  }
+  for(j=0;j<bp.length;j++){i=bp[j];f2=i&7;rw=i>>3;
+    if(bf[f2]>1)sc+=10;
+    if((f2===0||!bf[f2-1])&&(f2===7||!bf[f2+1]))sc+=8;
+    pass=true;for(q2=0;q2<wp.length;q2++){bi=wp[q2];if(((bi&7)-f2>=-1&&(bi&7)-f2<=1)&&(bi>>3)>rw){pass=false;break;}}
+    if(pass){adv=rw-1;sc-=Math.round((6+adv*adv*2.6)*eg);}
+  }
+  return sc;
+}
+var nodes=0,deadline=0,stopped=false,rootKeys=null;
+var KILL=[],HIST=[];
+function isCap(s,m){return s.b[m.t]!=='.'||m.fl==='e';}
+function orderMoves(s,ms,first,ply){
+  var k1=KILL[ply]&&KILL[ply][0],k2=KILL[ply]&&KILL[ply][1];
+  var sc=ms.map(function(m){
+    var x=0;if(first&&sameMove(m,first))x=1e7;
+    else if(isCap(s,m)){var v=s.b[m.t]==='.'?'p':s.b[m.t].toLowerCase();x=100000+10*VAL[v]-VAL[s.b[m.f].toLowerCase()]/10;}
+    else if(k1&&sameMove(m,k1))x=90000;
+    else if(k2&&sameMove(m,k2))x=80000;
+    else x+=HIST[m.f*64+m.t]||0;
+    if(m.pr)x+=m.pr==='q'?90000:100;
+    return x;});
+  var idx=ms.map(function(_,i){return i;}).sort(function(a,b){return sc[b]-sc[a];});
+  return idx.map(function(i){return ms[i];});
+}
+function evalStm(s){var v=evalW(s);return s.t==='w'?v:-v;}
+function qsearch(s,alpha,beta,ply){
+  if((++nodes&2047)===0&&Date.now()>deadline)stopped=true;
+  if(stopped)return 0;
+  var st=evalStm(s);
+  if(st>=beta)return st;
+  if(st>alpha)alpha=st;
+  if(ply>24)return st;
+  var w=s.t==='w',en=w?'b':'w';
+  var ms=orderMoves(s,genPseudo(s).filter(function(m){return isCap(s,m)||m.pr==='q';}),null,ply);
+  for(var i=0;i<ms.length;i++){
+    var ns=make(s,ms[i]);
+    if(attackedBy(ns.b,kingSq(ns.b,w),en))continue;
+    var sc=-qsearch(ns,-beta,-alpha,ply+1);
+    if(stopped)return 0;
+    if(sc>=beta)return sc;
+    if(sc>alpha)alpha=sc;
+  }
+  return alpha;
+}
+function search(s,depth,alpha,beta,ply){
+  if((++nodes&2047)===0&&Date.now()>deadline)stopped=true;
+  if(stopped)return 0;
+  if(s.h>=100)return 0;
+  if(ply<=2&&rootKeys&&rootKeys[posKey(s)])return 0;
+  var chk=inCheck(s);
+  if(chk&&ply<14)depth++;
+  if(depth<=0)return qsearch(s,alpha,beta,ply);
+  var ms=orderMoves(s,genMoves(s),null,ply);
+  if(!ms.length)return chk?-MATE+ply:0;
+  for(var i=0;i<ms.length;i++){
+    var sc=-search(make(s,ms[i]),depth-1,-beta,-alpha,ply+1);
+    if(stopped)return 0;
+    if(sc>=beta){
+      if(!isCap(s,ms[i])){
+        var kl=KILL[ply]||(KILL[ply]=[]);
+        if(!kl[0]||!sameMove(kl[0],ms[i])){kl[1]=kl[0];kl[0]=ms[i];}
+        HIST[ms[i].f*64+ms[i].t]=(HIST[ms[i].f*64+ms[i].t]||0)+depth*depth;
+      }
+      return sc;
+    }
+    if(sc>alpha)alpha=sc;
+  }
+  return alpha;
+}
+function gauss(){return (Math.random()+Math.random()+Math.random()-1.5)/0.5;}
+// opt: {depth, ms, noise, keys:[]}
+function think(s,opt){
+  var moves=genMoves(s);
+  if(!moves.length)return null;
+  if(moves.length===1)return {m:moves[0],score:0,only:true};
+  nodes=0;stopped=false;deadline=Date.now()+(opt.ms||1000);
+  rootKeys=null;KILL=[];HIST=[];
+  if(opt.keys){rootKeys={};opt.keys.forEach(function(k){rootKeys[k]=1;});}
+  var noise=opt.noise||0,best=moves[0],bestScore=-INF,list=null,first=null,d;
+  for(d=1;d<=(opt.depth||3);d++){
+    var ord=orderMoves(s,moves,first,0),alpha=-INF,cur=[],bm=null,bs=-INF;
+    for(var i=0;i<ord.length;i++){
+      var ns=make(s,ord[i]),sc;
+      if(noise)sc=-search(ns,d-1,-INF,INF,1);else sc=-search(ns,d-1,-INF,-alpha,1);
+      if(stopped)break;
+      cur.push({m:ord[i],sc:sc});
+      if(sc>bs){bs=sc;bm=ord[i];}
+      if(sc>alpha)alpha=sc;
+    }
+    if(stopped&&d>1)break;
+    if(bm){best=bm;bestScore=bs;first=bm;list=cur;}
+    if(stopped)break;
+    if(Math.abs(bs)>MATE-100&&!noise)break;
+  }
+  if(noise&&list){
+    var bb=null,bv=-INF;
+    list.forEach(function(x){var v=x.sc+gauss()*noise;if(v>bv){bv=v;bb=x.m;}});
+    if(bb)best=bb;
+  }
+  return {m:best,score:bestScore,nodes:nodes};
+}
+if(typeof self!=='undefined'&&typeof document==='undefined'&&typeof module==='undefined'){
+  self.onmessage=function(ev){var d=ev.data;var r=think(d.state,d.opt);self.postMessage({id:d.id,m:r?r.m:null,score:r?r.score:null});};
+}
+if(typeof module!=='undefined')module.exports={parseFEN:parseFEN,toFEN:toFEN,genMoves:genMoves,make:make,san:san,parseSAN:parseSAN,think:think,gameStatus:gameStatus,inCheck:inCheck,START_FEN:START_FEN,sameMove:sameMove,attacksFrom:attacksFrom,attackedBy:attackedBy,sqName:sqName,evalW:evalW};
+</script>
+<script>var ENGINE_SRC=document.getElementById('engine-src').textContent;(0,eval)(ENGINE_SRC);</script>
+<script>var PIECES={"cburnett": {"bb": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><g fill=\"#000\" stroke-linecap=\"butt\"><path d=\"M9 36c3.4-1 10.1.4 13.5-2 3.4 2.4 10.1 1 13.5 2 0 0 1.6.5 3 2-.7 1-1.6 1-3 .5-3.4-1-10.1.5-13.5-1-3.4 1.5-10.1 0-13.5 1-1.4.5-2.3.5-3-.5 1.4-2 3-2 3-2z\"/><path d=\"M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z\"/><path d=\"M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 1 1 5 0z\"/></g><path stroke=\"#ececec\" stroke-linejoin=\"miter\" d=\"M17.5 26h10M15 30h15m-7.5-14.5v5M20 18h5\"/></g></svg>", "bk": "<svg viewBox=\"0 0 45 45\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path stroke-linejoin=\"miter\" d=\"M22.5 11.6V6\"/><path fill=\"#000\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" d=\"M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5\"/><path fill=\"#000\" d=\"M11.5 37a22.3 22.3 0 0 0 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V27v-3.5c-3.5-7.5-13-10.5-16-4-3 6 5 10 5 10z\"/><path stroke-linejoin=\"miter\" d=\"M20 8h5\"/><path stroke=\"#ececec\" d=\"M32 29.5s8.5-4 6-9.7C34.1 14 25 18 22.5 24.6v2.1-2.1C20 18 9.9 14 7 19.9c-2.5 5.6 4.8 9 4.8 9\"/><path stroke=\"#ececec\" d=\"M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0\"/></g></svg>", "bn": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path fill=\"#000\" d=\"M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21\"/><path fill=\"#000\" d=\"M24 18c.38 2.91-5.55 7.37-8 9-3 2-2.82 4.34-5 4-1.04-.94 1.41-3.04 0-3-1 0 .19 1.23-1 2-1 0-4 1-4-4 0-2 6-12 6-12s1.89-1.9 2-3.5c-.73-1-.5-2-.5-3 1-1 3 2.5 3 2.5h2s.78-2 2.5-3c1 0 1 3 1 3\"/><path fill=\"#ececec\" stroke=\"#ececec\" d=\"M9.5 25.5a.5.5 0 1 1-1 0 .5.5 0 1 1 1 0m5.43-9.75a.5 1.5 30 1 1-.86-.5.5 1.5 30 1 1 .86.5\"/><path fill=\"#ececec\" stroke=\"none\" d=\"m24.55 10.4-.45 1.45.5.15c3.15 1 5.65 2.49 7.9 6.75S35.75 29.06 35.25 39l-.05.5h2.25l.05-.5c.5-10.06-.88-16.85-3.25-21.34s-5.79-6.64-9.19-7.16z\"/></g></svg>", "bp": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><path stroke=\"#000\" stroke-linecap=\"round\" stroke-width=\"1.5\" d=\"M22.5 9a4 4 0 0 0-3.22 6.38 6.48 6.48 0 0 0-.87 10.65c-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47a6.46 6.46 0 0 0-.87-10.65A4.01 4.01 0 0 0 22.5 9z\"/></svg>", "bq": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><g stroke=\"none\"><circle cx=\"6\" cy=\"12\" r=\"2.75\"/><circle cx=\"14\" cy=\"9\" r=\"2.75\"/><circle cx=\"22.5\" cy=\"8\" r=\"2.75\"/><circle cx=\"31\" cy=\"9\" r=\"2.75\"/><circle cx=\"39\" cy=\"12\" r=\"2.75\"/></g><path stroke-linecap=\"butt\" d=\"M9 26c8.5-1.5 21-1.5 27 0l2.5-12.5L31 25l-.3-14.1-5.2 13.6-3-14.5-3 14.5-5.2-13.6L14 25 6.5 13.5z\"/><path stroke-linecap=\"butt\" d=\"M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1.5 2.5-1.5 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-8.5-1.5-18.5-1.5-27 0z\"/><path fill=\"none\" stroke-linecap=\"butt\" d=\"M11 38.5a35 35 1 0 0 23 0\"/><path fill=\"none\" stroke=\"#ececec\" d=\"M11 29a35 35 1 0 1 23 0m-21.5 2.5h20m-21 3a35 35 1 0 0 22 0m-23 3a35 35 1 0 0 24 0\"/></g></svg>", "br": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path stroke-linecap=\"butt\" d=\"M9 39h27v-3H9zm3.5-7 1.5-2.5h17l1.5 2.5zm-.5 4v-4h21v4z\"/><path stroke-linecap=\"butt\" stroke-linejoin=\"miter\" d=\"M14 29.5v-13h17v13z\"/><path stroke-linecap=\"butt\" d=\"M14 16.5 11 14h23l-3 2.5zM11 14V9h4v2h5V9h5v2h5V9h4v5z\"/><path fill=\"none\" stroke=\"#ececec\" stroke-linejoin=\"miter\" stroke-width=\"1\" d=\"M12 35.5h21m-20-4h19m-18-2h17m-17-13h17M11 14h23\"/></g></svg>", "wb": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><g fill=\"#fff\" stroke-linecap=\"butt\"><path d=\"M9 36c3.39-.97 10.11.43 13.5-2 3.39 2.43 10.11 1.03 13.5 2 0 0 1.65.54 3 2-.68.97-1.65.99-3 .5-3.39-.97-10.11.46-13.5-1-3.39 1.46-10.11.03-13.5 1-1.35.49-2.32.47-3-.5 1.35-1.94 3-2 3-2z\"/><path d=\"M15 32c2.5 2.5 12.5 2.5 15 0 .5-1.5 0-2 0-2 0-2.5-2.5-4-2.5-4 5.5-1.5 6-11.5-5-15.5-11 4-10.5 14-5 15.5 0 0-2.5 1.5-2.5 4 0 0-.5.5 0 2z\"/><path d=\"M25 8a2.5 2.5 0 1 1-5 0 2.5 2.5 0 1 1 5 0z\"/></g><path stroke-linejoin=\"miter\" d=\"M17.5 26h10M15 30h15m-7.5-14.5v5M20 18h5\"/></g></svg>", "wk": "<svg viewBox=\"0 0 45 45\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path stroke-linejoin=\"miter\" d=\"M22.5 11.63V6M20 8h5\"/><path fill=\"#fff\" stroke-linecap=\"butt\" stroke-linejoin=\"miter\" d=\"M22.5 25s4.5-7.5 3-10.5c0 0-1-2.5-3-2.5s-3 2.5-3 2.5c-1.5 3 3 10.5 3 10.5\"/><path fill=\"#fff\" d=\"M11.5 37c5.5 3.5 15.5 3.5 21 0v-7s9-4.5 6-10.5c-4-6.5-13.5-3.5-16 4V27v-3.5c-3.5-7.5-13-10.5-16-4-3 6 5 10 5 10z\"/><path d=\"M11.5 30c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0m-21 3.5c5.5-3 15.5-3 21 0\"/></g></svg>", "wn": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill=\"none\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path fill=\"#fff\" d=\"M22 10c10.5 1 16.5 8 16 29H15c0-9 10-6.5 8-21\"/><path fill=\"#fff\" d=\"M24 18c.38 2.91-5.55 7.37-8 9-3 2-2.82 4.34-5 4-1.042-.94 1.41-3.04 0-3-1 0 .19 1.23-1 2-1 0-4.003 1-4-4 0-2 6-12 6-12s1.89-1.9 2-3.5c-.73-.994-.5-2-.5-3 1-1 3 2.5 3 2.5h2s.78-1.992 2.5-3c1 0 1 3 1 3\"/><path fill=\"#000\" d=\"M9.5 25.5a.5.5 0 1 1-1 0 .5.5 0 1 1 1 0m5.433-9.75a.5 1.5 30 1 1-.866-.5.5 1.5 30 1 1 .866.5\"/></g></svg>", "wp": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><path fill=\"#fff\" stroke=\"#000\" stroke-linecap=\"round\" stroke-width=\"1.5\" d=\"M22.5 9c-2.21 0-4 1.79-4 4 0 .89.29 1.71.78 2.38C17.33 16.5 16 18.59 16 21c0 2.03.94 3.84 2.41 5.03-3 1.06-7.41 5.55-7.41 13.47h23c0-7.92-4.41-12.41-7.41-13.47 1.47-1.19 2.41-3 2.41-5.03 0-2.41-1.33-4.5-3.28-5.62.49-.67.78-1.49.78-2.38 0-2.21-1.79-4-4-4z\"/></svg>", "wq": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill=\"#fff\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path d=\"M8 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0m16.5-4.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0M41 12a2 2 0 1 1-4 0 2 2 0 1 1 4 0M16 8.5a2 2 0 1 1-4 0 2 2 0 1 1 4 0M33 9a2 2 0 1 1-4 0 2 2 0 1 1 4 0\"/><path stroke-linecap=\"butt\" d=\"M9 26c8.5-1.5 21-1.5 27 0l2-12-7 11V11l-5.5 13.5-3-15-3 15-5.5-14V25L7 14z\"/><path stroke-linecap=\"butt\" d=\"M9 26c0 2 1.5 2 2.5 4 1 1.5 1 1 .5 3.5-1.5 1-1.5 2.5-1.5 2.5-1.5 1.5.5 2.5.5 2.5 6.5 1 16.5 1 23 0 0 0 1.5-1 0-2.5 0 0 .5-1.5-1-2.5-.5-2.5-.5-2 .5-3.5 1-2 2.5-2 2.5-4-8.5-1.5-18.5-1.5-27 0z\"/><path fill=\"none\" d=\"M11.5 30c3.5-1 18.5-1 22 0M12 33.5c6-1 15-1 21 0\"/></g></svg>", "wr": "<svg width=\"45\" height=\"45\" viewBox=\"0 0 45 45\"><g fill=\"#fff\" fill-rule=\"evenodd\" stroke=\"#000\" stroke-linecap=\"round\" stroke-linejoin=\"round\" stroke-width=\"1.5\"><path stroke-linecap=\"butt\" d=\"M9 39h27v-3H9zm3-3v-4h21v4zm-1-22V9h4v2h5V9h5v2h5V9h4v5\"/><path d=\"m34 14-3 3H14l-3-3\"/><path stroke-linecap=\"butt\" stroke-linejoin=\"miter\" d=\"M31 17v12.5H14V17\"/><path d=\"m31 29.5 1.5 2.5h-20l1.5-2.5\"/><path fill=\"none\" stroke-linejoin=\"miter\" d=\"M11 14h23\"/></g></svg>"}, "merida": {"bb": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.094\" x2=\"77.669\" y1=\"37.101\" y2=\"37.469\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M25 42.162c-.229.94-.516 1.592-.847 1.956-.33.364-.762.745-1.312 1.143-.593.415-1.295.762-2.108 1.05s-1.71.364-2.701.211l-6.968-.965a2.858 2.858 0 0 0-.762 0c-.22.034-.432.051-.635.051-.347 0-.787.076-1.32.237-.543.153-.958.381-1.254.677l-2.405-3.945c.297-.33.56-.559.788-.694.237-.127.508-.271.821-.415a9.179 9.179 0 0 1 3.073-.821c.466-.034.923-.043 1.364-.026a9.8 9.8 0 0 0 1.397-.05c.889.152 1.786.287 2.684.406.905.127 1.811.254 2.717.39.991 0 1.66-.102 2.007-.297.186-.102.474-.288.872-.55.398-.263.796-.652 1.194-1.169-.88-.093-1.77-.262-2.684-.508a24.094 24.094 0 0 1-2.405-.753l2.583-6.401c-1.296-.745-2.193-1.338-2.71-1.795a5.3 5.3 0 0 1-1.21-1.575c-.432-.762-.712-1.498-.83-2.21a9.341 9.341 0 0 1-.16-1.913c.016-.99.245-2.083.702-3.285.457-1.194 1.312-2.27 2.565-3.209a79.091 79.091 0 0 0 3.057-2.455 27.746 27.746 0 0 0 2.946-2.955c-1.22-.627-1.829-1.626-1.829-2.997 0-.932.322-1.72.974-2.388.652-.66 1.456-.99 2.396-.99.923 0 1.719.33 2.38.99.66.669.99 1.456.99 2.388q0 2.031-1.83 2.997a26.796 26.796 0 0 0 2.914 2.955 56.74 56.74 0 0 0 3.09 2.455c1.236.94 2.083 2.015 2.523 3.209.449 1.202.694 2.294.72 3.285 0 .567-.051 1.202-.17 1.913s-.38 1.448-.796 2.21a6.084 6.084 0 0 1-1.253 1.575c-.5.457-1.388 1.05-2.667 1.795l2.583 6.4c-.729.263-1.55.517-2.456.754-.914.246-1.786.415-2.633.508.381.517.77.906 1.168 1.169.398.262.695.448.898.55.347.195 1.016.296 2.007.296a263.35 263.35 0 0 1 2.692-.39 81.13 81.13 0 0 0 2.718-.406c.44.051.889.068 1.346.051a13.12 13.12 0 0 1 1.405.026 9.627 9.627 0 0 1 3.074.82c.296.145.567.289.804.416.246.135.508.364.804.694l-2.43 3.945c-.296-.296-.71-.524-1.253-.677-.533-.16-.965-.237-1.295-.237-.22 0-.44-.017-.66-.05a2.794 2.794 0 0 0-.754 0l-6.95.964c-.992.153-1.914.085-2.761-.194-.855-.28-1.558-.652-2.1-1.118-.542-.449-.982-.83-1.304-1.151-.321-.322-.592-.957-.804-1.897\"/><path fill=\"url(#a)\" d=\"M24.086 23.705v2.108c0 .61.304.914.914.914s.914-.304.914-.914v-2.134h2.236c.575 0 .872-.296.872-.897 0-.593-.297-.889-.872-.889h-2.236v-2.235c0-.61-.304-.915-.914-.915s-.914.305-.914.915v2.235H21.9c-.584 0-.872.296-.872.889 0 .601.288.897.872.897zm7.51 13.741-1.042-2.531c-1.685-.364-3.539-.542-5.554-.542-1.998 0-3.835.178-5.503.542l-1.042 2.506c2.05-.517 4.234-.77 6.545-.77 2.286 0 4.479.262 6.596.795m-2.083-5.114-.72-1.735v-.67a27.03 27.03 0 0 0-3.793-.27 27.35 27.35 0 0 0-3.768.27l-.025.67-.669 1.735A25.85 25.85 0 0 1 25 31.96c1.592 0 3.09.127 4.513.372m-.864 9.381c-.66-.5-1.33-1.287-1.99-2.362h-.787c0 .813.186 1.6.567 2.362zm-5.114 0c.381-.812.576-1.6.576-2.362h-.796c-.643 1.059-1.312 1.846-2.015 2.362z\"/></svg>", "bk": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.13\" x2=\"77.764\" y1=\"37.224\" y2=\"37.469\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M25.821 12.022h-1.76v-3.25h-2.067c-.558 0-.838-.272-.838-.822v-.025c0-.542.28-.813.838-.813h2.066V5.004c0-.585.297-.872.89-.872.575 0 .871.287.871.872v2.108h2.134c.542 0 .813.27.813.813v.025c0 .55-.271.821-.813.821l-2.117.026zM11.03 37.744l-.813-4.64c-.017 0-.042-.033-.076-.101-.085-.119-.322-.271-.711-.457-.381-.195-.838-.517-1.346-.982a41.99 41.99 0 0 1-1.702-1.49 8.509 8.509 0 0 1-1.1-1.237C4.273 27.45 3.705 25.772 3.595 23.8c-.17-1.897.601-3.794 2.303-5.682 1.719-1.88 4.047-2.768 6.968-2.65 1.092.068 2.38.33 3.844.796.483.195.974.39 1.482.576l1.498.584c.263.136.5.271.695.398a4.38 4.38 0 0 1-.127-1.041c0-1.287.457-2.388 1.38-3.302.914-.906 2.023-1.372 3.31-1.389 1.287 0 2.388.466 3.302 1.38.906.915 1.363 2.015 1.363 3.285 0 .263-.034.61-.101 1.042.228-.144.457-.271.669-.373.762-.33 1.76-.72 3.005-1.16 1.423-.482 2.701-.753 3.844-.821 2.921-.136 5.241.753 6.943 2.65 1.668 1.888 2.447 3.785 2.328 5.681-.127 1.973-.703 3.65-1.71 5.038-.33.449-.703.863-1.118 1.253a40.5 40.5 0 0 1-1.66 1.473c-.541.466-1.007.796-1.388.982-.38.186-.6.347-.669.457a.294.294 0 0 1-.05.077c-.017.017-.026.034-.026.05l-.796 4.666 1.643 6.121c-.83.745-2.684 1.355-5.554 1.837-2.879.483-6.206.72-9.974.72-3.835 0-7.214-.254-10.118-.754-2.912-.508-4.741-1.143-5.486-1.896z\"/><path fill=\"url(#a)\" d=\"M24.95 20.675a2.295 2.295 0 0 0-.128-.423 5.606 5.606 0 0 0-.245-.72c-.051-.11-.119-.254-.195-.431a9.028 9.028 0 0 1-.254-.56c-.05-.118-.11-.27-.186-.456-.068-.195-.136-.373-.187-.534a1.735 1.735 0 0 1-.067-.474c0-.872.415-1.312 1.261-1.312.88 0 1.313.431 1.313 1.287 0 .22-.034.372-.094.474-.237.626-.355.965-.372 1.016-.254.5-.406.821-.474.965-.119.27-.195.508-.22.72-.051.101-.085.186-.102.262s-.034.136-.05.186m-2.778 8.56c-2.066.034-3.954.136-5.673.322-1.71.178-3.03.44-3.979.77a18.973 18.973 0 0 0-1.719-1.854 33.007 33.007 0 0 1-1.727-1.744c-.83-.847-1.236-1.77-1.236-2.777 0-1.245.203-2.15.618-2.726.44-.67 1.135-1.16 2.058-1.482a8.486 8.486 0 0 1 2.802-.483c1.194 0 2.328.263 3.42.796 1.076.56 1.787 1.008 2.134 1.338 1.126 1.143 2.007 2.38 2.633 3.717.212.5.373 1.194.483 2.074.11.89.17 1.567.186 2.05zm2.777-4.318c.119-.466.212-.787.296-.965.17-.643.356-1.194.576-1.643.093-.279.237-.6.432-.973.186-.373.39-.805.61-1.279.127-.28.27-.626.415-1.033.152-.406.304-.804.448-1.202.136-.33.203-.686.203-1.067 0-.813-.296-1.498-.872-2.066-.575-.575-1.278-.863-2.108-.863-1.964 0-2.955.99-2.955 2.955 0 .38.068.736.203 1.066.365 1.076.644 1.82.839 2.236.22.474.415.906.6 1.278.179.373.34.694.466.974.22.55.398 1.092.55 1.642.035.093.128.415.297.94m-.889 6.223c0-.66-.017-1.575-.05-2.735-.034-1.168-.161-2.142-.373-2.92-.677-2.21-1.702-3.997-3.082-5.351-.711-.695-1.795-1.347-3.268-1.94-1.685-.66-3.285-.99-4.792-.99-2.608 0-4.547.931-5.8 2.803-.711.99-1.067 2.235-1.067 3.716 0 1.626.398 2.955 1.186 3.997.415.592 1.21 1.329 2.387 2.21 1.169.872 2.168 1.684 2.972 2.43 1.44-.314 3.065-.585 4.877-.822 1.812-.229 4.149-.364 7.01-.398m13.784 11.735-.737-2.93c-3.225-.736-7.281-1.109-12.158-1.109-4.826 0-8.864.373-12.107 1.11l-.787 2.954c3.14-.956 7.442-1.439 12.92-1.439 2.624 0 5.071.136 7.315.398 2.252.262 4.106.601 5.554 1.016m-.643-7.417c-3.04-.838-7.096-1.261-12.15-1.261-5.097 0-9.195.431-12.302 1.287l.372 2.506c3.125-.813 7.095-1.22 11.93-1.22 4.809 0 8.729.398 11.752 1.194zm-11.363-4.292c2.845.05 5.182.194 7.002.423 1.812.229 3.455.508 4.91.821.907-.897 1.914-1.744 3.023-2.557s1.888-1.507 2.337-2.083c.788-1.075 1.186-2.413 1.186-4.021 0-1.465-.356-2.701-1.067-3.692-1.27-1.87-3.218-2.802-5.825-2.802-1.524 0-3.108.33-4.767.99-1.507.593-2.59 1.237-3.277 1.93-1.405 1.364-2.43 3.15-3.073 5.36-.246.762-.381 1.727-.407 2.904s-.042 2.083-.042 2.727m1.812-1.93c0-.483.06-1.16.16-2.05.111-.88.28-1.575.509-2.074.618-1.338 1.49-2.574 2.633-3.717.33-.33 1.042-.779 2.134-1.338a7.655 7.655 0 0 1 3.446-.796c.93 0 1.845.161 2.768.483.915.322 1.609.813 2.066 1.482.415.559.627 1.464.627 2.726 0 .99-.407 1.913-1.22 2.777a40.35 40.35 0 0 1-1.71 1.651c-.61.55-1.202 1.202-1.76 1.947-.958-.33-2.295-.592-4.006-.77-1.71-.186-3.59-.288-5.647-.322z\"/></svg>", "bn": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.253\" x2=\"77.641\" y1=\"37.592\" y2=\"37.469\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M26.178 9.395c2.6.17 5.004.838 7.222 2.015 2.21 1.169 4.098 2.676 5.656 4.513 1.092 1.287 2.117 2.845 3.082 4.665a28.684 28.684 0 0 1 2.32 5.774 36.511 36.511 0 0 1 1.253 7.46c.177 2.599.262 5.012.262 7.23v5.402H15.468c-.153 0-.22-.407-.212-1.21.009-.814.06-1.466.16-1.965.06-.398.221-.957.467-1.685.254-.728.66-1.609 1.244-2.65.263-.534.89-1.304 1.88-2.32.999-1.016 2.133-2.201 3.429-3.539.745-.762 1.32-1.719 1.744-2.879.423-1.151.601-2.201.533-3.15a8.37 8.37 0 0 1-2.006 1.22c-3.505 1.253-6.045 3.073-7.612 5.452-.118.153-.49.822-1.117 2.015-.33.627-.618 1.059-.847 1.287-.313.314-.77.491-1.363.525-.923.043-1.643-.398-2.16-1.346-.693.203-1.312.288-1.862.254-.923-.347-1.592-.72-2.006-1.117-.847-.847-1.389-1.685-1.651-2.532a9.43 9.43 0 0 1-.381-2.726c0-1.389.855-3.226 2.582-5.512 2.015-2.625 3.09-4.631 3.217-6.003 0-.593.06-1.261.178-2.007a4.198 4.198 0 0 1 .618-1.49c.22-.33.364-.558.432-.677.076-.127.212-.313.415-.559.144-.203.27-.355.372-.457.093-.11.22-.254.373-.44.178-.212.406-.457.694-.745a18.06 18.06 0 0 1-1.067-7.46c3.285 1.169 6.054 3.015 8.28 5.53.551-1.872 1.626-3.387 3.226-4.539 1.321.923 2.371 2.15 3.15 3.666\"/><path fill=\"url(#a)\" d=\"m15.688 17.786.542-.28c.5-.194.652-.559.474-1.092-.195-.491-.576-.66-1.143-.491-1.947.711-3.294 2.015-4.039 3.92-.118.542.076.914.593 1.118.516.16.864-.017 1.041-.55.136-.28.229-.466.297-.543.186.144.423.246.72.297 1.007.16 1.6-.28 1.76-1.338a1.498 1.498 0 0 0-.245-1.041M11.573 34.55c.06-.153.17-.373.322-.67.28-.693.415-1.108.415-1.244-.026-.457-.271-.694-.72-.694-.33 0-.711.474-1.16 1.414a.97.97 0 0 1-.296.347c-.449.466-.381.855.194 1.168.534.314.94.212 1.245-.321m14.63-9.204c1.16-1.524 1.728-3.217 1.71-5.08-.067-.55-.38-.82-.94-.82-.761 0-1.057.279-.897.837.051.915-.033 1.668-.27 2.261-.382.94-.805 1.643-1.262 2.108-.254.5-.102.864.449 1.092.525.246.931.119 1.21-.398M19.726 13.24a6.798 6.798 0 0 1 .051-1.93c-.99.194-1.922.66-2.802 1.388-.525.28-.652.67-.373 1.169.28.508.67.592 1.169.245.347-.186.669-.355.956-.508.288-.16.618-.28 1-.364zm23.25 31.454c-.017 0 0-.449.042-1.346.131-3.108.096-6.221.076-9.33a26.837 26.837 0 0 0-.889-6.613c-.84-3.31-2.124-6.485-4.072-9.297-2.634-3.845-6.814-6.033-11.286-6.976.126.766.033 1.54.076 2.311a25.82 25.82 0 0 1 4.538 2.032c4.241 2.555 6.414 7.276 7.197 11.93 1.272 6.154.453 11.557.813 17.289zM9.439 30.139c.475-.34.525-.729.144-1.194-.398-.381-.83-.415-1.312-.102-1.007.66-1.55 1.533-1.617 2.608.017.542.347.804.974.77.592-.05.88-.355.863-.922.136-.525.449-.915.948-1.16\"/></svg>", "bp": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><path fill=\"#1f1a17\" d=\"M25 46.448H11.606a13.139 13.139 0 0 1-.99-5.043c0-2.975.863-5.644 2.598-8.018 1.736-2.365 3.971-4.054 6.697-5.067a6.824 6.824 0 0 1-2.861-2.398c-.737-1.071-1.1-2.283-1.1-3.634 0-1.69.575-3.156 1.735-4.392 1.151-1.244 2.574-1.961 4.267-2.15-1.346-.981-2.015-2.283-2.015-3.89 0-1.351.491-2.513 1.482-3.477.982-.964 2.176-1.442 3.581-1.442 1.389 0 2.582.478 3.573 1.442s1.49 2.126 1.49 3.477c0 1.607-.669 2.909-2.015 3.89 1.693.189 3.116.906 4.267 2.15 1.16 1.236 1.736 2.703 1.736 4.392 0 1.351-.373 2.563-1.126 3.634a7.036 7.036 0 0 1-2.862 2.398c2.726 1.013 4.962 2.702 6.697 5.067 1.736 2.374 2.6 5.043 2.6 8.018q0 2.6085-.966 5.043z\"/></svg>", "bq": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.253\" x2=\"77.764\" y1=\"37.224\" y2=\"37.36\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M24.95 10.752c-.94 0-1.745-.33-2.397-.99s-.974-1.465-.974-2.405c0-.931.322-1.727.974-2.387s1.456-.99 2.396-.99c.923 0 1.727.33 2.396.99a3.23 3.23 0 0 1 1 2.387c0 .94-.33 1.744-1 2.405-.669.66-1.473.99-2.396.99zm15.281 33.19c-.812.71-2.633 1.304-5.46 1.786-2.828.474-6.088.72-9.771.72-3.75 0-7.053-.254-9.898-.745-2.844-.5-4.64-1.118-5.384-1.863l1.566-5.952-.694-3.895L8.405 30.2 6.297 14.774l1.21-.474 6.8 11.455.152-13.64 1.685-.296 5.182 13.716 2.776-14.757h1.72l2.776 14.706L33.73 11.82l1.71.296.153 13.64 6.824-11.48 1.16.541-2.058 15.359-2.21 3.793-.694 3.945zM14.535 11.989c-.948 0-1.752-.322-2.413-.974-.66-.652-.99-1.456-.99-2.396 0-.923.33-1.719.99-2.38s1.465-.99 2.413-.99c.923 0 1.719.33 2.38.99s.99 1.457.99 2.38c0 .94-.33 1.744-.99 2.396a3.266 3.266 0 0 1-2.38.974m20.828 0c-.94 0-1.736-.322-2.387-.974-.652-.652-.982-1.456-.982-2.396 0-.923.33-1.719.982-2.38s1.447-.99 2.387-.99c.948 0 1.753.33 2.413.99s.99 1.457.99 2.38c0 .94-.33 1.744-.99 2.396s-1.465.974-2.413.974M5.4 14.723c-.94 0-1.736-.33-2.388-.982s-.982-1.448-.982-2.396c0-.923.33-1.719.982-2.388C3.664 8.28 4.46 7.95 5.4 7.95c.948 0 1.744.33 2.413 1.007.66.67.99 1.465.99 2.388 0 .948-.33 1.744-.99 2.396a3.323 3.323 0 0 1-2.413.982m39.141 0c-.94 0-1.744-.33-2.404-.982s-.991-1.448-.991-2.396q0-1.3845.99-2.388c.66-.677 1.465-1.007 2.405-1.007.931 0 1.727.33 2.388 1.007.66.67.99 1.465.99 2.388 0 .948-.33 1.744-.99 2.396a3.28 3.28 0 0 1-2.388.982\"/><path fill=\"url(#a)\" d=\"M37.2 35.73c-3.04-.84-7.095-1.262-12.15-1.262-5.096 0-9.194.431-12.301 1.286l.372 2.507c3.124-.813 7.095-1.22 11.93-1.22 4.809 0 8.729.398 11.752 1.194zm1.736-4.437c-1.372-.5-3.302-.906-5.791-1.228-2.49-.322-5.233-.483-8.247-.483-2.946 0-5.638.153-8.085.458-2.447.304-4.378.702-5.783 1.202l1.245 2.252c1.388-.406 3.191-.703 5.41-.89 2.21-.177 4.631-.27 7.264-.27s5.063.093 7.29.27q3.3525.2805 5.436.915zm-1.092 11.853-.737-2.93c-3.226-.736-7.281-1.109-12.158-1.109-4.826 0-8.864.373-12.107 1.11l-.788 2.954c3.142-.956 7.443-1.44 12.92-1.44 2.625 0 5.072.136 7.316.399 2.252.262 4.106.601 5.554 1.016\"/></svg>", "br": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.192\" x2=\"77.736\" y1=\"37.552\" y2=\"37.429\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M28.408 9.22h4.216V5.825h6.799v9.296l-5.503 4.242v11.862l4.216 4.216v5.08h3.793v5.927H8.071V40.52h3.793v-5.08l4.242-4.216V19.363l-5.504-4.242V5.825h6.774V9.22h4.242V5.825h6.79z\"/><path fill=\"url(#a)\" d=\"M25.013 35.043h-10.27L13.6 36.11v1.44h22.826v-1.44l-1.143-1.067zM13.6 40.123v2.532h22.826v-2.532zM25.013 13.04h-12.7v1.142l1.812 1.364h21.801l1.761-1.364V13.04zm0 4.19h-8.679l1.482 1.169v1.414h14.393v-1.414l1.482-1.168zm0 13.547h-7.197v1.143l-1.482 1.44h17.357l-1.482-1.44v-1.143z\"/></svg>", "wb": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.13\" x2=\"77.641\" y1=\"37.592\" y2=\"37.469\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M25.447 42.008c-.228.94-.516 1.592-.846 1.956s-.762.745-1.313 1.143c-.592.415-1.295.762-2.108 1.05s-1.71.364-2.7.211l-6.969-.965a2.858 2.858 0 0 0-.762 0c-.22.034-.432.051-.635.051-.347 0-.787.076-1.32.237-.542.152-.957.381-1.254.677l-2.404-3.945c.296-.33.559-.559.787-.694.237-.127.508-.271.821-.415a9.179 9.179 0 0 1 3.074-.822c.466-.033.923-.042 1.363-.025a9.8 9.8 0 0 0 1.397-.05c.89.152 1.786.287 2.684.406.906.127 1.812.254 2.718.39.99 0 1.66-.102 2.006-.297.187-.102.474-.288.872-.55.398-.263.796-.652 1.194-1.169-.88-.093-1.77-.262-2.684-.508a24.094 24.094 0 0 1-2.404-.753l2.582-6.401c-1.295-.745-2.193-1.338-2.71-1.795a5.3 5.3 0 0 1-1.21-1.575c-.432-.762-.711-1.499-.83-2.21a9.341 9.341 0 0 1-.16-1.913c.016-.99.245-2.083.702-3.285.457-1.194 1.312-2.27 2.566-3.21a79.091 79.091 0 0 0 3.056-2.455 27.746 27.746 0 0 0 2.946-2.954c-1.219-.627-1.828-1.626-1.828-2.998 0-.93.321-1.718.973-2.387.652-.66 1.457-.99 2.396-.99.923 0 1.72.33 2.38.99.66.669.99 1.456.99 2.387 0 1.355-.61 2.354-1.829 2.998a26.796 26.796 0 0 0 2.913 2.954c.982.839 2.015 1.66 3.09 2.456 1.236.94 2.083 2.015 2.523 3.209.449 1.202.694 2.294.72 3.285 0 .567-.05 1.202-.17 1.913s-.38 1.448-.795 2.21a6.084 6.084 0 0 1-1.253 1.575c-.5.457-1.389 1.05-2.667 1.795l2.582 6.4a28.57 28.57 0 0 1-2.455.754c-.915.246-1.787.415-2.634.508.381.517.771.906 1.169 1.168.398.263.694.45.897.55.347.196 1.016.297 2.007.297a263.35 263.35 0 0 1 2.692-.39 81.13 81.13 0 0 0 2.718-.406c.44.051.89.068 1.346.051a13.12 13.12 0 0 1 1.406.025 9.627 9.627 0 0 1 3.073.822c.297.144.567.288.805.415.245.135.508.364.804.694l-2.43 3.945c-.296-.296-.711-.525-1.253-.677-.534-.16-.965-.237-1.296-.237-.22 0-.44-.017-.66-.05a2.794 2.794 0 0 0-.753 0l-6.952.964c-.99.153-1.913.085-2.76-.194-.855-.28-1.558-.652-2.1-1.118a20.04 20.04 0 0 1-1.303-1.151c-.322-.322-.593-.957-.805-1.897\"/><path fill=\"url(#a)\" d=\"M26.32 39.197c0 1.092.245 2.024.753 2.794.5.77 1.041 1.372 1.626 1.795.905.669 2.235 1 3.987 1 .432 0 1.279-.094 2.532-.28a74.737 74.737 0 0 1 2.48-.356c.627-.076 1.05-.135 1.27-.186a6.53 6.53 0 0 1 1.982.05c.262.068.559.128.88.187a1.6 1.6 0 0 1 .805.38l1.194-1.93a7.372 7.372 0 0 0-2.16-.72c-1.252-.22-2.353-.262-3.301-.151-.28.033-.644.118-1.101.245-.457.136-1.067.263-1.846.372-1.676.272-2.557.399-2.658.399-.644 0-1.203-.077-1.685-.246a10.37 10.37 0 0 1-1.287-.542c-.88-.398-1.77-1.338-2.684-2.81zm-1.762 0h-.795c-.932 1.49-1.812 2.43-2.659 2.811-.398.195-.83.373-1.312.542-.483.17-1.033.246-1.66.246-.118 0-.999-.127-2.658-.398-.788-.11-1.423-.238-1.88-.373a8.828 8.828 0 0 0-1.092-.245c-.948-.11-2.04-.068-3.302.152a7.056 7.056 0 0 0-2.134.72l1.194 1.93c.195-.195.457-.322.779-.381.322-.06.618-.119.88-.186a6.53 6.53 0 0 1 1.982-.051c.22.05.643.11 1.27.186.626.076 1.465.195 2.506.356 1.236.186 2.083.28 2.531.28 1.736 0 3.065-.331 3.988-1 .567-.423 1.1-1.024 1.6-1.795.508-.77.762-1.702.762-2.794m.89-9.347c1.6 0 3.14.127 4.614.372 1.617-.575 2.794-1.481 3.522-2.7a6.745 6.745 0 0 0 .94-3.497c0-.762-.187-1.6-.568-2.523-.38-.915-.999-1.744-1.862-2.49-.974-.812-2.04-1.701-3.2-2.666a33.093 33.093 0 0 1-3.447-3.387c-1.16 1.287-2.311 2.421-3.47 3.387a406.55 406.55 0 0 0-3.176 2.667c-.88.745-1.499 1.574-1.871 2.489-.373.923-.559 1.76-.559 2.523 0 1.27.305 2.438.914 3.497.712 1.219 1.897 2.125 3.548 2.7a27.749 27.749 0 0 1 4.614-.372zm0 4.513c1.938 0 3.793.194 5.579.575l-1.185-3.056a28.297 28.297 0 0 0-4.395-.347c-1.507 0-2.98.118-4.41.347l-1.194 3.056c1.769-.38 3.64-.575 5.604-.575zm0-23.538c1.126 0 1.684-.559 1.684-1.685s-.559-1.693-1.685-1.693-1.684.567-1.684 1.693.558 1.685 1.684 1.685zm0 27.009a18.97 18.97 0 0 0 3.285-.28c1.066-.194 2.1-.423 3.09-.685-1.94-.508-4.064-.77-6.376-.77-2.345 0-4.47.262-6.375.77.957.262 1.973.49 3.048.686a19.46 19.46 0 0 0 3.327.279zm-.89-14.334-2.065-.026c-.56 0-.839-.279-.839-.846 0-.559.28-.838.839-.838h2.065v-2.134c0-.576.297-.872.89-.872.575 0 .872.296.872.872v2.134h2.133c.542 0 .813.28.813.838 0 .567-.271.846-.813.846H26.32v2.032c0 .602-.297.898-.873.898-.592 0-.889-.296-.889-.898z\"/></svg>", "wk": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.376\" x2=\"77.641\" y1=\"37.346\" y2=\"37.346\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M25.821 12.022h-1.76v-3.25h-2.067c-.558 0-.838-.272-.838-.822v-.025c0-.542.28-.813.838-.813h2.066V5.004c0-.585.297-.872.89-.872.575 0 .871.287.871.872v2.108h2.134c.542 0 .813.27.813.813v.025c0 .55-.271.821-.813.821l-2.117.026zM11.03 37.744l-.813-4.64c-.017 0-.042-.033-.076-.101-.085-.119-.322-.271-.711-.457-.381-.195-.838-.517-1.346-.982a41.99 41.99 0 0 1-1.702-1.49 8.509 8.509 0 0 1-1.1-1.237C4.273 27.45 3.705 25.772 3.595 23.8c-.17-1.897.601-3.794 2.303-5.682 1.719-1.88 4.047-2.768 6.968-2.65 1.092.068 2.38.33 3.844.796.483.195.974.39 1.482.576l1.498.584c.263.136.5.271.695.398a4.38 4.38 0 0 1-.127-1.041c0-1.287.457-2.388 1.38-3.302.914-.906 2.023-1.372 3.31-1.389 1.287 0 2.388.466 3.302 1.38.906.915 1.363 2.015 1.363 3.285 0 .263-.034.61-.101 1.042.228-.144.457-.271.669-.373.762-.33 1.76-.72 3.005-1.16 1.423-.482 2.701-.753 3.844-.821 2.921-.136 5.241.753 6.943 2.65 1.668 1.888 2.447 3.785 2.328 5.681-.127 1.973-.703 3.65-1.71 5.038-.33.449-.703.863-1.118 1.253a40.5 40.5 0 0 1-1.66 1.473c-.541.466-1.007.796-1.388.982-.38.186-.6.347-.669.457a.294.294 0 0 1-.05.077c-.017.017-.026.034-.026.05l-.796 4.666 1.643 6.121c-.83.745-2.684 1.355-5.554 1.837-2.879.483-6.206.72-9.974.72-3.835 0-7.214-.254-10.118-.754-2.912-.508-4.741-1.143-5.486-1.896z\"/><path fill=\"url(#a)\" d=\"M25.796 29.532c2.845.033 5.444.203 7.806.508 2.37.304 4.225.694 5.563 1.151a126.32 126.32 0 0 0 2.057-1.651 12.018 12.018 0 0 0 1.863-1.846c.787-1.007 1.185-2.337 1.185-3.996 0-1.482-.356-2.726-1.067-3.717-1.27-1.854-3.209-2.777-5.8-2.777-1.557 0-3.149.322-4.792.965-1.439.584-2.531 1.228-3.268 1.94-1.388 1.388-2.421 3.174-3.082 5.35-.228.779-.364 1.49-.406 2.125s-.06 1.287-.06 1.947zm-13.25 6.697c3.14-.796 7.306-1.194 12.505-1.194 5.088 0 9.203.38 12.327 1.143l.618-3.65c-3.327-.871-7.67-1.312-13.047-1.312-5.41 0-9.745.45-13.022 1.338zm25.298 4.41-.737-2.844c-3.276-.728-7.332-1.092-12.158-1.092-4.809 0-8.856.364-12.133 1.092l-.787 2.87c3.158-.923 7.468-1.388 12.946-1.388 5.444 0 9.728.457 12.869 1.363zm.652 2.338c-3.192-1.287-7.68-1.94-13.445-1.94-5.986 0-10.516.661-13.598 1.99 2.913 1.152 7.417 1.736 13.522 1.736 2.912 0 5.562-.16 7.958-.483 2.405-.321 4.25-.762 5.563-1.303M24.077 29.532c-.008-.644-.034-1.287-.068-1.922s-.16-1.347-.372-2.126c-.677-2.21-1.702-3.996-3.082-5.35-.711-.695-1.795-1.347-3.268-1.94-1.685-.66-3.285-.99-4.792-.99-2.608 0-4.547.931-5.8 2.803-.711.99-1.067 2.235-1.067 3.716 0 1.626.398 2.955 1.186 3.997.482.61 1.092 1.227 1.837 1.837s1.44 1.168 2.083 1.66c2.895-1.042 7.34-1.6 13.343-1.685m.872-4.615c.119-.465.212-.787.296-.965.17-.643.356-1.194.576-1.643.093-.279.237-.6.432-.973.186-.373.39-.805.61-1.279.127-.28.27-.626.415-1.033.152-.406.304-.804.448-1.202.136-.33.203-.686.203-1.067 0-.813-.296-1.498-.872-2.066-.575-.575-1.278-.863-2.108-.863-1.964 0-2.955.99-2.955 2.955 0 .38.068.736.203 1.067.365 1.075.644 1.82.839 2.235.22.474.415.906.6 1.278.179.373.34.694.466.974.22.55.398 1.092.55 1.642.035.094.128.415.297.94\"/></svg>", "wn": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.405\" x2=\"77.641\" y1=\"37.346\" y2=\"37.346\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M26.178 9.395c2.6.17 5.004.838 7.222 2.015 2.21 1.169 4.098 2.676 5.656 4.513 1.092 1.287 2.117 2.845 3.082 4.665a28.684 28.684 0 0 1 2.32 5.774 36.511 36.511 0 0 1 1.253 7.46c.177 2.599.262 5.012.262 7.23v5.402H15.468c-.153 0-.22-.407-.212-1.21.009-.814.06-1.466.16-1.965.06-.398.221-.957.467-1.685.254-.728.66-1.609 1.244-2.65.263-.534.89-1.304 1.88-2.32.999-1.016 2.133-2.201 3.429-3.539.745-.762 1.32-1.719 1.744-2.879.423-1.151.601-2.201.533-3.15a8.37 8.37 0 0 1-2.006 1.22c-3.505 1.253-6.045 3.073-7.612 5.452-.118.153-.49.822-1.117 2.015-.33.627-.618 1.059-.847 1.287-.313.314-.77.491-1.363.525-.923.043-1.643-.398-2.16-1.346-.693.203-1.312.288-1.862.254-.923-.347-1.592-.72-2.006-1.117-.847-.847-1.389-1.685-1.651-2.532a9.43 9.43 0 0 1-.381-2.726c0-1.389.855-3.226 2.582-5.512 2.015-2.625 3.09-4.631 3.217-6.003 0-.593.06-1.261.178-2.007a4.198 4.198 0 0 1 .618-1.49c.22-.33.364-.558.432-.677.076-.127.212-.313.415-.559.144-.203.27-.355.372-.457.093-.11.22-.254.373-.44.178-.212.406-.457.694-.745a18.06 18.06 0 0 1-1.067-7.46c3.285 1.169 6.054 3.015 8.28 5.53.551-1.872 1.626-3.387 3.226-4.539 1.321.923 2.371 2.15 3.15 3.666\"/><path fill=\"url(#a)\" d=\"M42.976 44.693c-.017 0 0-.449.042-1.346.051-.906.076-1.88.076-2.921.017-2.066.017-4.2 0-6.41a26.837 26.837 0 0 0-.889-6.612c-.567-2.117-1.185-3.92-1.862-5.419-.678-1.498-1.414-2.785-2.21-3.878-1.185-1.786-2.811-3.302-4.86-4.538-2.049-1.244-4.19-2.057-6.426-2.438.152.813.22 1.609.203 2.387-.034.593-.313.89-.847.89-.61 0-.88-.297-.82-.89.05-2.184-.729-4.055-2.33-5.604-1.252 1.32-1.938 2.853-2.031 4.605-.034.585-.33.839-.898.77-.525-.016-.787-.32-.787-.914 0 0 .017-.067.042-.203-.677.22-1.388.525-2.133.923-.474.33-.864.246-1.16-.245-.297-.5-.17-.89.398-1.169.71-.364 1.244-.635 1.608-.821a17.634 17.634 0 0 0-4.86-3.522 17.31 17.31 0 0 0 1.889 6.528c.279.423.211.804-.204 1.134-.465.364-.855.313-1.168-.17a8.87 8.87 0 0 1-.491-.897c-.347.347-.584.61-.694.77-.119.153-.322.483-.61.991-.288.517-.5.94-.635 1.27-.144.415-.212.745-.186 1.008.025.254.05.533.067.855a7.61 7.61 0 0 1-1.007 2.752 133.71 133.71 0 0 1-1.998 3.15 127.607 127.607 0 0 1-1.787 2.675c-.415.601-.728 1.354-.94 2.286-.152.559-.152 1.244 0 2.04.144.805.475 1.431.966 1.88.762.77 1.498 1.126 2.21 1.067.228 0 .541-.093.93-.28.39-.178.687-.525.907-1.041.423-.94.779-1.414 1.067-1.414.406 0 .635.237.668.694 0 .102-.135.517-.397 1.245-.153.33-.348.677-.593 1.041-.322.432-.457.61-.423.542.262.948.702 1.11 1.312.5.178-.178.39-.525.618-1.016q.3555-.75 1.092-2.007c.584-.982 1.202-1.77 1.863-2.388.66-.61 1.244-1.109 1.76-1.481.297-.22.661-.466 1.093-.745.432-.288 1.008-.576 1.736-.872.576-.229 1.219-.517 1.922-.856s1.329-.77 1.87-1.303c.763-.745 1.347-1.66 1.762-2.752.22-.61.296-1.363.245-2.26-.144-.56.136-.839.847-.839.533 0 .83.271.898.821 0 1.863-.534 3.565-1.592 5.106.347 1.058.44 2.218.27 3.471-.143 1.008-.499 2.091-1.05 3.243-.558 1.143-1.676 2.421-3.36 3.827-3.43 2.845-5.046 5.774-4.86 8.78h12.175zM9.338 29.613c-.483.297-.77.695-.872 1.194.017.542-.237.839-.762.89-.584.067-.88-.178-.898-.746.068-1.092.55-1.955 1.465-2.599.432-.347.83-.322 1.194.093.364.449.322.838-.127 1.169zm7.366-11.827c.212.33.296.677.245 1.041-.16 1.058-.753 1.499-1.76 1.338a1.596 1.596 0 0 1-.72-.296c-.06.076-.161.262-.297.541-.178.534-.525.712-1.041.55-.508-.202-.711-.575-.593-1.117.745-1.905 2.091-3.209 4.039-3.92.567-.17.94 0 1.117.491.204.534.051.898-.448 1.092a2.745 2.745 0 0 1-.271.136c-.085.042-.17.093-.271.144\"/></svg>", "wp": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.13\" x2=\"77.764\" y1=\"37.346\" y2=\"37.469\" gradientTransform=\"matrix(1 0 0 .97324 0 1.243)\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M25 46.448H11.606a13.139 13.139 0 0 1-.99-5.043c0-2.975.863-5.644 2.598-8.018 1.736-2.365 3.971-4.054 6.697-5.067a6.824 6.824 0 0 1-2.861-2.398c-.737-1.071-1.1-2.283-1.1-3.634 0-1.69.575-3.156 1.735-4.392 1.151-1.244 2.574-1.961 4.267-2.15-1.346-.981-2.015-2.283-2.015-3.89 0-1.351.491-2.513 1.482-3.477.982-.964 2.176-1.442 3.581-1.442 1.389 0 2.582.478 3.573 1.442.99.964 1.49 2.126 1.49 3.477 0 1.607-.669 2.909-2.015 3.89 1.693.189 3.116.906 4.267 2.15 1.16 1.236 1.736 2.703 1.736 4.392 0 1.351-.373 2.563-1.126 3.634a7.036 7.036 0 0 1-2.862 2.398c2.726 1.013 4.962 2.702 6.697 5.067 1.736 2.374 2.6 5.043 2.6 8.018q0 2.6085-.966 5.043z\"/><path fill=\"url(#a)\" d=\"M25 44.808h12.175a11.79 11.79 0 0 0 .525-3.403c0-2.513-.711-4.787-2.142-6.831-1.43-2.044-3.277-3.552-5.52-4.516-1.584-.62-1.643-.659-1.643-1.738 0-.849.559-1.475 1.668-1.879 1.533-1.046 2.303-2.43 2.303-4.153 0-1.244-.432-2.324-1.287-3.263-.864-.931-1.905-1.467-3.124-1.615-1-.083-1.49-.626-1.49-1.64 0-.453.178-.873.542-1.26.897-.676 1.346-1.558 1.346-2.654 0-.898-.339-1.673-1-2.315-.66-.643-1.447-.964-2.353-.964-.94 0-1.744.32-2.396.964a3.136 3.136 0 0 0-.974 2.315c0 1.08.44 1.961 1.338 2.653.364.355.542.775.542 1.261 0 1.014-.483 1.557-1.465 1.64a4.9 4.9 0 0 0-3.133 1.615c-.855.94-1.278 2.019-1.278 3.263 0 1.722.77 3.107 2.303 4.153 1.11.412 1.668 1.046 1.668 1.879 0 1.08-.068 1.118-1.668 1.738-2.244.964-4.081 2.472-5.503 4.516-1.423 2.044-2.134 4.318-2.134 6.831 0 1.195.178 2.324.525 3.403z\"/></svg>", "wq": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.253\" x2=\"77.641\" y1=\"37.224\" y2=\"37.346\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" stroke=\"#1f1a17\" stroke-width=\".076\" d=\"M44.541 14.723c-.94 0-1.744-.33-2.404-.982s-.991-1.448-.991-2.396q0-1.3845.99-2.388c.66-.677 1.465-1.007 2.405-1.007.931 0 1.727.33 2.388 1.007.66.67.99 1.465.99 2.388 0 .948-.33 1.744-.99 2.396a3.28 3.28 0 0 1-2.388.982zm-4.31 29.219c-.812.71-2.633 1.304-5.46 1.786-2.828.474-6.088.72-9.771.72-3.75 0-7.053-.254-9.898-.745-2.844-.5-4.64-1.118-5.384-1.863l1.566-5.952-.694-3.895L8.405 30.2 6.297 14.774l1.21-.474 6.8 11.455.152-13.64 1.685-.296 5.182 13.716 2.776-14.757h1.72l2.776 14.706L33.73 11.82l1.71.296.153 13.64 6.824-11.48 1.16.541-2.058 15.359-2.21 3.793-.694 3.945zM14.535 11.988c-.948 0-1.752-.321-2.413-.973-.66-.652-.99-1.456-.99-2.396 0-.923.33-1.719.99-2.38s1.465-.99 2.413-.99c.923 0 1.719.33 2.38.99s.99 1.457.99 2.38c0 .94-.33 1.744-.99 2.396a3.266 3.266 0 0 1-2.38.973zM5.4 14.723c-.94 0-1.736-.33-2.388-.982s-.982-1.448-.982-2.396c0-.923.33-1.719.982-2.388C3.664 8.28 4.46 7.95 5.4 7.95c.948 0 1.744.33 2.413 1.007.66.67.99 1.465.99 2.388 0 .948-.33 1.744-.99 2.396a3.323 3.323 0 0 1-2.413.982zm19.55-3.97c-.94 0-1.745-.33-2.397-.991-.652-.66-.974-1.465-.974-2.405 0-.931.322-1.727.974-2.387s1.456-.99 2.396-.99c.923 0 1.727.33 2.396.99a3.23 3.23 0 0 1 1 2.387c0 .94-.33 1.744-1 2.405-.669.66-1.473.99-2.396.99zm10.413 1.235c-.94 0-1.736-.321-2.387-.973-.652-.652-.983-1.456-.983-2.396 0-.923.33-1.719.983-2.38s1.447-.99 2.387-.99c.948 0 1.753.33 2.413.99s.99 1.457.99 2.38c0 .94-.33 1.744-.99 2.396s-1.465.973-2.413.973z\"/><path fill=\"url(#a)\" stroke=\"#1f1a17\" stroke-width=\".076\" d=\"M38.217 43.044c-3.023-1.253-7.417-1.88-13.166-1.88-5.876 0-10.313.644-13.327 1.931 2.896 1.143 7.316 1.71 13.25 1.71 2.845 0 5.445-.152 7.798-.465 2.363-.314 4.175-.745 5.445-1.296zM24.949 9.017c1.11 0 1.66-.56 1.66-1.66 0-1.092-.55-1.642-1.66-1.642-1.092 0-1.634.55-1.634 1.642 0 1.1.542 1.66 1.634 1.66zm12.624 24.976c-3.192-.812-7.366-1.21-12.522-1.21-5.292 0-9.517.406-12.675 1.236l.373 2.379c3.217-.762 7.323-1.143 12.302-1.143 4.944 0 8.975.372 12.099 1.117zm.618-1.49 1.617-2.853a6.432 6.432 0 0 1-2.43.474c-2.218 0-3.987-.897-5.308-2.7-.99.82-2.1 1.235-3.328 1.235-1.583 0-2.853-.618-3.793-1.862-1.058 1.16-2.32 1.744-3.793 1.744-1.194 0-2.286-.406-3.276-1.22-1.389 1.77-3.184 2.65-5.385 2.65a7.055 7.055 0 0 1-2.506-.465l1.735 2.972c3.21-.923 7.62-1.389 13.225-1.389 5.707 0 10.118.474 13.242 1.414zm-11.108-5.926-2.108-12.133-2.109 11.989c.051-.034.161-.119.348-.254.38-.745.956-1.118 1.735-1.118.847 0 1.389.373 1.634 1.118.102.101.271.237.5.398zm6.866.474V15.56l-4.09 11.261c.314-.11.577-.262.797-.44.33-.415.779-.627 1.338-.627.66 0 1.193.297 1.591.872.043.068.102.136.17.212.067.076.135.144.194.212zm-13.936-.347L15.95 15.562v11.336c.043-.067.119-.144.22-.245.33-.694.872-1.042 1.634-1.042.627 0 1.143.263 1.541.796.449.195.67.297.67.297zm-6.3 1.388L8.38 18.89l1.363 8.382c.94.66 1.863.99 2.752.99.347 0 .753-.059 1.219-.169zm22.395.119c.381.118.805.178 1.27.178 1.008 0 1.948-.314 2.828-.94l1.363-8.585zm1.49 12.556-.745-2.803c-3.242-.71-7.205-1.066-11.904-1.066-4.648 0-8.61.355-11.878 1.066l-.771 2.828c3.073-.931 7.298-1.388 12.675-1.388 5.24 0 9.448.448 12.623 1.363zM14.535 10.253c1.084 0 1.634-.542 1.634-1.634s-.55-1.634-1.634-1.634c-1.109 0-1.668.542-1.668 1.634s.56 1.634 1.668 1.634zm20.828 0c1.11 0 1.668-.542 1.668-1.634s-.559-1.634-1.668-1.634c-1.083 0-1.634.542-1.634 1.634s.55 1.634 1.634 1.634zM5.4 12.988c1.109 0 1.668-.55 1.668-1.643 0-1.11-.56-1.66-1.668-1.66-1.084 0-1.634.55-1.634 1.66 0 1.092.55 1.643 1.634 1.643zm39.141 0c1.092 0 1.643-.55 1.643-1.643 0-1.11-.55-1.66-1.643-1.66-1.1 0-1.66.55-1.66 1.66 0 1.092.56 1.643 1.66 1.643z\"/></svg>", "wr": "<svg width=\"50mm\" height=\"50mm\" fill-rule=\"evenodd\" clip-rule=\"evenodd\" image-rendering=\"optimizeQuality\" shape-rendering=\"geometricPrecision\" text-rendering=\"geometricPrecision\" viewBox=\"0 0 50 50\"><linearGradient id=\"a\" x1=\"21.376\" x2=\"77.641\" y1=\"37.469\" y2=\"37.469\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient><path fill=\"#1f1a17\" d=\"M28.408 9.22h4.216V5.825h6.799v9.296l-5.503 4.242v11.862l4.216 4.216v5.08h3.793v5.927H8.071V40.52h3.793v-5.08l4.242-4.216V19.363l-5.504-4.242V5.825h6.774V9.22h4.242V5.825h6.79z\"/><path fill=\"url(#a)\" d=\"m33.073 17.678 3.15-2.557h-22.42l3.175 2.557zm7.197 24.528H9.756v2.557H40.27zm-3.844-5.055H13.6v3.37h22.826zm-4.217-17.788H17.816v11.862h14.393zm5.504-5.927V7.51h-3.395v3.395h-7.646V7.51h-3.344v3.395h-7.62V7.51h-3.395v5.926zm-1.914 22.005-2.548-2.531H16.8l-2.6 2.531z\"/></svg>"}, "alpha": {"bb": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"M732 1290 628 993l386-417 421 375-132 380 49 152-658-9z\"/><path fill=\"#101010\" d=\"M768 1365q-5 39-26 82h564q-18-36-26-82zm495-73 46-73q-142-49-285-47-144-2-285 47l46 73q118-40 239-38 120-2 239 38m-432 227H624q67-116 72-229-114-119-162-223t-6-224q33-96 118-189t312-247q-17-11-46-36t-29-79q0-58 41-96t100-38q58 0 100 38t41 96q0 54-29 79t-46 36q226 153 311 247t119 189q42 119-6 224t-162 223q4 113 72 229h-207l10 16q33 53 70 60t89 7h250q76 0 142 62t65 179h-495q-123 0-223-84t-101-199q0 114-101 199t-223 84H205q0-117 65-179t142-62h250q51 0 88-7t71-60zm146-701h-95v89h95v165h94V907h95v-89h-95V714h-94z\"/></svg>", "bk": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m553 1485-55 320 1048 5-48-335s324-313 330-467c7-153-35-331-241-406-183-67-372 121-372 121l-182-161-190 160S658 586 587 592a373 373 0 0 0-362 333c10 331 328 560 328 560\"/><path fill=\"#101010\" d=\"M1024 1769h489l-12-73H547l-12 73zm0-921q-25-60-62-111 31-48 62-65 30 17 62 65-38 51-62 111m-97 454q-154 11-303 58-123-108-200-213t-77-202q0-89 74-159t148-70q67 0 135 63t102 130q30 54 75 175t46 218m-350 217-26 156 145-84zm447-907q-47 0-136 121-31-36-50-55 93-140 186-140 92 0 186 140-20 19-50 55-90-121-136-121m0 775q-1-126-42-267t-84-227l-14-27-12-23q-28-43-48-69-51-63-120-105t-134-42q-103 0-208 93T257 949q0 120 99 255t249 259q201-74 419-76m0 456H448l61-365q-325-280-326-535-1-159 125-274t267-116q78 0 159 47t142 119q61 74 99 165t49 150q12-60 49-150t99-165q61-72 142-119t159-47q140 0 266 116t126 274q-2 255-326 535l61 365zm97-541q0-97 45-218t76-175q34-68 102-130t135-63q74 0 148 70t74 159q0 96-77 202t-200 213q-150-47-303-58m350 217-119 72 145 84zm-447-132q217 2 419 76 150-125 249-259t99-255q0-136-105-229t-208-93q-66 0-135 42t-119 105q-21 26-48 69l-12 23-14 27q-44 85-85 227t-41 267m-139 159 139 86 139-84-139-86zm92-1248v-95h94v95h107v95h-107v153q-48-16-94 0V393H870v-95z\"/></svg>", "bn": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"M1658 1806c-408-301-71-920-452-1343l60-16s296 167 320 257c182 468 41 691 135 1077zM972 523l120 176-312-3zM498 981l-93-41 42-93 127 28z\"/><path fill=\"#101010\" d=\"m502 868-52 1-26 64 69 21 46-55zm536-187q34 1-16-68t-80-42L826 680zm-338-98q6-39 116-107t220-144l115-154 96 217q342 172 433 418t47 603q-18 128 5 236t57 190l-1242 1q-9-178 39-301t183-238q50-11 83-39t53-59l63-1 138-29 139-97 66-207q0-17-8-34t-12-37q-62 228-161 289t-191 58q-236-42-292 60l-56 102-217-121 115-82-51-50-122 86-12-297zm981 1192q-102-130-85-308t27-363-50-351-316-276q220 164 253 342t16 351-12 329 167 276\"/></svg>", "bp": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#101010\" d=\"M1024 1843H446v-74q-4-80 42-137t125-108q117-91 172-217t78-268H576l284-239q-86-74-86-188 0-103 73-177t177-74q103 0 177 74t73 177q0 114-86 188l284 239h-287q23 141 78 268t172 217q79 51 125 108t42 137v74z\"/></svg>", "bq": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m520 1801.8 41.5-448.7 474-128.9 458 133.5 34.4 446.4z\"/><path fill=\"#101010\" d=\"M590 1519q4 72-15 158l134-86zm434 324H441q114-231 57.5-456.5T296 937q-12 2-19 2-54 0-92.5-38.5T146 808t38.5-92.5T277 677t92.5 38.5T408 808q0 20-6 38-4 14-15 33l196 139 100-486q-64-31-72-103-5-44 29-91t88-53q54-5 96 29t48 88q7 68-46 114l198 412 198-412q-54-46-46-114 6-54 48-88t96-29q54 6 87.5 53t29.5 91q-9 72-72 103l100 486 196-139q-12-19-15-33-6-18-6-38 0-54 38.5-92.5T1771 677t92.5 38.5T1902 808t-38.5 92.5T1771 939q-7 0-19-2-147 224-203 449.5t58 456.5zm0-450q109 0 222 28.5t213 67.5q2-41 11-89-108-42-221.5-68t-224.5-26-225 26-221 68q8 48 11 89 99-39 212-67.5t223-28.5m0 376h478q-15-34-24-73H570q-10 39-24 73zm434-250-119 72 134 86q-20-86-15-158m-573 47 139 87 139-84-139-86z\"/></svg>", "br": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m674 732-76 807 851 14-75-833z\"/><path fill=\"#101010\" d=\"M1024 1843H383l29-264 159-118 50-659-149-107-17-341h289v147h137V354h286v147h137V354h289l-17 341-149 107 50 659 159 118 29 264zm0-989h333l-6-88H697l-6 88zm0 647h381l-6-87H649l-6 87z\"/></svg>", "wb": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m948 366 1-139 148-7 1 147zM564 860c114-267 456-443 456-443s392 176 476 502c-9 209-183 332-183 332l27 221-653 6 46-233s-230-171-169-385m-101 790c175 6 355 23 425-142h92s0 190-88 246c-163 103-625 38-625 38s-15-146 196-142m631 37-36-185 102 5s22 153 315 131c381-17 318 153 318 153l-483 5z\"/><path fill=\"#101010\" d=\"M1024 356q66 0 64-66 1-55-64-55-66 0-64 55-3 66 64 66m0 1204q0 114-101 199t-223 84H205q0-117 65-179t142-62h250q51 0 88-7t71-60l10-16h76q-7 21-3 13-45 105-109 125t-146 19H409q-52 0-86 40t-34 53h424q66 0 159-65t93-185H624q67-116 72-229-114-119-162-223t-6-224q33-96 118-189t312-247q-17-11-46-36t-29-79q0-58 41-96t100-38q58 0 100 38t41 96q0 54-29 79t-46 36q226 153 311 247t119 189q42 119-6 224t-162 223q4 113 72 229h-341q0 120 93 185t159 65h424q0-13-34-53t-86-40h-240q-83 0-146-19t-109-125q4 8-3-13h76l10 16q33 53 70 60t89 7h250q76 0 142 62t65 179h-495q-123 0-223-84t-101-199m0-114h283q-28-84-29-154-120-41-254-38-135-3-254 38-2 70-29 154zm0-267q159-1 285 42 189-180 142-346-60-193-427-431-368 238-427 431-48 166 142 346 125-43 285-42m-47-361V714h94v104h95v89h-95v165h-94V907h-95v-89z\"/></svg>", "wk": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m501.6 1811 48.4-354.4-260-269.2s-166.4-288.2 29.9-481C582.2 448.7 826 727.2 826 727.2l195.6-165.7 184 165.7s216.4-232.5 430.4-76 255.4 317.6 117.4 531.6c-138.1 214-250.9 280.7-250.9 280.7L1558 1811z\"/><path fill=\"#101010\" d=\"M977 298v-95h94v95h107v95h-107v153q-48-16-94 0V393H870v-95zm47 314q-47 0-136 121-31-36-50-55 93-140 186-140 92 0 186 140-20 19-50 55-90-121-136-121m-447 907-26 156 145-84zm410-206q-1-147-36.5-274.5T870 845q-45-88-131.5-153T570 627q-103 0-208 93T257 949q0 109 86.5 236T546 1408q212-88 441-95m37 530H448l61-365q-325-280-326-535-1-159 125-274.5T575 553q78 0 158.5 47T876 719q61 74 98.5 164.5T1024 1034q12-60 49-150.5t99-164.5q61-72 142-119t159-47q140 0 266 115.5T1865 943q-2 255-326 535l61 365zm0-74h489l-50-298q-216-84-439-84t-439 84l-50 298zm447-250 26 156-145-84zm-410-206q229 7 441 95 115-96 202-223t87-236q0-136-105.5-229T1478 627q-83 0-169.5 65T1178 845q-46 66-81.5 193.5T1061 1313m-176 233 141-84 137 86-141 84z\"/></svg>", "wn": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m352 861 787-569 94 148s336 103 398 388c63 286 51 974 51 974l-1088 9s-37-290 184-460c221-171 221-212 221-212s-226-71-295-16-117 138-117 138l-129-67 74-85-88-97-94 56z\"/><path fill=\"#101010\" d=\"m1151 178-115 154c-74 50-147 98-220 144-73 45-112 81-116 107L304 846l12 297 122-86 51 50-115 82 217 121 56-102c37-68 135-88 292-60l-55 85c-25 37-63 60-115 71a608 608 0 0 0-183 238c-32 82-45 182-39 301h1242c-23-55-42-118-57-190-15-73-17-152-5-237 29-239 13-440-47-603-61-164-205-303-433-418zm-17 145 59 133a664 664 0 0 1 262 188c55 72 100 150 134 234 27 97 40 181 41 253 0 71-3 140-9 205-7 65-11 131-13 199-2 67 9 145 32 234H621c-4-84 12-158 48-223s85-124 146-177c78-22 129-56 152-102s53-90 90-131c13-10 27-15 38-15 10-1 21 0 33-2 52-7 95-36 129-85 33-49 51-104 52-165l-19-67c-37 159-99 245-188 257l-45 6c-16 1-33 10-52 26-41-25-87-35-138-31q-111 9-165 27l-108 73-39 45-47-28 78-65-138-144-64 41-4-125 366-241c15-34 58-74 131-120l208-131zM960 564c-6 0-12 2-18 7L826 671l212 2c23 0 17-21-16-63-24-31-44-46-62-46M502 868l-33 4-33 56 57 26 46-55z\"/></svg>", "wp": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m734 981 196-193s-189-82-79-288c79-149 303-114 361 50 63 179-113 240-113 240l226 197Zm-235 799s-8-107 50-154c196-173 338-386 371-599l210 2c33 206 182 447 321 561 101 59 99 199 99 199z\"/><path fill=\"#101010\" d=\"M520 1769h1008q8-97-132-182-132-101-196-239t-80-309H928q-15 170-79 309t-197 239q-141 85-132 182m504 74H446v-74q-4-80 42-137t125-108q117-91 172-217t78-268H576l284-239q-86-74-86-188 0-103 73-177t177-74q103 0 177 74t73 177q0 114-86 188l284 239h-287q23 141 78 268t172 217q79 51 125 108t42 137v74zM756 974h536l-225-191q134-31 134-171 0-76-52-126t-125-51q-73 0-125 51t-52 126q0 140 134 171z\"/></svg>", "wq": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m508.5 1815.6 48.4-356.7-216.3-554.6-135.8-20.7-16.1-126.5 112.7-43.8 78.3 73.7-18.4 99 246.2 197.8 112.8-568.3L635 428l78.3-108 112.8 43.7-23 161 223.2 474 244-490-66.8-105.9 92-92 105.9 73.6L1337 534l103.5 529.2 260-161-16-142.7 131-46 57.6 131.1-207 103.6-175 529.2 48.4 308.4z\"/><path fill=\"#101010\" d=\"M1024 1769h478q-53-130-43-280-100-39-213-67.5t-222-28.5q-110 0-223 28.5T589 1489q9 150-43 280zm0-450q111 0 223.5 26.5T1468 1413q17-105 60.5-212.5T1634 988l-220 155-123-601-267 555-267-555-123 601-220-155q61 105 104.5 212.5T580 1413q108-41 220.5-67.5T1024 1319m0 524H441q114-231 57.5-456.5T296 937q-12 2-19 2-54 0-92.5-38.5T146 808t38.5-92.5T277 677t92.5 38.5T408 808q0 20-6 38-4 14-15 33l196 139 100-486q-64-31-72-103-5-44 29-91t88-53q54-5 96 29t48 88q7 68-46 114l198 412 198-412q-54-46-46-114 6-54 48-88t96-29q54 6 87.5 53t29.5 91q-9 72-72 103l100 486 196-139q-12-19-15-33-6-18-6-38 0-54 38.5-92.5T1771 677t92.5 38.5T1902 808t-38.5 92.5T1771 939q-7 0-19-2-147 224-203 449.5t58 456.5zM276 746q-62 0-62 62t62 62q63 0 63-62t-63-62m466-394q-62 0-62 62t62 62 62-62-62-62M590 1519l119 72-134 86q19-86 15-158m1182-773q-63 0-63 62t63 62q62 0 62-62t-62-62m-466-394q-62 0-62 62t62 62 62-62-62-62m152 1167-119 72 134 86q-20-86-15-158m-573 47 139-83 139 86-139 84z\"/></svg>", "wr": "<svg viewBox=\"0 0 2048 2048\"><path fill=\"#f9f9f9\" d=\"m435 1804 16-212 152-115 51-688-148-115-7-276 210-2 4 138 198 2 7-140 212-3 14 145 193-4 5-138h204l-7 285-145 106 42 693 172 124 19 207z\"/><path fill=\"#101010\" d=\"M1024 1501H643l5-74h752l5 74zm0-661H692l5-74h654l5 74zm0 1003H383l29-264 159-118 50-659-149-107-17-341h289v147h137V354h286v147h137V354h289l-17 341-149 107 50 659 159 118 29 264zm0-74h557l-15-149-161-119-54-735 152-109 13-230h-138v148h-285V427H955v148H670V427H532l13 230 152 109-54 735-161 119-15 149z\"/></svg>"}};
+var LIB=[
+{id:'italian',cat:'open',en:'Italian Game',ar:'الافتتاحية الإيطالية',side:'w',kw:'جيوكو بيانو bc4 e4 e5',line:'e4 e5 Nf3 Nc6 Bc4 Bc5 c3 Nf6 d4',desc:'افتتاحية كلاسيكية سهلة وسريعة: بتطلّع الفيل لـ c4 وبتستهدف f7، وبتجهّز لتحكّم في المركز.',ideas:['طلّع الفيل لـ c4 على القطر المستهدف f7','c3 وبعدها d4 عشان تاخد المركز','بيّض بسرعة واحمي ملكك'],descEn:"A classic, easy opening: develop the bishop to c4, aim at f7, and prepare to fight for the center.",ideasEn:["Bishop to c4 on the diagonal toward f7", "c3 then d4 to take the center", "Castle early and keep your king safe"]},
+{id:'evans',cat:'gambit',en:'Evans Gambit',ar:'جامبيت إيفانز',side:'w',kw:'gambit b4 ضحية بيدق هجوم',line:'e4 e5 Nf3 Nc6 Bc4 Bc5 b4 Bxb4 c3 Ba5 d4',desc:'بتضحّي ببيدق b4 عشان تاخد المركز وتفتح خطوط للهجوم. جامبيت هجومي مشهور.',ideas:['ضحّي بـ b4 عشان تكسب وقت','c3 وd4 تبني مركز قوي','الهجوم السريع على f7 والملك'],descEn:"Sacrifice the b4 pawn to seize the center and open attacking lines. A famous attacking gambit.",ideasEn:["b4 sacrifices a pawn for time", "c3 and d4 build a strong center", "Fast attack on f7 and the king"]},
+{id:'ruy',cat:'open',en:'Ruy Lopez (Spanish)',ar:'روي لوبيز (الإسبانية)',side:'w',kw:'bb5 spanish اسبانية',line:'e4 e5 Nf3 Nc6 Bb5 a6 Ba4 Nf6 O-O Be7',desc:'من أقدم وأقوى الافتتاحيات. الفيل بيضغط على الحصان اللي بيحمي e5. لعب استراتيجي عميق.',ideas:['الضغط غير المباشر على e5','بيّض بدري','خطة طويلة المدى في المنتصف'],descEn:"One of the oldest and strongest openings. The bishop pressures the knight that defends e5. Deep strategic play.",ideasEn:["Indirect pressure on e5", "Castle early", "Long-term middlegame plans"]},
+{id:'scotch',cat:'open',en:'Scotch Game',ar:'الافتتاحية الإسكتلندية',side:'w',kw:'d4 اسكتلندية',line:'e4 e5 Nf3 Nc6 d4 exd4 Nxd4 Nf6 Nxc6 bxc6 e5',desc:'بتفتح المركز مبكراً بـ d4. لعب مفتوح ونشيط وسهل الفهم.',ideas:['افتح المركز مبكراً','نشّط قطعك بسرعة','البيدق e5 بيطرد الحصان'],descEn:"Opens the center early with d4. Open, active play that is easy to understand.",ideasEn:["Open the center early", "Activate your pieces fast", "The e5 pawn kicks the knight"]},
+{id:'kg',cat:'gambit',en:"King's Gambit",ar:'جامبيت الملك',side:'w',kw:'f4 gambit رومانسي',line:'e4 e5 f4 exf4 Nf3 g5 h4 g4 Ne5',desc:'أكتر جامبيت رومانسي وهجومي. بتضحّي ببيدق f عشان تفتح خط f وتهاجم.',ideas:['ضحية بيدق f4','خط f المفتوح للهجوم','خطر على ملكك كمان، فخلّي بالك'],descEn:"The most romantic, attacking gambit. Sacrifice the f-pawn to open the f-file and attack.",ideasEn:["The f4 pawn sacrifice", "Open f-file for the attack", "Your own king is at risk too, so be careful"]},
+{id:'danish',cat:'gambit',en:'Danish Gambit',ar:'الجامبيت الدنماركي',side:'w',kw:'d4 c3 تضحية بيدقين',line:'e4 e5 d4 exd4 c3 dxc3 Bc4 cxb2 Bxb2',desc:'بتضحّي ببيدقين عشان تطلّع الفيلين على أقطار قوية صوب ملك الأسود. هجوم سريع جداً.',ideas:['بيدقين مقابل تطوير سريع','الفيلين بيستهدفوا f7 وg7','لازم تهاجم بسرعة'],descEn:"Sacrifice two pawns to put both bishops on powerful diagonals toward the black king. A very fast attack.",ideasEn:["Two pawns for rapid development", "Bishops aim at f7 and g7", "You must attack quickly"]},
+{id:'najdorf',cat:'open',en:'Sicilian: Najdorf',ar:'الدفاع الصقلي: نايدورف',side:'b',kw:'sicilian c5 a6 صقلي',line:'e4 c5 Nf3 d6 d4 cxd4 Nxd4 Nf6 Nc3 a6',desc:'من أشهر الدفاعات وأكتر واحد بيحارب للفوز بالأسود. a6 بتمنع الحصان والفيل من b5.',ideas:['اكسب مساحة على جناح الوزير','عدم توازن = فرص فوز للأسود','لعب محتاج حفظ شوية'],descEn:"The most famous defense, and the one that fights hardest for a win with Black. a6 stops bishop and knight from b5.",ideasEn:["Gain space on the queenside", "Imbalance = winning chances for Black", "Needs some memorization"]},
+{id:'morra',cat:'gambit',en:'Smith-Morra Gambit',ar:'جامبيت سميث-مورا',side:'w',kw:'sicilian c3 d4 ضد الصقلي',line:'e4 c5 d4 cxd4 c3 dxc3 Nxc3 Nc6 Nf3 d6 Bc4',desc:'سلاح للأبيض ضد الصقلي: ضحّي ببيدق عشان تطوّر بسرعة وتضغط على الخطوط المفتوحة.',ideas:['ضحية بيدق مقابل تطوير','قطع نشيطة وضغط على d وc','الأسود لازم يدافع بدقة'],descEn:"A weapon for White against the Sicilian: give a pawn for fast development and pressure on open lines.",ideasEn:["Pawn sacrifice for development", "Active pieces, pressure on the c- and d-files", "Black must defend precisely"]},
+{id:'french',cat:'open',en:'French Defense',ar:'الدفاع الفرنسي',side:'b',kw:'e6 d5 فرنسي',line:'e4 e6 d4 d5 Nc3 Bb4 e5 c5 a3 Bxc3+ bxc3',desc:'دفاع صلب ومتين: بيدقك d5 بيواجه المركز وبعدين بتضرب بـ c5.',ideas:['e6 وd5 بناء قوي','اضرب المركز بـ c5','الفيل الأبيض الضعيف خلف السلسلة'],descEn:"A solid, tough defense: your d5 pawn challenges the center, then you strike with c5.",ideasEn:["e6 and d5: a strong structure", "Hit the center with c5", "White's bad bishop behind the chain"]},
+{id:'caro',cat:'open',en:'Caro-Kann',ar:'دفاع كارو-كان',side:'b',kw:'c6 d5 اقفل',line:'e4 c6 d4 d5 Nc3 dxe4 Nxe4 Bf5 Ng3 Bg6',desc:'دفاع آمن جداً. بتطلّع الفيل برّه سلسلة البيادق قبل ما تقفلها بـ e6.',ideas:['c6 تدعم d5','طلّع الفيل لـ f5 بدري','هيكل بيادق سليم'],descEn:"A very safe defense. Develop the bishop outside the pawn chain before locking it with e6.",ideasEn:["c6 supports d5", "Get the bishop to f5 early", "A healthy pawn structure"]},
+{id:'scand',cat:'open',en:'Scandinavian',ar:'الدفاع الاسكندنافي',side:'b',kw:'d5 qxd5 الملكة',line:'e4 d5 exd5 Qxd5 Nc3 Qa5 d4 Nf6',desc:'بتهاجم e4 فوراً بـ d5. الوزير بيطلع بدري، بس بسيط ومباشر.',ideas:['d5 فوراً ضد e4','Qa5 يهرب من الحصان','كمّل التطوير بسرعة'],descEn:"Attack e4 immediately with d5. The queen comes out early, but it is simple and direct.",ideasEn:["d5 immediately against e4", "Qa5 escapes the knight", "Keep developing fast"]},
+{id:'pirc',cat:'open',en:'Pirc Defense',ar:'دفاع بيرتس',side:'b',kw:'d6 g6 فيانكيتو',line:'e4 d6 d4 Nf6 Nc3 g6 f4 Bg7 Nf3',desc:'بتسيب الأبيض يبني المركز وبعدين تضرب عليه من الأجناب بالفيل g7.',ideas:['فيل g7 قوي','سيب المركز وهاجمه بعدين','مرونة كبيرة'],descEn:"Let White build a center, then strike at it from the flanks with the g7 bishop.",ideasEn:["Strong g7 bishop", "Give up the center, attack it later", "Very flexible"]},
+{id:'qg',cat:'open',en:"Queen's Gambit",ar:'جامبيت الوزير',side:'w',kw:'d4 c4 d5',line:'d4 d5 c4 e6 Nc3 Nf6 Bg5 Be7 e3 O-O',desc:'أشهر افتتاحية بـ d4. مش جامبيت حقيقي لأن الأبيض يقدر يستعيد البيدق. مركز قوي وخطط واضحة.',ideas:['c4 بيضغط على d5','تطوير هادئ','هيكل مركز متين'],descEn:"The most famous d4 opening. Not a real gambit, since White can win the pawn back. Strong center, clear plans.",ideasEn:["c4 pressures d5", "Calm development", "A solid central structure"]},
+{id:'qga',cat:'gambit',en:"Queen's Gambit Accepted",ar:'جامبيت الوزير المقبول',side:'b',kw:'dxc4',line:'d4 d5 c4 dxc4 Nf3 Nf6 e3 e6 Bxc4 c5',desc:'الأسود بياخد بيدق c4 ويرجّعه بعدين عشان يلعب c5 ويتعادل بسهولة.',ideas:['خد البيدق وارجّع','c5 يضرب المركز','نشاط للفيل'],descEn:"Black takes the c4 pawn and gives it back later to play c5 and equalize easily.",ideasEn:["Take the pawn and return it", "c5 strikes the center", "Activity for the bishop"]},
+{id:'slav',cat:'open',en:'Slav Defense',ar:'الدفاع السلافي',side:'b',kw:'c6 d5',line:'d4 d5 c4 c6 Nf3 Nf6 Nc3 dxc4 a4 Bf5',desc:'دفاع متين ضد جامبيت الوزير: c6 تدعم d5 وتسيب الفيل يطلع بره.',ideas:['c6 قوية','فيل c8 حر','هيكل سليم'],descEn:"A tough defense to the Queen's Gambit: c6 supports d5 and lets the bishop out.",ideasEn:["Strong c6", "Free c8 bishop", "Healthy structure"]},
+{id:'kid',cat:'open',en:"King's Indian",ar:'الدفاع الهندي الملكي',side:'b',kw:'g6 bg7',line:'d4 Nf6 c4 g6 Nc3 Bg7 e4 d6 Nf3 O-O',desc:'بتسيب الأبيض يبني مركز كبير وتهاجمه بعدين، وغالباً بتهاجم ملك الأبيض بـ f5.',ideas:['فيل g7 على القطر الطويل','بيّض بدري','هجوم على الجناح الملكي'],descEn:"Let White build a big center, then attack it, often with a kingside pawn storm starting with f5.",ideasEn:["The g7 bishop on the long diagonal", "Castle early", "Kingside attack"]},
+{id:'nimzo',cat:'open',en:'Nimzo-Indian',ar:'الدفاع النمزو-هندي',side:'b',kw:'bb4 e6',line:'d4 Nf6 c4 e6 Nc3 Bb4 e3 O-O Bd3 d5',desc:'الفيل b4 بيدبّس الحصان c3 وبيتحكم في e4. دفاع مرن ومحترم.',ideas:['اربط الحصان c3','تحكم في e4','ممكن تضعّف بيادق الأبيض'],descEn:"The b4 bishop pins the c3 knight and fights for e4. A flexible, respected defense.",ideasEn:["Pin the c3 knight", "Control e4", "You can double White's pawns"]},
+{id:'london',cat:'open',en:'London System',ar:'نظام لندن',side:'w',kw:'bf4 d4 سهل',line:'d4 d5 Bf4 Nf6 e3 e6 Nf3 Bd6 Bg3 O-O',desc:'سيستم سهل الحفظ: بتلعب نفس الحركات تقريباً ضد أغلب الدفاعات. ممتاز للمبتدئين.',ideas:['d4 + Bf4 + e3','Nf3 وBd3 وO-O','خطة ثابتة'],descEn:"An easy system to learn: you play almost the same moves against most defenses. Great for beginners.",ideasEn:["d4 + Bf4 + e3", "Nf3, Bd3, O-O", "A fixed plan"]},
+{id:'english',cat:'open',en:'English Opening',ar:'الافتتاحية الإنجليزية',side:'w',kw:'c4',line:'c4 e5 Nc3 Nf6 Nf3 Nc6 g3 d5 cxd5 Nxd5',desc:'افتتاحية مرنة بتبدأ بـ c4 وبتسيطر على d5 من الجنب.',ideas:['اتحكم في d5','فيانكيتو g3 + Bg2','لعب إستراتيجي مرن'],descEn:"A flexible opening starting with c4, controlling d5 from the flank.",ideasEn:["Control d5", "Fianchetto with g3 and Bg2", "Flexible strategic play"]},
+{id:'englund',cat:'trap',en:'Englund Gambit (trap)',ar:'جامبيت إنجلند (فخ)',side:'b',kw:'d4 e5 فخ',line:'d4 e5 dxe5 Nc6 Nf3 Qe7 Bf4 Qb4+ Bd2 Qxb2 Bc3 Bb4 Qd2 Bxc3 Qxc3 Qxa1+',desc:'جامبيت مخادع: لو الأبيض أخد البيدق ولعب بسرعة ممكن يقع في فخ ويخسر الطابية! لكن لو لعب صح الأسود في ورطة.',ideas:['الفخ: Bf4 Qb4+ وبعدها Qxb2','لو لعب الأبيض بدقة هو الأفضل','للتسلية والمفاجآت فقط'],descEn:"A tricky gambit: if White grabs the pawn and plays fast, they can fall into a trap and lose a rook! But accurate play leaves Black in trouble.",ideasEn:["The trap: Bf4 Qb4+ then Qxb2", "Accurate play favors White", "For fun and surprises only"]},
+{id:'budapest',cat:'gambit',en:'Budapest Gambit',ar:'جامبيت بودابست',side:'b',kw:'e5 ng4',line:'d4 Nf6 c4 e5 dxe5 Ng4 Bf4 Nc6 Nf3 Bb4+',desc:'الأسود بيضحّي ببيدق e5 ويطلّع الحصان لـ g4 ويهاجم بسرعة.',ideas:['e5 جريئة','Ng4 بيهدد e5','تطوير سريع'],descEn:"Black sacrifices the e5 pawn, jumps the knight to g4 and attacks quickly.",ideasEn:["Bold e5", "Ng4 targets e5", "Fast development"]},
+{id:'benko',cat:'gambit',en:'Benko Gambit',ar:'جامبيت بينكو',side:'b',kw:'b5 c5',line:'d4 Nf6 c4 c5 d5 b5 cxb5 a6 bxa6 Bxa6 Nc3 d6',desc:'ضحّي ببيدق b5 عشان تفتح خطوط a وb للطوابي وتضغط على جناح الوزير.',ideas:['ضحية بيدق دائمة','الطوابي على الأعمدة المفتوحة','ضغط طويل الأمد'],descEn:"Sacrifice the b5 pawn to open the a- and b-files for your rooks and squeeze the queenside.",ideasEn:["A long-term pawn sacrifice", "Rooks on the open files", "Lasting pressure"]},
+{id:'fried',cat:'trap',en:'Fried Liver Attack',ar:'هجوم الكبد المقلي',side:'w',kw:'ng5 nxf7 هجوم',line:'e4 e5 Nf3 Nc6 Bc4 Nf6 Ng5 d5 exd5 Nxd5 Nxf7 Kxf7 Qf3+ Ke6 Nc3',desc:'هجوم قوي ضد Nf6: بتضحّي بالحصان على f7 وتجرّ الملك للوسط. محفوف بالمخاطر لو لعب الأسود دقيق.',ideas:['Ng5 تهاجم f7','Nxf7 ضحية الحصان','الملك الأسود مكشوف'],descEn:"A fierce attack on Nf6: sacrifice the knight on f7 and drag the king into the open. Risky if Black defends well.",ideasEn:["Ng5 attacks f7", "Nxf7: the knight sacrifice", "The black king is exposed"]},
+{id:'vienna',cat:'gambit',en:'Vienna Gambit',ar:'جامبيت فيينا',side:'w',kw:'nc3 f4',line:'e4 e5 Nc3 Nf6 f4 d5 fxe5 Nxe4 Nf3 Be7',desc:'زي جامبيت الملك بس بحصان c3 يحمي ويضغط على المركز.',ideas:['f4 بعد Nc3','هجوم على المركز','أمان أكتر من جامبيت الملك'],descEn:"Like the King's Gambit, but the c3 knight adds protection and central pressure.",ideasEn:["f4 after Nc3", "Attack the center", "Safer than the King's Gambit"]},
+{id:'legal',cat:'trap',en:"Légal's Mate",ar:'مات ليجال (فخ)',side:'w',kw:'trap فخ ملكة',line:'e4 e5 Nf3 d6 Bc4 Bg4 Nc3 g6 Nxe5 Bxd1 Bxf7+ Ke7 Nd5#',desc:'فخ قديم وجميل: بتضحّي بالوزير عشان تعمل مات بقطع صغيرة. اتحذر لما تلعب Bg4 بدري.',ideas:['ضحّي بالوزير Nxe5','Bxf7+ الشاه بيتجر','Nd5# مات بالحصان'],descEn:"A beautiful old trap: sacrifice your queen to mate with minor pieces. Watch out when playing Bg4 early.",ideasEn:["Sacrifice the queen with Nxe5", "Bxf7+ drags the king", "Nd5#: mate by knight"]},
+{id:'scholar',cat:'trap',en:"Scholar's Mate",ar:'مات المدرسة (٤ نقلات)',side:'w',kw:'qh5 qxf7 مات سريع',line:'e4 e5 Bc4 Nc6 Qh5 Nf6 Qxf7#',desc:'أشهر مات سريع. الدفاع: بدري افتح حصان f6 واحمي f7 ولا تتسرع.',ideas:['الوزير والفيل على f7','احمي f7 بـ Nf6 أو g6','متتعبش نفسك لو اتلعبت ضدك: Nf6 تنهيه'],descEn:"The most famous quick mate. The defense: develop the f6 knight early, guard f7, and don't rush.",ideasEn:["Queen and bishop on f7", "Defend f7 with Nf6 or g6", "If it is tried on you: Nf6 ends it"]},
+{id:'fool',cat:'trap',en:"Fool's Mate",ar:'مات الأحمق (نقلتين)',side:'b',kw:'أسرع مات f3 g4',line:'f3 e5 g4 Qh4#',desc:'أسرع مات ممكن في الشطرنج: بس الأبيض لازم يلعب أسوأ نقلات!',ideas:['f3 وg4 بتفتح القطر للملك','Qh4#','خلّي بالك من ملكك'],descEn:"The fastest mate possible in chess: White just has to play the worst moves!",ideasEn:["f3 and g4 open the king's diagonal", "Qh4#", "Take care of your own king"]},
+{id:'fork',cat:'tact',en:'Fork',ar:'الشوكة (Fork)',side:'w',kw:'fork حصان',fen:'2q3k1/5ppp/8/3N4/8/8/8/4K3 w - - 0 1',desc:'قطعة واحدة بتهاجم قطعتين أو أكتر في نفس الوقت، والخصم مش هيقدر ينقذهم كلهم. الحصان أخطر قطعة في الشوكات.',ideas:['حصان + ملك + وزير = شوكة ملكية','كل ما القطع الأغلى كل ما أحلى','دور على مربعات الحصان اللي بتهاجم قطعتين'],descEn:"One piece attacks two or more at once, and the opponent cannot save them all. The knight is the deadliest forker.",ideasEn:["Knight + king + queen = royal fork", "The pricier the targets, the sweeter", "Look for knight squares that hit two pieces"]},
+{id:'pin',cat:'tact',en:'Pin',ar:'التثبيت (Pin)',side:'w',kw:'pin',fen:'4k3/8/2n5/1B6/8/8/8/4K3 b - - 0 1',desc:'قطعة بتتثبت لأنها لو اتحركت هتكشف قطعة أغلى وراها (غالباً الملك). التثبيت المطلق: القطعة مينفعش تتحرك.',ideas:['فيل أو طابية أو وزير بيثبتوا','هاجم القطعة المثبتة بحاجة تانية','Bb5 يثبت الحصان c6 قدام الملك e8'],descEn:"A piece is pinned because moving it would expose a more valuable piece behind it (often the king). An absolute pin means it cannot legally move.",ideasEn:["Bishops, rooks and queens pin", "Attack the pinned piece again", "Bb5 pins the c6 knight to the king on e8"]},
+{id:'skewer',cat:'tact',en:'Skewer',ar:'السيخ (Skewer)',side:'w',kw:'skewer',fen:'3k3q/8/8/8/8/8/8/R3K3 w - - 0 1',desc:'عكس التثبيت: بتهاجم القطعة الأغلى أولاً، لما تتحرك تاخد اللي وراها.',ideas:['كش بالطابية Ra8+','الملك لازم يتحرك','Rxh8 ياخد الوزير'],descEn:"The reverse of a pin: attack the more valuable piece first, and when it moves you take what is behind.",ideasEn:["Check with the rook: Ra8+", "The king must move", "Rxh8 wins the queen"]},
+{id:'disc',cat:'tact',en:'Discovered Attack',ar:'الهجوم المكشوف',side:'w',kw:'discovered',desc:'بتحرك قطعة فبتكشف هجوم قطعة تانية وراها. لو الحركة نفسها كش أو بتهدد قطعة، بيبقى مضاعف.',ideas:['حرّك القطعة الأمامية بتهديد','القطعة الخلفية بتهاجم','هجوم مزدوج = صعب الدفاع'],descEn:"Move one piece and unveil an attack from a piece behind it. If the move itself gives check or a threat, it is double.",ideasEn:["Move the front piece with a threat", "The back piece attacks", "A double attack is hard to defend"]},
+{id:'backrank',cat:'tact',en:'Back-rank mate',ar:'مات الصف الأخير',side:'w',kw:'back rank',fen:'6k1/5ppp/8/8/8/8/8/R3K3 w - - 0 1',desc:'الملك محبوس خلف بيادقه نفسها وطابية أو وزير بيدخل الصف الأخير. دايماً اعمل "نافذة" لملكك بـ h3 أو g3.',ideas:['اعمل فتحة لملكك','حافظ على طابية تحمي الصف الأخير','دور على الفرصة عند الخصم'],descEn:"The king is trapped behind its own pawns and a rook or queen slips into the last rank. Always make luft for your king with h3 or g3.",ideasEn:["Make an escape square for your king", "Keep a rook guarding the back rank", "Look for the same chance against your opponent"]},
+{id:'zug',cat:'str',en:'Zugzwang',ar:'الزوجزوانج',side:'w',kw:'zugzwang',desc:'لما اللي عليه الدور بيبقى أي نقلة يلعبها تضره، ومفيش نقلة "ماسك". شائعة في النهايات.',ideas:['"لو كان ليّ أن أمرّر دوري"','الملك والبيادق بس','معرفة المعارضة تساعد'],descEn:"When the side to move hurts itself with every legal move and has no pass. Common in endgames.",ideasEn:["\"If only I could skip my turn\"", "Just king and pawns", "Knowing the opposition helps"]},
+{id:'opp',cat:'end',en:'Opposition',ar:'المعارضة (Opposition)',side:'w',kw:'opposition ملك بيدق',fen:'8/8/8/4k3/8/4K3/4P3/8 w - - 0 1',desc:'مفتاح نهايات الملك والبيدق: لما الملكين يواجهوا بعض بمربع واحد بينهم، اللي ماعليهش الدور بياخد المعارضة.',ideas:['تقدّم الملك قدام البيدق','خد المعارضة','البيدق يتقدم لما الملك يسانده'],descEn:"The key to king-and-pawn endings: when the kings face each other one square apart, the side NOT to move has the opposition.",ideasEn:["Advance the king in front of the pawn", "Take the opposition", "The pawn advances when its king supports it"]},
+{id:'passed',cat:'str',en:'Passed pawn',ar:'البيدق الحر',side:'w',kw:'passed pawn',desc:'بيدق مفيش قدامه ولا على جنبه بيدق للخصم يمنعه. في النهايات ده ذهب.',ideas:['ادفعه لما يبقى مدعوم','ملك قريب = أقوى','الطابية خلفه'],descEn:"A pawn with no enemy pawn ahead of it or beside it. In the endgame it is gold.",ideasEn:["Push it when it is supported", "A nearby king makes it stronger", "Put a rook behind it"]},
+{id:'bpair',cat:'str',en:'Bishop pair',ar:'زوج الفيلة',side:'w',kw:'bishops',desc:'الفيلان مع بعض قويين في المراكز المفتوحة لأنهم بيغطوا كل ألوان المربعات.',ideas:['افتح اللعب','اتبادل الحصان مقابل الفيل بحذر','اتجنب البيادق المقفولة'],descEn:"Two bishops together are strong in open positions because they cover squares of both colors.",ideasEn:["Open the game", "Trade knight for bishop with care", "Avoid locked pawn chains"]},
+{id:'isolated',cat:'str',en:'Isolated pawn',ar:'البيدق المعزول',side:'w',kw:'isolated',desc:'بيدق مفيش جنبه بيدق من نفس اللون على الأعمدة المجاورة. قوة نشاط لكن ضعف كمان.',ideas:['ضغط وقطع نشيطة تعوّض','في النهاية بيبقى هدف','بدّل القطع لو ضعفه ظاهر'],descEn:"A pawn with no friendly pawn on a neighboring file. It gives activity but is also a weakness.",ideasEn:["Active pieces compensate", "It becomes a target in the endgame", "Trade pieces if it is weak"]},
+{id:'lucena',cat:'end',en:'Lucena position',ar:'وضع لوسينا',side:'w',kw:'lucena rook endgame',fen:'1K1k4/1P6/8/8/8/8/r7/2R5 w - - 0 1',desc:'أشهر نهاية طابية وبيدق فيها فوز: الأسود ملكه محبوس والأبيض بيبني "جسر" عشان يرقّي.',ideas:['الطابية تعمل جسر على الصف الرابع','الملك يختبئ ورا الجسر','تحتاج تمرين على الفكرة'],descEn:"The most famous winning rook-and-pawn ending: the enemy king is cut off and White builds a \"bridge\" to promote.",ideasEn:["The rook builds a bridge on the fourth rank", "The king hides behind the bridge", "The idea takes practice"]}
+];
+var CATS=[['all','الكل','All'],['open','افتتاحيات','Openings'],['gambit','جامبيت','Gambits'],['trap','فخاخ','Traps'],['tact','تكتيكات','Tactics'],['end','نهايات','Endgames'],['str','استراتيجية','Strategy']];
+// Lessons: step types: info {t,x,fen?}, puz {fen,sol:[],mate?,q,why,hint?}, quiz {q,o:[],a,why}
+var UNITS=[
+{id:'u1',ar:'الأساسيات',en:"Basics",ic:'♙',lessons:[
+ {id:'l11',ar:'أخد القطع',en:"Capturing",steps:[
+  {t:'info',x:'القطع بتاخد القطع اللي قدامها بنفس طريقة حركتها. هنتمرن على كل قطعة، اضغط على القطعة وبعدين المربع.',fen:'4k3/8/8/8/3p4/8/8/3RK3 w - - 0 1',xEn:"Pieces capture what's in front of them the same way they move. We'll practice with each piece: tap the piece, then the square."},
+  {t:'puz',fen:'4k3/8/8/8/3p4/8/8/3RK3 w - - 0 1',sol:['Rxd4'],q:'الطابية بتتحرك أفقي ورأسي. خد البيدق!',why:'الطابية بتتحرك في خطوط مستقيمة. عمود d فاضي بينها وبين البيدق.',qEn:"Rooks move horizontally and vertically. Take the pawn!",whyEn:"The rook moves in straight lines. The d-file is clear between it and the pawn."},
+  {t:'puz',fen:'4k3/8/8/3n4/8/8/6B1/4K3 w - - 0 1',sol:['Bxd5'],q:'الفيل بيتحرك قُطري. خد الحصان!',why:'الفيل بيمشي على الأقطار بس. القطر g2-d5 فاضي.',qEn:"The bishop moves diagonally. Take the knight!",whyEn:"The bishop only moves on diagonals. The g2-d5 diagonal is clear."},
+  {t:'puz',fen:'4k3/8/5r2/8/4N3/8/8/4K3 w - - 0 1',sol:['Nxf6'],q:'الحصان بيقفز على شكل L. خد الطابية!',why:'الحصان بيقفز: خطوتين وخطوة. من e4 لـ f6 بالظبط.',qEn:"The knight jumps in an L shape. Take the rook!",whyEn:"The knight jumps two squares then one. From e4 to f6 exactly."},
+  {t:'quiz',q:'أي قطعة ممكن تقفز فوق القطع التانية؟',o:['الفيل','الحصان','الطابية'],a:1,why:'الحصان بس هو اللي بيقفز.',qEn:"Which piece can jump over other pieces?",oEn:["The bishop", "The knight", "The rook"],whyEn:"Only the knight jumps."}]},
+ {id:'l12',ar:'كش ومات',en:"Check & Mate",steps:[
+  {t:'info',x:'الكش: الملك متهدد. المات: الملك متهدد ومفيش أي طريقة تنقذه. لو الملك مش متهدد ومعندوش نقلة قانونية = تعادل (جمود).',xEn:"Check: the king is attacked. Mate: the king is attacked with no way out. If the king is not attacked but has no legal move, it is a draw (stalemate)."},
+  {t:'puz',fen:'6k1/5ppp/8/8/8/8/8/R3K3 w - - 0 1',sol:['Ra8#'],mate:1,q:'مات في نقلة واحدة!',why:'ملك الأسود محبوس ورا بياديقه (مات الصف الأخير).',qEn:"Mate in one move!",whyEn:"The black king is trapped behind its own pawns (back-rank mate)."},
+  {t:'puz',fen:'7k/8/5K2/8/8/8/8/6Q1 w - - 0 1',sol:['Qg7#'],mate:1,q:'مات في نقلة. الملك بيحمي الوزير.',why:'الوزير على g7 محمي بملكك فالملك الأسود مش هيقدر ياخده.',qEn:"Mate in one. The king protects the queen.",whyEn:"The queen on g7 is protected by your king, so the black king cannot take it."},
+  {t:'puz',fen:'6rk/6pp/8/6N1/8/8/8/4K3 w - - 0 1',sol:['Nf7#'],mate:1,q:'مات بالحصان! (مات الخنق)',why:'الملك مخنوق بقطعه هو نفسها، والحصان بيدّيله كش.',qEn:"Mate with the knight! (smothered mate)",whyEn:"The king is smothered by its own pieces, and the knight delivers check."},
+  {t:'puz',fen:'k7/8/1K6/8/8/8/8/7R w - - 0 1',sol:['Rh8#'],mate:1,q:'مات بالطابية والملك.',why:'ملكك بيغطي a7 وb7 والطابية بتغطي الصف الأخير.',qEn:"Mate with rook and king.",whyEn:"Your king covers a7 and b7, and the rook covers the last rank."}]},
+ {id:'l13',ar:'أسرع ماتات',en:"Fastest Mates",steps:[
+  {t:'info',x:'ماتات المبتدئين: مات المدرسة بيهاجم f7. تعلّم تعمله وتتجنبه.',xEn:"Beginner mates: Scholar's Mate attacks f7. Learn to play it and to stop it."},
+  {t:'puz',fen:'r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4',sol:['Qxf7#'],mate:1,q:'مات المدرسة. دوّر على f7.',why:'الفيل c4 يحمي الوزير على f7 والملك مفيش عنده مهرب.',qEn:"Scholar's Mate. Look at f7.",whyEn:"The c4 bishop protects the queen on f7 and the king has no escape."},
+  {t:'quiz',q:'أضعف مربع في بداية اللعب للأسود؟',o:['f7','d7','a7'],a:0,why:'f7 محمي بالملك بس.',qEn:"Black's weakest square at the start?",oEn:["f7", "d7", "a7"],whyEn:"f7 is guarded only by the king."},
+  {t:'puz',fen:'7k/5Q2/6K1/8/8/8/8/8 w - - 0 1',sol:['Qg7#'],mate:1,q:'خلّي بالك من الجمود: اعمل مات مش تعادل!',why:'Qg7# أو Qf8# مات. أي نقلة تانية قد تعمل تعادل.',qEn:"Watch out for stalemate: deliver mate, not a draw!",whyEn:"Qg7# or Qf8# is mate. Any other move may stalemate."}]}]},
+{id:'u2',ar:'التكتيكات',en:"Tactics",ic:'♞',lessons:[
+ {id:'l21',ar:'الشوكة',en:"The Fork",steps:[
+  {t:'info',x:'الشوكة: قطعة تهاجم قطعتين في نفس الوقت. الحصان أشهر قطعة للشوكات لأن مفيش حد يهاجمه من بعيد.',fen:'r3k3/8/8/1N6/8/8/8/4K3 w - - 0 1',xEn:"A fork: one piece attacks two at once. The knight is the most famous forker because nothing attacks it from far away."},
+  {t:'puz',fen:'r3k3/8/8/1N6/8/8/8/4K3 w - - 0 1',sol:['Nc7+'],q:'شوكة ملكية للملك والطابية!',why:'Nc7+ بيدي كش وفي نفس الوقت بيهدد الطابية a8.',qEn:"A royal fork on king and rook!",whyEn:"Nc7+ gives check and also threatens the a8 rook."},
+  {t:'puz',fen:'2q3k1/5ppp/8/3N4/8/8/8/4K3 w - - 0 1',sol:['Ne7+'],q:'شوكة للملك والوزير.',why:'من e7 الحصان بيدّي كش وبيهدد c8 (الوزير).',qEn:"Fork the king and queen.",whyEn:"From e7 the knight checks and also attacks c8 (the queen)."},
+  {t:'quiz',q:'الشوكة بتنفع أكتر لما القطع المهاجَمة...',o:['غالية ومش محمية','رخيصة ومحمية','في الركن'],a:0,why:'كل ما كانت أغلى وأضعف حماية كل ما أنجح.',qEn:"Forks work best when the attacked pieces are...",oEn:["valuable and unprotected", "cheap and protected", "in the corner"],whyEn:"The more valuable and less defended, the better."}]},
+ {id:'l22',ar:'السيخ والتثبيت',en:"Skewer & Pin",steps:[
+  {t:'info',x:'السيخ: بتهاجم قطعة أغلى فتتحرك وتخلّيك تاخد اللي وراها.',fen:'3k3q/8/8/8/8/8/8/R3K3 w - - 0 1',xEn:"A skewer: attack a valuable piece so it moves away and lets you take what is behind it."},
+  {t:'puz',fen:'3k3q/8/8/8/8/8/8/R3K3 w - - 0 1',sol:['Ra8+'],q:'كش بالطابية وبعدها خد الوزير!',why:'بعد Ra8+ الملك لازم يتحرك وبعدين Rxh8.',qEn:"Check with the rook, then take the queen!",whyEn:"After Ra8+ the king must move, then Rxh8."},
+  {t:'quiz',q:'التثبيت المطلق معناه إن القطعة المثبتة...',o:['مينفعش تتحرك قانونياً','تتحرك بس بخسارة','تاخد مجاناً'],a:0,why:'لو اتحركت هتعرّض ملكها للكش وده ممنوع.',qEn:"An absolute pin means the pinned piece...",oEn:["cannot legally move", "moves only at a loss", "can be taken for free"],whyEn:"Moving it would expose its king to check, which is illegal."}]}]},
+{id:'u3',ar:'الافتتاحية',en:"The Opening",ic:'♗',lessons:[
+ {id:'l31',ar:'قواعد الافتتاحية',en:"Opening Rules",steps:[
+  {t:'info',x:'3 قواعد ذهبية: 1) سيطر على المركز (e4/d4). 2) طوّر قطعك (حصان وفيل). 3) بيّض بدري. وامشِ بالوزير متأخر.',xEn:"3 golden rules: 1) Control the center (e4/d4). 2) Develop your pieces (knights and bishops). 3) Castle early. Bring the queen out late."},
+  {t:'quiz',q:'أفضل أول نقلة؟',o:['e4','a4','h3'],a:0,why:'e4 بتسيطر على المركز وتفتح الفيل والوزير.',qEn:"Best first move?",oEn:["e4", "a4", "h3"],whyEn:"e4 controls the center and frees the bishop and queen."},
+  {t:'quiz',q:'الأحسن تبدأ تطوّر...',o:['الحصان والفيل','الطابية','الوزير'],a:0,why:'القطع الصغيرة الأول والوزير متأخر.',qEn:"It is best to develop first...",oEn:["knights and bishops", "rooks", "the queen"],whyEn:"Minor pieces first, the queen later."},
+  {t:'quiz',q:'ليه التبييض مهم؟',o:['بيحمي الملك ويشغّل الطابية','بيعمل كش','بياخد بيدق'],a:0,why:'الملك بيبقى آمن والطابية بتشارك.',qEn:"Why is castling important?",oEn:["it keeps the king safe and activates a rook", "it gives check", "it wins a pawn"],whyEn:"The king becomes safe and the rook joins the game."},
+  {t:'info',x:'روح لـ المكتبة وجرّب أي افتتاحية: هتلاقي "جرّب الخط" وهتتدرب على نقلاتها.',xEn:"Go to the Library and try any opening: you will find \"Try the line\" and can practice its moves."}]}]},
+{id:'u4',ar:'النهايات',en:"Endgames",ic:'♜',lessons:[
+ {id:'l41',ar:'ترقية البيدق',en:"Pawn Promotion",steps:[
+  {t:'info',x:'لما البيدق يوصل لآخر صف بيتحول لأي قطعة (الوزير غالباً).',xEn:"When a pawn reaches the last rank it promotes to any piece (usually a queen)."},
+  {t:'puz',fen:'8/4P3/8/8/8/k7/8/4K3 w - - 0 1',sol:['e8=Q'],q:'رقّي البيدق!',why:'e8=Q بيعمل وزير جديد.',qEn:"Promote the pawn!",whyEn:"e8=Q makes a new queen."},
+  {t:'quiz',q:'أغلب الوقت بنرقي لـ...',o:['وزير','حصان','فيل'],a:0,why:'الوزير أقوى قطعة. أحياناً الحصان لشوكة خاصة.',qEn:"Most of the time we promote to a...",oEn:["queen", "knight", "bishop"],whyEn:"The queen is the strongest piece. Sometimes a knight for a special fork."}]}]}
+];
+</script><script>var GL={k:'♚',q:'♛',r:'♜',b:'♝',n:'♞',p:'♟'};
+var LEVELS=[
+{r:400,n:'الكتكوت',en:'Chick',e:'🐣',d:1,ms:200,noise:380,book:0,t:'بيلعب شبه عشوائي. مناسب للبداية.',tEn:'Plays almost randomly. Good for starting.'},
+{r:600,n:'سمسم',en:'Sesame',e:'🐥',d:1,ms:250,noise:190,book:0,t:'بيغلط كتير ويسيب قطع.',tEn:'Makes lots of mistakes, hangs pieces.'},
+{r:800,n:'الصاحب',en:'Buddy',e:'🙂',d:2,ms:400,noise:150,book:2,t:'بيشوف تهديد واحد قدام.',tEn:'Sees one threat ahead.'},
+{r:1000,n:'نادي الحي',en:'Block Club',e:'🧢',d:2,ms:600,noise:70,book:4,t:'لعب معقول وغلطات بسيطة.',tEn:'Reasonable play, small mistakes.'},
+{r:1200,n:'لاعب القهوة',en:'Café Player',e:'☕',d:3,ms:900,noise:50,book:6,t:'بيشوف شوكات بسيطة.',tEn:'Sees simple forks.'},
+{r:1400,n:'المنافس',en:'The Rival',e:'😎',d:4,ms:1500,noise:0,book:8,t:'ثابت وبيستغل غلطاتك.',tEn:'Steady, punishes your mistakes.'},
+{r:1600,n:'لاعب النادي',en:'Club Player',e:'🎯',d:5,ms:2200,noise:0,book:12,t:'تكتيكات أعمق.',tEn:'Deeper tactics.'},
+{r:1800,n:'الخبير',en:'The Expert',e:'🧠',d:6,ms:3500,noise:0,book:16,t:'صعب. قليل الغلط.',tEn:'Hard. Rarely errs.'},
+{r:2000,n:'الأستاذ',en:'The Master',e:'👑',d:8,ms:6000,noise:0,book:20,t:'أقوى مستوى في التطبيق.',tEn:'Strongest level in the app.'}];
+var THEMES=[
+{ar:'خشب كلاسيك',en:'Classic Wood',lt:'#f0d9b5',dk:'#b58863',tx:'repeating-linear-gradient(45deg,rgba(60,30,0,.04) 0 9px,transparent 9px 18px)'},
+{ar:'أخضر البطولات',en:'Tournament Green',lt:'#eeeed2',dk:'#769656',tx:'none'},
+{ar:'أزرق هادي',en:'Calm Blue',lt:'#dee3e6',dk:'#8ca2ad',tx:'none'},
+{ar:'رمادي',en:'Slate',lt:'#ededed',dk:'#8a8a8a',tx:'none'},
+{ar:'جوز',en:'Walnut',lt:'#f1d9c0',dk:'#946f51',tx:'repeating-linear-gradient(45deg,rgba(50,25,0,.05) 0 8px,transparent 8px 16px)'},
+{ar:'بنفسجي',en:'Purple',lt:'#ece5f5',dk:'#8a6fae',tx:'none'},
+{ar:'رخام',en:'Marble',lt:'#f2f2f2',dk:'#a8a8a8',tx:'repeating-linear-gradient(135deg,rgba(0,0,0,.025) 0 10px,transparent 10px 20px)'},
+{ar:'ليلي',en:'Night',lt:'#3a4356',dk:'#1d2330',tx:'none'},
+{ar:'وردي',en:'Rose',lt:'#f5e1e4',dk:'#c48a95',tx:'none'},
+{ar:'رملي',en:'Sand',lt:'#eae0c8',dk:'#bfa06a',tx:'none'}];
+var PSETS=[['cburnett','كلاسيك','Classic'],['merida','تقليدي','Traditional'],['alpha','عصري','Modern'],['glyph','رموز','Symbols']];
+var mem={};
+var store={get:function(k,d){try{var v=localStorage.getItem('cj_'+k);if(v!==null)return JSON.parse(v);}catch(e){}return mem[k]!==undefined?mem[k]:d;},set:function(k,v){mem[k]=v;try{localStorage.setItem('cj_'+k,JSON.stringify(v));}catch(e){}}};
+var UI=store.get('ui',{lang:'ar',theme:0,pieces:'cburnett',sound:true});
+function LI(){return UI.lang==='en'?1:0;}
+var T={
+back:['رجوع','Back'],settings:['الإعدادات','Settings'],language:['اللغة','Language'],boardTheme:['ثيم اللوحة','Board theme'],piecesSet:['شكل القطع','Piece style'],sound:['الصوت','Sound'],on:['شغال','On'],off:['مقفول','Off'],preview:['معاينة','Preview'],
+subtitle:['العب أوفلاين، اتعلّم، وحلّل مبارياتك','Play offline, learn, and analyze your games'],
+contGame:['▶ كمّل المباراة الحالية','▶ Resume current game'],
+vsCpu:['العب ضد الكمبيوتر','Play vs Computer'],vsCpuSub:['9 مستويات بتصنيف','9 rated levels'],
+pvp:['العب مع صاحبك','Play with a friend'],pvpSub:['Play in person على نفس الموبايل','In person, on the same phone'],
+learnT:['تعلّم','Learn'],learnSub:['وحدات ودروس وتمارين','Units, lessons and puzzles'],
+libT:['المكتبة والبحث','Library & Search'],libSub:['افتتاحيات، جامبيت، تكتيكات، نهايات','Openings, gambits, tactics, endgames'],
+histT:['مبارياتي وتحليلها','My games & analysis'],histSub:['نقاط ضعفك وتقدّمك','Your weaknesses and progress'],
+setSub:['ثيمات، قطع، لغة، صوت','Themes, pieces, language, sound'],
+footNote:['كل حاجة شغالة من غير نت. التصنيفات تقريبية ومش رسمية.','Everything works offline. Ratings are approximate, not official.'],
+chooseBot:['اختار الخصم','Choose your opponent'],
+rateNote:['التصنيف تقريبي ومقارن بمحرك التطبيق، مش تصنيف FIDE أو Chess.com.','Ratings are approximate vs this app\'s engine, not FIDE or Chess.com ratings.'],
+yourColor:['لونك','Your color'],white:['⚪ أبيض','⚪ White'],black:['⚫ أسود','⚫ Black'],random:['🎲 عشوائي','🎲 Random'],
+time:['الوقت','Time'],noTime:['بدون','None'],min5:['5 د','5 min'],min10:['10 د','10 min'],min15:['15 د','15 min'],min3:['3 د','3 min'],
+startGame:['ابدأ المباراة','Start game'],start:['ابدأ','Start'],
+pvpNote:['حطّوا الموبايل بينكم. الأبيض من تحت. اللوحة ثابتة. وقت دور الأسود، قطع الأسود بتلف تلقائياً عشان لاعب الأسود يشوفها صح.','Place the phone between you. White at the bottom. The board stays fixed. On Black\'s turn, Black\'s pieces turn around automatically so that player reads them properly.'],
+flipBlack:['اقلب قطع الأسود 180° (للاعب اللي قدامك)','Flip Black\'s pieces 180° (for the player opposite)'],
+autoRot:['لف اللوح تلقائياً بعد كل نقلة','Auto-rotate the board after each move'],
+game:['مباراة','Game'],turnW:['دور الأبيض','White to move'],turnB:['دور الأسود','Black to move'],thinking:['🤔 بيفكّر...','🤔 Thinking...'],checkSfx:[' • كش!',' • Check!'],
+undoB:['↶ تراجع','↶ Undo'],hintB:['💡 تلميح','💡 Hint'],drawB:['½ تعادل','½ Draw'],flipB:['🔄 اقلب','🔄 Flip'],resignB:['🏳️ استسلام','🏳️ Resign'],
+noMoves:['لسه ما حصلتش نقلات','No moves yet'],
+you:['أنت','You'],playerW:['لاعب الأبيض','White player'],playerB:['لاعب الأسود','Black player'],
+draw:['تعادل','Draw'],youWon:['كسبت!','You won!'],youLost:['خسرت المرة دي','You lost this time'],whiteWon:['الأبيض كسب','White won'],blackWon:['الأسود كسب','Black won'],
+analyzeGame:['📈 حلّل المباراة','📈 Analyze game'],rematch:['مباراة جديدة','New game'],mainMenu:['القائمة الرئيسية','Main menu'],
+resignQ:['تستسلم؟','Resign?'],resignQW:['الأبيض يستسلم؟','White resigns?'],resignQB:['الأسود يستسلم؟','Black resigns?'],drawQ:['الاتنين متفقين على التعادل؟','Both players agree to a draw?'],
+promote:['رقّي البيدق لـ','Promote to']};
+function t(k){var e=T[k];return e?e[LI()]:k;}
+var WHY_EN={'مات':'Checkmate','تعادل بالجمود (Stalemate)':'Draw by stalemate','تعادل: مفيش مادة كفاية للمات':'Draw: not enough material to mate','تعادل: قاعدة الـ 50 نقلة':'Draw: fifty-move rule','تعادل: تكرار النقلات 3 مرات':'Draw: threefold repetition','خلص الوقت ⏱':'Time ran out ⏱','استسلمت':'You resigned','الأبيض استسلم':'White resigned','الأسود استسلم':'Black resigned','تعادل بالاتفاق':'Draw by agreement'};
+function whyText(w){return UI.lang==='en'?(WHY_EN[w]||w):w;}
+var $=function(id){return document.getElementById(id);};
+function esc(t2){return String(t2).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+function sleep(ms){return new Promise(function(r){setTimeout(r,ms);});}
+function applyUI(){var th=THEMES[UI.theme]||THEMES[0],st=document.documentElement.style;
+  st.setProperty('--lt',th.lt);st.setProperty('--dk',th.dk);st.setProperty('--tx',th.tx);
+  document.documentElement.lang=UI.lang;document.documentElement.dir=UI.lang==='en'?'ltr':'rtl';
+  document.title=UI.lang==='en'?'Pocket Chess':'شطرنج جيب';}
+function uiSet(k,v){UI[k]=v;store.set('ui',UI);applyUI();if(view)view();}
+function uiLangToggle(){uiSet('lang',UI.lang==='ar'?'en':'ar');}
+// ---------- sound
+var AC=null;
+function snd(k){if(!UI.sound)return;try{
+  AC=AC||new (window.AudioContext||window.webkitAudioContext)();
+  if(AC.state==='suspended')AC.resume();
+  var now=AC.currentTime;
+  var tone=function(f,d,g,ty,at){var o=AC.createOscillator(),v=AC.createGain();o.type=ty||'triangle';o.frequency.value=f;v.gain.setValueAtTime(0.0001,at);v.gain.exponentialRampToValueAtTime(g,at+0.012);v.gain.exponentialRampToValueAtTime(0.0001,at+d);o.connect(v);v.connect(AC.destination);o.start(at);o.stop(at+d+0.03);};
+  if(k==='move')tone(520,0.07,0.14,'triangle',now);
+  else if(k==='cap'){tone(280,0.09,0.18,'square',now);tone(170,0.1,0.14,'triangle',now+0.02);}
+  else if(k==='check'){tone(700,0.08,0.16,'triangle',now);tone(920,0.1,0.16,'triangle',now+0.09);}
+  else if(k==='end'){[523,659,784].forEach(function(f,i){tone(f,0.16,0.14,'triangle',now+i*0.13);});}
+  else if(k==='crack'){var bl=AC.sampleRate*0.35,bf=AC.createBuffer(1,bl,AC.sampleRate),bd=bf.getChannelData(0);for(var q=0;q<bl;q++)bd[q]=(Math.random()*2-1)*Math.pow(1-q/bl,3);var bs=AC.createBufferSource(),bg=AC.createGain();bs.buffer=bf;bg.gain.value=0.5;bs.connect(bg);bg.connect(AC.destination);bs.start(now+0.5);tone(90,0.4,0.3,'sawtooth',now+0.5);}
+  else if(k==='start'){[392,523].forEach(function(f,i){tone(f,0.12,0.14,'triangle',now+i*0.1);});}
+}catch(e){}}
+// ---------- engine bridge
+var worker=null,pend={},wid=0;
+try{
+  worker=new Worker(URL.createObjectURL(new Blob([ENGINE_SRC],{type:'text/javascript'})));
+  worker.onmessage=function(ev){var d=ev.data,p=pend[d.id];if(p){delete pend[d.id];p.res(d);}};
+  worker.onerror=function(){worker=null;var ps=pend;pend={};Object.keys(ps).forEach(function(k){fallback(ps[k]);});};
+}catch(e){worker=null;}
+function fallback(p){setTimeout(function(){var r=think(p.state,p.opt);p.res({m:r?r.m:null,score:r?r.score:null});},30);}
+function thinkAsync(state,opt){return new Promise(function(res){var p={res:res,state:state,opt:opt};if(worker){var id=++wid;pend[id]=p;worker.postMessage({id:id,state:state,opt:opt});}else fallback(p);});}
+// ---------- pieces + board
+function pieceHTML(p,extra){
+  var w=isW(p),k=p.toLowerCase();
+  if(UI.pieces==='glyph')return '<span class="pc gly '+(w?'wp':'bp')+(extra||'')+'">'+GL[k]+'﻿</span>';
+  return '<span class="pc '+(extra||'')+'">'+(PIECES[UI.pieces]&&PIECES[UI.pieces][(w?'w':'b')+k]||GL[k])+'</span>';
+}
+function capHTML(p){
+  var w=isW(p),k=p.toLowerCase();
+  if(UI.pieces==='glyph')return '<span class="cp gly '+(w?'wp':'bp')+'">'+GL[k]+'﻿</span>';
+  return '<span class="cp">'+(PIECES[UI.pieces]&&PIECES[UI.pieces][(w?'w':'b')+k]||GL[k])+'</span>';
+}
+var onSq=null,ANIM=null;
+function boardHTML(o){
+  var h='<div class="boardwrap"><div class="board'+(o.broken!=null&&!o.brokenFin?' shake':'')+'" dir="ltr">';
+  for(var vr=0;vr<8;vr++)for(var vc=0;vc<8;vc++){
+    var r=o.flip?7-vr:vr,c=o.flip?7-vc:vc,sq=r*8+c,p=o.s.b[sq];
+    var cls='sq '+(((r+c)&1)?'dk':'lt');
+    if(o.sel===sq)cls+=' sel';
+    if(o.last&&(o.last[0]===sq||o.last[1]===sq))cls+=' last';
+    if(p===(o.s.t==='w'?'K':'k')&&inCheck(o.s))cls+=' chk';
+    if(o.targets&&o.targets.indexOf(sq)>=0)cls+=p!=='.'?' tcap':' tgt';
+    if(o.mark===sq)cls+=' mark';
+    if(o.broken===sq)cls+=' brk'+(o.brokenFin?' fin':'');
+    h+='<div class="'+cls+'" data-sq="'+sq+'">';
+    if(p!=='.')h+=pieceHTML(p,o.rot&&o.s.t==='b'&&!isW(p)?' rot':'');
+    if(o.broken===sq&&!o.brokenFin)h+=crackHTML();
+    if(vc===0)h+='<i class="rk">'+(8-r)+'</i>';
+    if(vr===7)h+='<i class="fl">'+FILES[c]+'</i>';
+    h+='</div>';
+  }
+  h+='</div>';
+  if(o.arrows&&o.arrows.length){
+    h+='<svg class="arrows" viewBox="0 0 8 8" dir="ltr">';
+    o.arrows.forEach(function(a){
+      var f=a[0],t2=a[1],col=a[2]||'#2ecc71';
+      var fx=(o.flip?7-(f&7):(f&7))+.5,fy=(o.flip?7-(f>>3):(f>>3))+.5,tx=(o.flip?7-(t2&7):(t2&7))+.5,ty=(o.flip?7-(t2>>3):(t2>>3))+.5;
+      var dx=tx-fx,dy=ty-fy,len=Math.sqrt(dx*dx+dy*dy),ux=dx/len,uy=dy/len;
+      var ex=tx-ux*.28,ey=ty-uy*.28,px=-uy,py=ux;
+      h+='<line x1="'+fx+'" y1="'+fy+'" x2="'+ex+'" y2="'+ey+'" stroke="'+col+'" stroke-width=".16" stroke-linecap="round" opacity=".85"/>';
+      h+='<polygon points="'+tx+','+ty+' '+(ex+px*.2)+','+(ey+py*.2)+' '+(ex-px*.2)+','+(ey-py*.2)+'" fill="'+col+'" opacity=".9"/>';
+    });
+    h+='</svg>';
+  }
+  return h+'</div>';
+}
+function crackHTML(){
+  var h='<svg class="crack" viewBox="0 0 40 40"><path d="M20 3 L17 13 L23 19 L16 27 L21 37"/><path d="M17 13 L7 15 L3 24"/><path d="M23 19 L33 17 L37 9"/></svg>';
+  for(var i=0;i<10;i++){var a=i/10*6.283+.3,d=70+(i%3)*45;h+='<b class="frag" style="--x:'+Math.round(Math.cos(a)*d)+'%;--y:'+Math.round(Math.sin(a)*d+30)+'%;--r:'+(i*57-200)+'deg;--d:'+(0.85+(i%4)*.05)+'s"></b>';}
+  return h;
+}
+function animateLast(flip){
+  if(!ANIM)return;
+  var mv=ANIM;ANIM=null;
+  try{
+    var bd=document.querySelector('.boardwrap .board');if(!bd)return;
+    var sq=bd.querySelector('[data-sq="'+mv[1]+'"]');if(!sq)return;
+    var pc=sq.querySelector('.pc');if(!pc)return;
+    var w=bd.clientWidth/8;
+    var dx=((mv[0]&7)-(mv[1]&7)),dy=((mv[0]>>3)-(mv[1]>>3));
+    if(flip){dx=-dx;dy=-dy;}
+    pc.style.transform='translate('+(dx*w)+'px,'+(dy*w)+'px)';
+    pc.classList.add('anim');
+    requestAnimationFrame(function(){requestAnimationFrame(function(){pc.style.transform='';});});
+  }catch(e){}
+}
+document.addEventListener('click',function(e){var q=e.target.closest&&e.target.closest('[data-sq]');if(q&&onSq)onSq(+q.getAttribute('data-sq'));});
+function cleanSan(t2){return t2.replace(/[+#!?]/g,'');}
+function legalTargets(s,from){return genMoves(s).filter(function(m){return m.f===from;}).map(function(m){return m.t;});}
+function promoHTML(cands,white){
+  var h='<div class="modal"><div class="card"><h3>'+t('promote')+'</h3><div class="promo">';
+  cands.forEach(function(m,i){h+='<button class="pbtn" onclick="promoChoose('+i+')">'+pieceHTML(white?m.pr.toUpperCase():m.pr)+'</button>';});
+  return h+'</div></div></div>';
+}
+var promoCb=null,promoCands=null;
+function promoChoose(i){var c=promoCands[i],cb=promoCb;promoCb=null;promoCands=null;$('promo').innerHTML='';cb(c);}
+function askPromo(cands,white,cb){promoCands=cands;promoCb=function(m){cb(m);};$('promo').innerHTML=promoHTML(cands,white);}
+function fmtClock(ms){ms=Math.max(0,ms);var s=Math.ceil(ms/1000),m=Math.floor(s/60);s=s%60;return m+':'+(s<10?'0':'')+s;}
+function capturedHTML(s,color){
+  var cnt={p:8,n:2,b:2,r:2,q:1},h='';
+  s.b.forEach(function(p){if(p!=='.'&&isW(p)===(color==='w')){var k=p.toLowerCase();if(cnt[k]!==undefined)cnt[k]--;}});
+  ['q','r','b','n','p'].forEach(function(k){for(var i=0;i<cnt[k];i++)h+=capHTML(color==='w'?k.toUpperCase():k);});
+  return h;
+}
+// ---------- navigation
+var view=null,G=null,clockTimer=null;
+function go(fn){if(fn!==gameView)stopClockUI();view=fn;window.scrollTo(0,0);fn();if(fn===gameView&&G&&G.clock&&!G.over&&!clockTimer){G.clock.at=Date.now();clockTimer=setInterval(tick,250);}}
+function setApp(h){$('app').innerHTML=h;}
+function topbar(title,back){return '<div class="top"><button class="back" onclick="'+(back||'go(home)')+'">‹ '+t('back')+'</button><div class="ttl">'+title+'</div></div>';}
+function home(){
+  onSq=null;
+  var prog=store.get('prog',{done:{},xp:0});
+  var logo=(UI.pieces!=='glyph'&&PIECES[UI.pieces])?PIECES[UI.pieces].wn:'♞';
+  var h='<div class="hero"><button class="langbtn" onclick="uiLangToggle()">🌐 '+(UI.lang==='ar'?'English':'عربي')+'</button><div class="logo'+(UI.pieces==='glyph'?' gly wp':'')+'"'+(UI.pieces==='glyph'?' style="font-size:64px;display:flex;align-items:center;justify-content:center"':'')+'>'+logo+'</div><h1>'+(UI.lang==='en'?'Pocket Chess':'شطرنج جيب')+'</h1><p>'+t('subtitle')+'</p></div>';
+  if(G&&!G.over)h+='<button class="big cont" onclick="go(gameView)">'+t('contGame')+'</button>';
+  h+='<div class="grid">'+
+  '<button class="tile" onclick="go(setupCpu)"><b>🤖</b><span>'+t('vsCpu')+'</span><small>'+t('vsCpuSub')+'</small></button>'+
+  '<button class="tile" onclick="go(setupPvp)"><b>👥</b><span>'+t('pvp')+'</span><small>'+t('pvpSub')+'</small></button>'+
+  '<button class="tile" onclick="go(learnHome)"><b>🎓</b><span>'+t('learnT')+'</span><small>'+t('learnSub')+' ('+prog.xp+' XP)</small></button>'+
+  '<button class="tile" onclick="go(libHome)"><b>📚</b><span>'+t('libT')+'</span><small>'+t('libSub')+'</small></button>'+
+  '<button class="tile" onclick="go(historyView)"><b>📊</b><span>'+t('histT')+'</span><small>'+t('histSub')+'</small></button>'+
+  '<button class="tile" onclick="go(settingsView)"><b>⚙️</b><span>'+t('settings')+'</span><small>'+t('setSub')+'</small></button></div>';
+  h+='<p class="foot">'+t('footNote')+'</p>';
+  setApp(h);
+}
+// ---------- settings
+function miniSwatch(th){var s='';for(var i=0;i<8;i++)s+='<i style="background:'+(((i+(i>>1))&1)?th.dk:th.lt)+'"></i>';return s;}
+function settingsView(){
+  onSq=null;
+  var h=topbar(t('settings'));
+  h+='<h3 class="sec">'+t('language')+'</h3><div class="seg"><button class="'+(UI.lang==='ar'?'on':'')+'" onclick="uiSet(\'lang\',\'ar\')">العربية</button><button class="'+(UI.lang==='en'?'on':'')+'" onclick="uiSet(\'lang\',\'en\')">English</button></div>';
+  h+='<h3 class="sec">'+t('boardTheme')+'</h3><div class="swgrid">'+THEMES.map(function(th,i){return '<button class="sw'+(UI.theme===i?' on':'')+'" onclick="uiSet(\'theme\','+i+')"><span class="swmini">'+miniSwatch(th)+'</span>'+esc(UI.lang==='en'?th.en:th.ar)+'</button>';}).join('')+'</div>';
+  h+='<h3 class="sec">'+t('piecesSet')+'</h3><div class="psets">'+PSETS.map(function(ps){
+    var sam=ps[0]==='glyph'?'<span class="gly bp">♞</span>':PIECES[ps[0]].wn;
+    return '<button class="pset'+(UI.pieces===ps[0]?' on':'')+'" onclick="uiSet(\'pieces\',\''+ps[0]+'\')"><span class="sam">'+sam+'</span>'+(UI.lang==='en'?ps[2]:ps[1])+'</button>';}).join('')+'</div>';
+  h+='<h3 class="sec">'+t('sound')+'</h3><div class="seg"><button class="'+(UI.sound?'on':'')+'" onclick="uiSet(\'sound\',true)">'+t('on')+'</button><button class="'+(!UI.sound?'on':'')+'" onclick="uiSet(\'sound\',false)">'+t('off')+'</button></div>';
+  h+='<h3 class="sec">'+t('preview')+'</h3><div class="prevwrap">'+boardHTML({s:parseFEN('r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4')})+'</div>';
+  setApp(h);
+}
+// ---------- setup screens
+function setupCpu(){
+  onSq=null;var st=store.get('cfg',{lvl:2,col:'w',mins:0});
+  var h=topbar(t('vsCpu'))+'<h3 class="sec">'+t('chooseBot')+'</h3><div class="bots">';
+  LEVELS.forEach(function(L,i){h+='<div class="bot'+(st.lvl===i?' on':'')+'" onclick="cfgSet(\'lvl\','+i+')"><span class="be">'+L.e+'</span><div class="bi"><b>'+(UI.lang==='en'?L.en:L.n)+'</b><small>'+(UI.lang==='en'?L.tEn:L.t)+'</small></div><span class="rate">'+L.r+'</span></div>';});
+  h+='</div><p class="note">'+t('rateNote')+'</p>';
+  h+='<h3 class="sec">'+t('yourColor')+'</h3><div class="seg">'+[['w',t('white')],['b',t('black')],['r',t('random')]].map(function(x){return '<button class="'+(st.col===x[0]?'on':'')+'" onclick="cfgSet(\'col\',\''+x[0]+'\')">'+x[1]+'</button>';}).join('')+'</div>';
+  h+='<h3 class="sec">'+t('time')+'</h3><div class="seg">'+[[0,t('noTime')],[5,t('min5')],[10,t('min10')],[15,t('min15')]].map(function(x){return '<button class="'+(st.mins===x[0]?'on':'')+'" onclick="cfgSet(\'mins\','+x[0]+')">'+x[1]+'</button>';}).join('')+'</div>';
+  h+='<button class="big" onclick="startCpu()">'+t('startGame')+'</button>';
+  setApp(h);
+}
+function cfgSet(k,v){var c=store.get('cfg',{lvl:2,col:'w',mins:0});c[k]=v;store.set('cfg',c);setupCpu();}
+function startCpu(){var c=store.get('cfg',{lvl:2,col:'w',mins:0});var col=c.col==='r'?(Math.random()<.5?'w':'b'):c.col;newGame({mode:'cpu',human:col,lvl:c.lvl,mins:c.mins,startFen:START_FEN});}
+function setupPvp(){
+  onSq=null;var st=store.get('pcfg',{mins:0,rot:true,auto:false});
+  var h=topbar(t('pvp'))+'<p class="note">'+t('pvpNote')+'</p>';
+  h+='<h3 class="sec">'+t('namesH')+'</h3><label>⚪ '+t('pnameW')+'</label><input class="nm" maxlength="16" id="nmw" value="'+esc(st.nw||'')+'" placeholder="'+esc(t('playerW'))+'" oninput="pname(\'nw\',this.value)"><label>⚫ '+t('pnameB')+'</label><input class="nm" maxlength="16" id="nmb" value="'+esc(st.nb||'')+'" placeholder="'+esc(t('playerB'))+'" oninput="pname(\'nb\',this.value)">';
+  h+='<h3 class="sec">'+t('time')+'</h3><div class="seg">'+[[0,t('noTime')],[3,t('min3')],[5,t('min5')],[10,t('min10')]].map(function(x){return '<button class="'+(st.mins===x[0]?'on':'')+'" onclick="pcfg(\'mins\','+x[0]+')">'+x[1]+'</button>';}).join('')+'</div>';
+  h+='<button class="big" onclick="startPvp()">'+t('start')+'</button>';
+  setApp(h);
+}
+function pname(k,v){var c=store.get('pcfg',{mins:0,rot:true,auto:false});c[k]=v;store.set('pcfg',c);}
+function pcfg(k,v){var c=store.get('pcfg',{mins:0,rot:true,auto:false});c[k]=v;store.set('pcfg',c);setupPvp();}
+function startPvp(){var c=store.get('pcfg',{mins:0,rot:true,auto:false});newGame({mode:'pvp',human:'w',mins:c.mins,rot:true,auto:false,startFen:START_FEN,names:{w:(c.nw||'').trim()||t('playerW'),b:(c.nb||'').trim()||t('playerB')}});}
+// ---------- game
+function cur(){return G.states[G.states.length-1];}
+function newGame(cfg){
+  var s=parseFEN(cfg.startFen);
+  stopClockUI();
+  G={id:Date.now(),mode:cfg.mode,human:cfg.human,lvl:cfg.lvl,startFen:cfg.startFen,states:[s],moves:[],sans:[],keys:[posKey(s)],over:null,sel:null,last:null,think:false,
+     flip:cfg.mode==='cpu'?cfg.human==='b':false,rot:!!cfg.rot,auto:!!cfg.auto,hint:null,hints:0,
+     names:cfg.names||null,showOver:true,fxDone:true,clock:cfg.mins?{w:cfg.mins*60000,b:cfg.mins*60000,at:Date.now()}:null,undone:0};
+  snd('start');
+  go(gameView);
+  maybeBot();
+}
+function stopClockUI(){if(clockTimer){clearInterval(clockTimer);clockTimer=null;}}
+function tick(){
+  if(!G||!G.clock||G.over||view!==gameView){return;}
+  var now=Date.now(),t2=cur().t;G.clock[t2]-=now-G.clock.at;G.clock.at=now;
+  if($('clk-w'))$('clk-w').textContent=fmtClock(G.clock.w);if($('clk-b'))$('clk-b').textContent=fmtClock(G.clock.b);
+  if(G.clock[t2]<=0){G.clock[t2]=0;finish(t2==='w'?'0-1':'1-0','خلص الوقت ⏱');}
+}
+function playerName(col){
+  if(G.mode==='pvp')return G.names?G.names[col]:(col==='w'?t('playerW'):t('playerB'));
+  if(col===G.human)return t('you');var L=LEVELS[G.lvl];return L.e+' '+(UI.lang==='en'?L.en:L.n)+' ('+L.r+')';
+}
+function gameView(){
+  if(!G){go(home);return;}
+  var s=cur(),flip=G.flip,top=flip?'w':'b',bot=flip?'b':'w';
+  var turnTxt=G.over?'':(s.t==='w'?t('turnW'):t('turnB'));
+  if(G.think)turnTxt=t('thinking');
+  if(!G.over&&inCheck(s))turnTxt+=t('checkSfx');
+  var bar=function(col){return '<div class="pbar"><div class="pn"><b>'+playerName(col)+'</b><span class="caps">'+capturedHTML(s,col==='w'?'b':'w')+'</span></div>'+(G.clock?'<div class="clk'+(s.t===col&&!G.over?' act':'')+'" id="clk-'+col+'">'+fmtClock(G.clock[col])+'</div>':'')+'</div>';};
+  var tg=G.sel!=null?legalTargets(s,G.sel):[];
+  var arrows=G.hint?[[G.hint.f,G.hint.t,'#3498db']]:[];
+  var h=topbar(t('game'),'leaveGame()')+bar(top)+boardHTML({s:s,flip:flip,sel:G.sel,targets:tg,last:G.last,rot:G.rot&&G.mode==='pvp',arrows:arrows,broken:mateKing(),brokenFin:G.fxDone})+bar(bot);
+  h+='<div class="turn" id="turn">'+turnTxt+'</div>';
+  h+='<div class="ctl"><button onclick="undo()">'+t('undoB')+'</button>'+(G.mode==='cpu'?'<button onclick="hint()">'+t('hintB')+'</button>':'<button onclick="offerDraw()">'+t('drawB')+'</button>')+'<button onclick="flipB()">'+t('flipB')+'</button><button onclick="resign()">'+t('resignB')+'</button></div>';
+  h+='<div class="mv">'+moveStrip()+'</div>';
+  if(G.over&&G.showOver)h+=overHTML();
+  setApp(h);
+  onSq=gameTap;
+  animateLast(flip);
+}
+function mateKing(){if(!G||!G.over||G.over.why!=='مات')return null;var s=cur();return kingSq(s.b,s.t==='w');}
+function moveStrip(){
+  var out='',a=G.sans,st=Math.max(0,a.length-8);if(st%2)st--;
+  for(var i=st;i<a.length;i++){if(i%2===0)out+='<span class="mn">'+(i/2+1)+'.</span>';out+='<span class="ms'+(i===a.length-1?' lastm':'')+'">'+esc(a[i])+'</span>';}
+  return out||'<span class="dim">'+t('noMoves')+'</span>';
+}
+function overHTML(){
+  var o=G.over,txt,em,mate=o.why==='مات',sub=esc(whyText(o.why)),lost=false;
+  if(G.mode==='cpu'){var hw=(o.r==='1-0'&&G.human==='w')||(o.r==='0-1'&&G.human==='b');lost=o.r!=='1/2-1/2'&&!hw;em=o.r==='1/2-1/2'?'🤝':hw?'🏆':'💔';txt=o.r==='1/2-1/2'?t('draw'):hw?t('youWon'):t('youLost');
+    if(mate){txt=hw?t('mateWon'):t('mateLost');sub=hw?t('mateWonS'):t('mateLostS');}}
+  else{em=o.r==='1/2-1/2'?'🤝':'🏆';var wn=o.r==='1-0'?G.names&&G.names.w:G.names&&G.names.b;
+    txt=o.r==='1/2-1/2'?t('draw'):(wn||(o.r==='1-0'?t('playerW'):t('playerB')))+' '+t('won');
+    if(mate){sub=t('checkmate')+' - '+sub;}}
+  var head=mate?'<div class="mateT">'+t('checkmate')+'</div>':'<div class="em">'+em+'</div>';
+  if(mate)head+='<div class="em">'+em+'</div>';
+  var rb=o.r==='1/2-1/2'?'':'<button class="big sec2" onclick="startReplay()">'+(lost?t('watchLoss'):t('watchReplay'))+'</button>';
+  return '<div class="modal"><div class="card">'+head+'<h2>'+esc(txt)+'</h2><p>'+(mate?(G.mode==='cpu'?'':'')+sub:sub)+'</p>'+rb+'<button class="big" onclick="analyzeRec('+G.id+')">'+t('analyzeGame')+'</button><button class="big sec2" onclick="rematch()">'+t('rematch')+'</button><button class="lnk" onclick="go(home)">'+t('mainMenu')+'</button></div></div>';
+}
+// ---------- replay (watch only)
+var RP=null;
+function startReplay(){if(!G||!G.moves.length)return;RP={i:0,play:true,tm:null};go(replayView);repSched();}
+function repSched(){if(RP.tm)clearInterval(RP.tm);RP.tm=setInterval(function(){
+  if(view!==replayView||!RP||!RP.play){if(!RP||view!==replayView){clearInterval(RP&&RP.tm);}return;}
+  if(RP.i>=G.moves.length){RP.play=false;replayView();return;}
+  RP.i++;var m=G.moves[RP.i-1];ANIM=[m.f,m.t];var st=G.states[RP.i],pc=G.states[RP.i-1].b[m.t];
+  snd(RP.i===G.moves.length&&G.over&&G.over.why==='مات'?'crack':(G.states[RP.i-1].b[m.t]!=='.'?'cap':'move'));
+  replayView();},1300);}
+function repStep(d){if(!RP)return;RP.play=false;RP.i=Math.max(0,Math.min(G.moves.length,RP.i+d));if(d>0&&RP.i>0){var m=G.moves[RP.i-1];ANIM=[m.f,m.t];}replayView();}
+function repToggle(){if(!RP)return;if(!RP.play&&RP.i>=G.moves.length)RP.i=0;RP.play=!RP.play;replayView();}
+function repClose(){if(RP&&RP.tm)clearInterval(RP.tm);RP=null;go(gameView);}
+function replayView(){
+  if(!G||!RP){go(home);return;}
+  var n=G.moves.length,i=RP.i,s=G.states[i],m=i>0?G.moves[i-1]:null,fin=i===n&&G.over&&G.over.why==='مات';
+  var bk=fin?kingSq(s.b,s.t==='w'):null;
+  var flip=G.flip;
+  var h=topbar(t('replay'),'repClose()')+'<div class="rinfo"><span class="rbadge">👁 '+t('watchOnly')+'</span></div>';
+  h+=boardHTML({s:s,flip:flip,last:m?[m.f,m.t]:null,rot:G.rot&&G.mode==='pvp',broken:bk,brokenFin:fin&&!RP.play&&false&&true});
+  h+='<div class="rinfo">'+t('moveN')+' '+i+' / '+n+(i>0?' &nbsp; <b>'+esc(G.sans[i-1])+'</b>':'')+'</div>';
+  h+='<div class="rctl"><button onclick="repStep(-1000)">⏮</button><button onclick="repStep(-1)">◀</button><button onclick="repToggle()">'+(RP.play?t('pauseB'):t('playB'))+'</button><button onclick="repStep(1)">▶</button><button onclick="repStep(1000)">⏭</button></div>';
+  if(fin)h+='<div class="rinfo"><div class="mateT">'+t('checkmate')+'</div></div>';
+  setApp(h);onSq=null;animateLast(flip);
+}
+function rematch(){if(G.mode==='cpu'){var c=store.get('cfg',{lvl:2,col:'w',mins:0});newGame({mode:'cpu',human:G.human==='w'?'b':'w',lvl:G.lvl,mins:c.mins,startFen:G.startFen});}else{var p=store.get('pcfg',{});newGame({mode:'pvp',human:'w',mins:p.mins||0,rot:true,auto:false,startFen:G.startFen,names:G.names?{w:G.names.b,b:G.names.w}:null});}}
+function leaveGame(){go(home);}
+function flipB(){G.flip=!G.flip;gameView();}
+function gameTap(sq){
+  if(G.over||G.think)return;
+  var s=cur();if(G.mode==='cpu'&&s.t!==G.human)return;
+  var legal=genMoves(s);
+  if(G.sel!=null){
+    var cands=legal.filter(function(m){return m.f===G.sel&&m.t===sq;});
+    if(cands.length){if(cands[0].pr)askPromo(cands,s.t==='w',function(c){commit(c);});else commit(cands[0]);return;}
+  }
+  var p=s.b[sq];G.sel=(p!=='.'&&isW(p)===(s.t==='w')&&sq!==G.sel)?sq:null;G.hint=null;gameView();
+}
+function commit(m){
+  var s=cur(),legal=genMoves(s),t2=s.t;
+  if(!legal.some(function(x){return sameMove(x,m);}))return;
+  if(G.clock){var now=Date.now();G.clock[t2]-=now-G.clock.at;G.clock.at=now;}
+  var isC=s.b[m.t]!=='.'||m.fl==='e';
+  var sn=san(s,m,legal),ns=make(s,m);
+  G.sans.push(sn);G.moves.push(m);G.states.push(ns);G.keys.push(posKey(ns));G.last=[m.f,m.t];G.sel=null;G.hint=null;
+  ANIM=[m.f,m.t];
+  var st=gameStatus(ns,G.keys);
+  snd(st?'end':isC?'cap':inCheck(ns)?'check':'move');
+  if(G.mode==='pvp'&&G.auto)G.flip=ns.t==='b';
+  if(st){finish(st.r,st.why);return;}
+  gameView();maybeBot();
+}
+function finish(r,why){
+  if(G.over)return;G.over={r:r,why:why};stopClockUI();
+  var recs=store.get('games',[]);
+  recs.unshift({id:G.id,t:Date.now(),mode:G.mode,human:G.human,lvl:G.lvl,startFen:G.startFen,sans:G.sans.slice(),result:r,why:why,an:null});
+  store.set('games',recs.slice(0,30));
+  if(why==='مات'){G.fxDone=false;G.showOver=false;snd('crack');var gid=G.id;
+    setTimeout(function(){if(G&&G.id===gid){G.fxDone=true;G.showOver=true;if(view===gameView)gameView();}},2400);}
+  if(view===gameView)gameView();
+}
+function bookMove(){
+  var L=LEVELS[G.lvl],n=G.sans.length;
+  if(G.startFen!==START_FEN||n>=L.book||Math.random()<.12)return null;
+  var c={};
+  LIB.forEach(function(e){if(!e.line)return;var a=e.line.split(' ');if(a.length>n){for(var i=0;i<n;i++)if(a[i]!==G.sans[i])return;c[a[n]]=1;}});
+  var k=Object.keys(c);if(!k.length)return null;
+  return parseSAN(cur(),k[Math.floor(Math.random()*k.length)]);
+}
+function maybeBot(){
+  if(!G||G.mode!=='cpu'||G.over)return;
+  var s=cur();if(s.t===G.human)return;
+  G.think=true;var gid=G.id,L=LEVELS[G.lvl];
+  gameView();
+  var bm=bookMove();
+  var p=bm?sleep(500).then(function(){return {m:bm};}):Promise.all([thinkAsync(s,{depth:L.d,ms:L.ms,noise:L.noise,keys:G.keys.slice(-8)}),sleep(450)]).then(function(x){return x[0];});
+  p.then(function(r){
+    if(!G||G.id!==gid||G.over)return;
+    G.think=false;
+    if(!r||!r.m){gameView();return;}
+    var legal=genMoves(s),mm=legal.filter(function(x){return sameMove(x,r.m);})[0];
+    commit(mm||legal[0]);
+  });
+}
+function undo(){
+  if(!G||G.over||G.think||!G.moves.length)return;
+  var n=G.mode==='pvp'?1:(cur().t===G.human?2:1);
+  if(G.mode==='cpu'){var minKeep=G.human==='w'?0:1;if(G.moves.length-n<minKeep)return;}
+  for(var i=0;i<n&&G.moves.length;i++){G.moves.pop();G.sans.pop();G.states.pop();G.keys.pop();}
+  G.last=G.moves.length?[G.moves[G.moves.length-1].f,G.moves[G.moves.length-1].t]:null;G.sel=null;G.hint=null;G.undone++;
+  if(G.clock)G.clock.at=Date.now();
+  gameView();
+}
+function hint(){
+  if(!G||G.over||G.think||cur().t!==G.human)return;
+  G.think=true;gameView();var gid=G.id;
+  thinkAsync(cur(),{depth:5,ms:1200}).then(function(r){if(!G||G.id!==gid)return;G.think=false;if(r&&r.m){G.hint=r.m;G.hints++;}gameView();});
+}
+function resign(){
+  if(!G||G.over)return;
+  if(G.mode==='cpu'){if(confirm(t('resignQ')))finish(G.human==='w'?'0-1':'1-0','استسلمت');}
+  else{var t2=cur().t;if(confirm(t2==='w'?t('resignQW'):t('resignQB')))finish(t2==='w'?'0-1':'1-0',t2==='w'?'الأبيض استسلم':'الأسود استسلم');}
+}
+function offerDraw(){if(confirm(t('drawQ')))finish('1/2-1/2','تعادل بالاتفاق');}
+// ---------- analysis
+Object.assign(T,{checkmate:['كش مات!','Checkmate!'],mateWon:['كش مات! كسبت 🏆','Checkmate! You won'],mateLost:['كش مات! خسرت','Checkmate! You lost'],mateWonS:['كسبت بكش مات','You won by checkmate'],mateLostS:['خسرت بكش مات','You lost by checkmate'],won:['كسب','won'],watchLoss:['🎬 شوف إزاي خسرت','🎬 Watch how you lost'],watchReplay:['🎬 شوف إعادة المباراة','🎬 Watch the replay'],namesH:['أسماء اللاعبين','Player names'],pnameW:['اسم لاعب الأبيض','White player name'],pnameB:['اسم لاعب الأسود','Black player name'],replay:['إعادة المباراة','Replay'],watchOnly:['مشاهدة فقط','Watch only'],moveN:['نقلة','Move'],playB:['▶ شغّل','▶ Play'],pauseB:['⏸ وقّف','⏸ Pause']});
+Object.assign(T,{
+analyzing:['بحلّل كل نقلة...','Analyzing every move...'],analyzeSlow:['ممكن ياخد دقيقة. سيب الصفحة مفتوحة.','This can take a minute. Keep the page open.'],
+accuracy:['الدقة','Accuracy'],bestWas:['الأفضل كان:','Best was:'],cpLoss:['سنتي بيدق','centipawns'],
+weakT:['نقاط الضعف والتوصيات','Weaknesses & tips'],noWeak:['مفيش نقاط ضعف واضحة في المباراة دي 👏','No clear weaknesses in this game 👏'],
+trainThis:['🎓 تمرّن على ده','🎓 Train this'],strongT:['نقاط قوتك','Your strengths'],
+phaseAvg:['متوسط الخسارة حسب المرحلة','Average loss by phase'],allMoves:['كل النقلات','All moves'],
+phaseNote:['الرقم أقل = أحسن (بسنتي بيدق لكل نقلة). التحليل بمحرك التطبيق بعمق محدود، فمش مثالي 100%.','Lower is better (centipawns per move). Analysis uses the app engine at limited depth, so it is not perfect.'],
+notEnough:['مفيش نقلات كفاية للتحليل.','Not enough moves to analyze.'],
+graphNote:['المساحة البيضا = أفضلية الأبيض. اضغط عليها عشان تتنقل.','White area = White\'s advantage. Tap it to navigate.'],
+navHint:['اضغط ▶ أو على الرسم البياني أو أي نقلة تحت.','Tap ▶, the graph, or any move below.'],
+openPh:['الافتتاحية','Opening'],midPh:['المنتصف','Middlegame'],endPh:['النهاية','Endgame'],
+times1:['مرة','time'],times2:['مرات','times']});
+function buildStates(rec){
+  var s=parseFEN(rec.startFen),st=[s],mv=[];
+  rec.sans.forEach(function(t2){var m=parseSAN(s,t2);mv.push(m);s=make(s,m);st.push(s);});
+  return {st:st,mv:mv};
+}
+function getRec(id){return store.get('games',[]).filter(function(r){return r.id===id;})[0];}
+function saveRec(rec){var a=store.get('games',[]);for(var i=0;i<a.length;i++)if(a[i].id===rec.id)a[i]=rec;store.set('games',a);}
+function analyzeRec(id){
+  var rec=getRec(id);if(!rec)return;
+  if(rec.an&&rec.an.plies){showAnalysis(id);return;}
+  var b=buildStates(rec),n=b.st.length,out=[],i=0;
+  onSq=null;view=null;
+  setApp(topbar(t('analyzeGame'),'go(home)')+'<div class="card center"><div class="em">🧠</div><h3>'+t('analyzing')+'</h3><div class="pg"><div id="pgb" style="width:0%"></div></div><p id="pgt" class="dim">0 / '+n+'</p><p class="dim">'+t('analyzeSlow')+'</p></div>');
+  (function next(){
+    if(i>=n){rec.an={plies:out};saveRec(rec);showAnalysis(id);return;}
+    var s=b.st[i],moves=genMoves(s);
+    if(!moves.length){out.push([-1,-1,'',inCheck(s)?-MATE:0]);i++;return next();}
+    thinkAsync(s,{depth:5,ms:400,noise:0}).then(function(r){
+      out.push([r.m?r.m.f:-1,r.m?r.m.t:-1,(r.m&&r.m.pr)||'',r.score||0]);
+      i++;if($('pgb')){$('pgb').style.width=Math.round(i/n*100)+'%';$('pgt').textContent=i+' / '+n;}
+      setTimeout(next,0);
+    });
+  })();
+}
+var CLS={best:['⭐','ممتاز','Brilliant','#2ecc71'],good:['✓','جيدة','Good','#7bc96f'],inacc:['?!','غير دقيقة','Inaccuracy','#f1c40f'],mist:['?','خطأ','Mistake','#e67e22'],blun:['??','غلطة فادحة','Blunder','#e74c3c']};
+function clsL(k){return CLS[k][LI()+1];}
+function clsC(k){return CLS[k][3];}
+function clampE(v){return Math.max(-1000,Math.min(1000,v));}
+function forkOf(ns,m,enemy){
+  var tg=attacksFrom(ns.b,m.t),mp=VAL[ns.b[m.t].toLowerCase()],n=0;
+  tg.forEach(function(q){var p=ns.b[q];if(p==='.'||(isW(p)?'w':'b')!==enemy)return;var k=p.toLowerCase();
+    if(k==='k'||VAL[k]>mp||!attackedBy(ns.b,q,enemy)){if(k==='p'&&!attackedBy(ns.b,q,enemy)&&mp>=300)return;n++;}});
+  return n>=2;
+}
+function computeAnalysis(rec){
+  var b=buildStates(rec),pl=rec.an.plies.map(function(x){return {m:x[0]<0?null:{f:x[0],t:x[1],pr:x[2]||undefined},sc:x[3]};});
+  var rows=[],i;
+  for(i=1;i<b.st.length;i++){
+    var s0=b.st[i-1],s1=b.st[i],mv=b.mv[i-1],side=s0.t,before=clampE(pl[i-1].sc),after=clampE(-pl[i].sc);
+    var loss=Math.max(0,before-after);
+    if(before>700&&after>500)loss=Math.min(loss,35);
+    var bm=pl[i-1].m,isBest=sameMove(bm,mv);
+    if(isBest)loss=Math.min(loss,5);
+    var cls=isBest||loss<=12?'best':loss<=40?'good':loss<=95?'inacc':loss<=230?'mist':'blun';
+    var np=0;s0.b.forEach(function(p){var k=p.toLowerCase();if(p!=='.'&&k!=='p'&&k!=='k')np+=VAL[k];});
+    var mn=Math.ceil(i/2),phase=mn<=10?'open':np<=2600?'end':'mid';
+    var legal0=genMoves(s0);
+    var row={i:i,side:side,san:rec.sans[i-1],loss:loss,cls:cls,phase:phase,before:before,after:after,evW:clampE(pl[i].sc*(s1.t==='w'?1:-1)),bestSan:bm?san(s0,bm,legal0):null,best:bm,acc:100*Math.exp(-loss/120),tags:[]};
+    if(loss>=90){
+      var enemy=side==='w'?'b':'w';
+      if(pl[i-1].sc>=MATE-100)row.tags.push('missmate');
+      else if(bm&&before-after>=150){
+        var ns=make(s0,bm),v=s0.b[bm.t]!=='.'?VAL[s0.b[bm.t].toLowerCase()]:(bm.fl==='e'?100:0),mp=VAL[s0.b[bm.f].toLowerCase()];
+        if(v>=300&&(!attackedBy(ns.b,bm.t,enemy)||v>mp))row.tags.push('missfree');
+        else if(forkOf(ns,bm,enemy))row.tags.push('missfork');
+        else row.tags.push('misstac');
+      }
+      var rp=pl[i].m;
+      if(loss>=150&&rp){
+        if(pl[i].sc>=MATE-100)row.tags.push('allowmate');
+        else{
+          var rv=s1.b[rp.t]!=='.'?VAL[s1.b[rp.t].toLowerCase()]:0,rmp=VAL[s1.b[rp.f].toLowerCase()],ns2=make(s1,rp);
+          if(rv>=300&&(!attackedBy(ns2.b,rp.t,side)||rv>rmp))row.tags.push('hang');
+          else if(forkOf(ns2,rp,side))row.tags.push('allowfork');
+        }
+      }
+    }
+    rows.push(row);
+  }
+  return {rows:rows,st:b.st,mv:b.mv};
+}
+var TAGINFO={
+ missmate:{t:['فوّتّ مات','Missed mate'],d:['كان في مات أو هجوم حاسم وما لقيتوش. قبل كل نقلة دوّر على كل الكشات.','There was a mate or a decisive attack you did not find. Before every move, scan all checks.'],ic:'👑',learn:['u1','l12']},
+ missfree:{t:['فوّتّ قطع مجانية','Missed free pieces'],d:['كان في قطعة تتاخد من غير خسارة. اسأل نفسك: إيه القطع المش محمية عند الخصم؟','A piece could be taken for free. Ask yourself: which enemy pieces are undefended?'],ic:'🎁',learn:['u1','l11']},
+ missfork:{t:['فوّتّ شوكات','Missed forks'],d:['كان في فرصة تهاجم قطعتين مع بعض (شوكة).','There was a chance to attack two pieces at once (a fork).'],ic:'🍴',learn:['u2','l21']},
+ misstac:{t:['فوّتّ ضربات تكتيكية','Missed tactics'],d:['في نقلات قوية فاتتك. دوّر على الكش والأخد والتهديدات.','Strong moves slipped by. Look for checks, captures and threats.'],ic:'⚡',learn:['u2','l21']},
+ hang:{t:['سيبت قطع من غير حماية','Left pieces hanging'],d:['بعد نقلتك الخصم قدر ياخد قطعة. قبل كل نقلة اسأل: إيه اللي ممكن يتاخد بعدها؟','After your move the opponent could take a piece. Before every move ask: what can be taken after it?'],ic:'🫣',learn:['u1','l11']},
+ allowfork:{t:['وقعت في شوكة','Got forked'],d:['الخصم قدر يهاجم قطعتين في نفس الوقت. دوّر على مربعات الحصان قبل ما تتحرك.','The opponent attacked two pieces at once. Check knight squares before you move.'],ic:'🍴',learn:['u2','l21']},
+ allowmate:{t:['سمحت بمات','Allowed mate'],d:['نقلة سمحت للخصم بمات. تأكد دايماً من أمان ملكك والصف الأخير.','A move allowed the opponent to mate. Always check your king safety and back rank.'],ic:'💀',learn:['u1','l12']}
+};
+function sideReport(an,side,rec){
+  var R=an.rows.filter(function(r){return r.side===side;});
+  if(!R.length)return null;
+  var sum=0,cnt={best:0,good:0,inacc:0,mist:0,blun:0},ph={open:[],mid:[],end:[]},tags={};
+  R.forEach(function(r){sum+=r.acc;cnt[r.cls]++;ph[r.phase].push(r.loss);r.tags.forEach(function(t2){tags[t2]=(tags[t2]||0)+1;});});
+  var acc=Math.round(sum/R.length),stg=[];
+  var avg=function(a){return a.length?a.reduce(function(x,y){return x+y;},0)/a.length:null;};
+  var pn={open:t('openPh'),mid:t('midPh'),end:t('endPh')},pa={};
+  Object.keys(ph).forEach(function(k){pa[k]=avg(ph[k]);});
+  var ks=Object.keys(pa).filter(function(k){return pa[k]!==null&&ph[k].length>=3;}).sort(function(a,b){return pa[b]-pa[a];});
+  var ins=[];Object.keys(tags).forEach(function(t2){ins.push({k:t2,n:tags[t2]});});
+  ins.sort(function(a,b){return b.n-a.n;});
+  var out=[];
+  ins.forEach(function(x){var I=TAGINFO[x.k];out.push({ic:I.ic,t:I.t[LI()]+' ('+x.n+' '+t(x.n===1?'times1':'times2')+')',d:I.d[LI()],learn:I.learn});});
+  var mine=rec.sans.filter(function(_,i){return (i%2===0)===(side==='w');}),first=mine.slice(0,10);
+  var castled=first.some(function(t2){return t2.indexOf('O-O')===0;});
+  var early=0;first.slice(0,6).forEach(function(t2){if(t2[0]==='Q')early++;});
+  var dev=0;first.forEach(function(t2){if(t2[0]==='N'||t2[0]==='B')dev++;});
+  if(mine.length>=8&&!castled)out.push({ic:'🏰',t:UI.lang==='en'?'King stuck in the center':'ملكك فضل في النص',d:UI.lang==='en'?'You did not castle in the first 10 moves. Castling keeps the king safe and activates a rook.':'ما بيّضتش في أول 10 نقلات. التبييض بيحمي الملك ويشغّل الطابية.',learn:['u3','l31']});
+  if(early>=2)out.push({ic:'👸',t:UI.lang==='en'?'Early queen moves':'طلّعت الوزير بدري',d:UI.lang==='en'?'The queen moved more than once in the opening, making it a target. Develop knights and bishops first.':'الوزير اتحرك أكتر من مرة في البداية، وده بيخليه هدف للخصم. طوّر الحصان والفيل الأول.',learn:['u3','l31']});
+  if(mine.length>=8&&dev<3)out.push({ic:'♞',t:UI.lang==='en'?'Slow development':'تطوير بطيء',d:UI.lang==='en'?'Minor pieces (knights/bishops) moved fewer than 3 times in the first 10 moves.':'اتحرّكت القطع الصغيرة (الحصان/الفيل) أقل من 3 مرات في أول 10 نقلات.',learn:['u3','l31']});
+  var peak=-9999;an.rows.forEach(function(r){if(r.side===side&&r.after>peak)peak=r.after;});
+  var won=(rec.result==='1-0'&&side==='w')||(rec.result==='0-1'&&side==='b');
+  if(peak>=300&&!won)out.push({ic:'📉',t:UI.lang==='en'?'Threw away an advantage':'ضيّعت أفضلية',d:UI.lang==='en'?'You were better at some point (+'+(peak/100).toFixed(1)+' pawns) but did not convert. Simplify and trade pieces when ahead.':'كنت أحسن في وقت من الأوقات (+'+(peak/100).toFixed(1)+' بيدق) بس ما كملتش للفوز. بسّط اللعب وبدّل القطع لما تبقى متقدم.',learn:['u4','l41']});
+  if(ks.length&&pa[ks[0]]>45)out.push({ic:'📍',t:(UI.lang==='en'?'Weakest phase: ':'أضعف مرحلة: ')+pn[ks[0]],d:(UI.lang==='en'?'Average loss there is ':'متوسط الخسارة فيها ')+Math.round(pa[ks[0]])+' '+t('cpLoss')+(UI.lang==='en'?' per move.':' لكل نقلة.'),learn:ks[0]==='open'?['u3','l31']:ks[0]==='end'?['u4','l41']:['u2','l21']});
+  if(cnt.blun===0&&R.length>=6)stg.push(UI.lang==='en'?'✅ No blunders.':'✅ من غير غلطات فادحة.');
+  if(acc>=80)stg.push((UI.lang==='en'?'✅ High accuracy (':'✅ دقة عالية (')+acc+'%).');
+  var bestPh=Object.keys(pa).filter(function(k){return pa[k]!==null&&ph[k].length>=3;}).sort(function(a,b){return pa[a]-pa[b];})[0];
+  if(bestPh&&pa[bestPh]<30)stg.push((UI.lang==='en'?'✅ Your strongest phase: ':'✅ أقوى مرحلة عندك: ')+pn[bestPh]+'.');
+  if(cnt.best>=R.length*.5)stg.push(UI.lang==='en'?'✅ About half your moves match the engine.':'✅ نص نقلاتك تقريباً مطابقة لاختيار المحرك.');
+  if(won&&R.length)stg.push(UI.lang==='en'?'✅ You won the game!':'✅ كسبت المباراة!');
+  return {acc:acc,cnt:cnt,ins:out,stg:stg,tags:tags,n:R.length,pa:pa,pn:pn};
+}
+var AV={id:null,an:null,rec:null,ply:0,side:'w'};
+function showAnalysis(id){
+  var rec=getRec(id);if(!rec||!rec.an)return;
+  var an=computeAnalysis(rec),sd=rec.mode==='cpu'?rec.human:'w';
+  AV={id:id,an:an,rec:rec,ply:0,side:sd};
+  var rp=sideReport(an,sd,rec);
+  if(rp&&!rec.an.sum){rec.an.sum={acc:rp.acc,tags:rp.tags,side:sd};saveRec(rec);}
+  go(analysisView);
+}
+function aSide(s){AV.side=s;AV.ply=0;analysisView();}
+function aGo(p){AV.ply=Math.max(0,Math.min(AV.an.st.length-1,p));analysisView();}
+function analysisView(){
+  onSq=null;var A=AV,an=A.an,rec=A.rec,rp=sideReport(an,A.side,rec);
+  var s=an.st[A.ply],row=A.ply>0?an.rows[A.ply-1]:null;
+  var mvl=A.ply>0?an.mv[A.ply-1]:null,flip=A.side==='b';
+  var arrows=[];if(row&&row.best&&row.cls!=='best'&&row.cls!=='good')arrows.push([row.best.f,row.best.t,'#2ecc71']);
+  if(row&&row.cls!=='best')arrows.push([mvl.f,mvl.t,clsC(row.cls)]);
+  var h=topbar(t('analyzeGame'),'go(historyView)');
+  if(rec.mode==='pvp')h+='<div class="seg"><button class="'+(A.side==='w'?'on':'')+'" onclick="aSide(\'w\')">'+t('white')+'</button><button class="'+(A.side==='b'?'on':'')+'" onclick="aSide(\'b\')">'+t('black')+'</button></div>';
+  if(!rp){setApp(h+'<p class="note">'+t('notEnough')+'</p>');return;}
+  h+='<div class="sumrow"><div class="acc"><b>'+rp.acc+'%</b><small>'+t('accuracy')+'</small></div><div class="chips">';
+  ['best','good','inacc','mist','blun'].forEach(function(k){h+='<span class="chip" style="border-color:'+clsC(k)+'"><b style="color:'+clsC(k)+'">'+rp.cnt[k]+'</b> '+clsL(k)+'</span>';});
+  h+='</div></div>';
+  var N=an.rows.length,W=300,H=70,pts=[{x:0,y:H/2}];
+  an.rows.forEach(function(r,i){pts.push({x:(i+1)/Math.max(1,N)*W,y:H/2-r.evW/1000*(H/2-3)});});
+  var cx=A.ply/Math.max(1,N)*W;
+  h+='<div class="graph"><svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" onclick="graphClick(event)"><rect width="'+W+'" height="'+H+'" fill="#2b3040"/><polygon fill="rgba(255,255,255,.85)" points="0,'+H+' '+pts.map(function(p){return p.x.toFixed(1)+','+p.y.toFixed(1);}).join(' ')+' '+W+','+H+'"/><line x1="0" y1="'+H/2+'" x2="'+W+'" y2="'+H/2+'" stroke="#888" stroke-width=".5"/><line x1="'+cx+'" y1="0" x2="'+cx+'" y2="'+H+'" stroke="#f39c12" stroke-width="1.5"/></svg><small class="dim">'+t('graphNote')+'</small></div>';
+  h+=boardHTML({s:s,flip:flip,last:mvl?[mvl.f,mvl.t]:null,arrows:arrows});
+  h+='<div class="ctl"><button onclick="aGo(0)">⏮</button><button onclick="aGo('+(A.ply-1)+')">◀</button><button onclick="aGo('+(A.ply+1)+')">▶</button><button onclick="aGo('+(an.st.length-1)+')">⏭</button></div>';
+  if(row){h+='<div class="rinfo" style="border-color:'+clsC(row.cls)+'"><b style="color:'+clsC(row.cls)+'">'+CLS[row.cls][0]+' '+esc(row.san)+' • '+clsL(row.cls)+'</b>'+(row.cls!=='best'&&row.bestSan?'<div>'+t('bestWas')+' <b>'+esc(row.bestSan)+'</b> ('+(UI.lang==='en'?'loss ~':'الخسارة ~')+Math.round(row.loss)+' '+t('cpLoss')+')</div>':'')+(row.tags.length?'<div class="dim">'+row.tags.map(function(t2){return TAGINFO[t2].t[LI()];}).join(' • ')+'</div>':'')+'</div>';}
+  else h+='<div class="rinfo"><span class="dim">'+t('navHint')+'</span></div>';
+  h+='<h3 class="sec">'+t('weakT')+'</h3>';
+  if(!rp.ins.length)h+='<p class="note">'+t('noWeak')+'</p>';
+  rp.ins.forEach(function(x){h+='<div class="ins"><b>'+x.ic+' '+x.t+'</b><p>'+x.d+'</p><button class="sm" onclick="openLesson(\''+x.learn[0]+'\',\''+x.learn[1]+'\')">'+t('trainThis')+'</button></div>';});
+  if(rp.stg.length)h+='<h3 class="sec">'+t('strongT')+'</h3><div class="ins">'+rp.stg.map(function(x){return '<p>'+x+'</p>';}).join('')+'</div>';
+  h+='<h3 class="sec">'+t('phaseAvg')+'</h3><div class="phs">';
+  ['open','mid','end'].forEach(function(k){var v=rp.pa[k];h+='<div><b>'+(v===null?'-':Math.round(v))+'</b><small>'+rp.pn[k]+'</small></div>';});
+  h+='</div><p class="note">'+t('phaseNote')+'</p>';
+  h+='<h3 class="sec">'+t('allMoves')+'</h3><div class="ml">';
+  an.rows.forEach(function(r,i){if(i%2===0)h+='<span class="mn">'+(i/2+1)+'.</span>';h+='<span class="mc'+(A.ply===i+1?' cur':'')+'" onclick="aGo('+(i+1)+')"><i style="color:'+clsC(r.cls)+'">'+(r.cls==='best'||r.cls==='good'?'':CLS[r.cls][0])+'</i>'+esc(r.san)+'</span>';});
+  h+='</div>';
+  setApp(h);
+}
+function graphClick(e){var r=e.currentTarget.getBoundingClientRect(),x=(e.clientX-r.left)/r.width;aGo(Math.round(x*AV.an.rows.length));}
+// ---------- history
+Object.assign(T,{
+sumGames:['مباريات محللة','analyzed games'],avgAcc:['متوسط الدقة:','Average accuracy:'],topWeak:['أكتر نقطة ضعف:','Top weakness:'],trainIt:['🎓 تمرّن عليها','🎓 Train it'],
+noGames:['لسه مفيش مباريات. العب مباراة وبعدها اضغط "حلّل".','No games yet. Play a game, then tap "Analyze".'],
+withFriend:['👥 مع صاحبك','👥 With a friend'],movesCnt:['نقلة','moves'],openB:['📈 افتح','📈 Open'],analyzeB:['📈 حلّل','📈 Analyze'],
+resDraw:['🤝 تعادل','🤝 Draw'],resW:['⚪ كسب','⚪ won'],resB:['⚫ كسب','⚫ won'],resWin:['🏆 كسبت','🏆 Won'],resLoss:['💔 خسرت','💔 Lost']});
+function historyView(){
+  onSq=null;var gs=store.get('games',[]);
+  var h=topbar(t('histT'));
+  var tot={},n=0,accs=[];
+  gs.forEach(function(g){if(g.an&&g.an.sum&&g.mode==='cpu'){n++;accs.push(g.an.sum.acc);Object.keys(g.an.sum.tags).forEach(function(t2){tot[t2]=(tot[t2]||0)+g.an.sum.tags[t2];});}});
+  if(n){h+='<div class="ins"><b>📊 '+n+' '+t('sumGames')+'</b><p>'+t('avgAcc')+' <b>'+Math.round(accs.reduce(function(a,b){return a+b;},0)/n)+'%</b></p>';
+    var ks=Object.keys(tot).sort(function(a,b){return tot[b]-tot[a];});
+    if(ks.length)h+='<p>'+t('topWeak')+' <b>'+TAGINFO[ks[0]].t[LI()]+'</b> ('+tot[ks[0]]+')</p><button class="sm" onclick="openLesson(\''+TAGINFO[ks[0]].learn[0]+'\',\''+TAGINFO[ks[0]].learn[1]+'\')">'+t('trainIt')+'</button>';
+    h+='</div>';}
+  if(!gs.length)h+='<p class="note">'+t('noGames')+'</p>';
+  gs.forEach(function(g){
+    var d=new Date(g.t),L=g.mode==='cpu'?LEVELS[g.lvl]:null;
+    var win=g.mode==='cpu'?((g.result==='1-0'&&g.human==='w')||(g.result==='0-1'&&g.human==='b')):null;
+    var res=g.result==='1/2-1/2'?t('resDraw'):g.mode==='pvp'?(g.result==='1-0'?t('resW'):t('resB')):win?t('resWin'):t('resLoss');
+    h+='<div class="gcard"><div><b>'+(L?L.e+' '+(UI.lang==='en'?L.en:L.n)+' ('+L.r+')':t('withFriend'))+'</b><small>'+d.toLocaleDateString(UI.lang==='en'?'en-GB':'ar-EG')+' • '+g.sans.length+' '+t('movesCnt')+' • '+res+'</small>'+(g.an&&g.an.sum?'<small>'+t('accuracy')+' '+g.an.sum.acc+'%</small>':'')+'</div><button class="sm" onclick="analyzeRec('+g.id+')">'+(g.an&&g.an.plies?t('openB'):t('analyzeB'))+'</button></div>';
+  });
+  setApp(h);
+}
+// ---------- learn
+Object.assign(T,{
+unitN:['الوحدة','Unit'],learnNote:['كمان في المكتبة تقدر تدوّر على أي افتتاحية أو جامبيت أو تكتيك وتجرّبه.','In the Library you can search any opening, gambit or tactic and try it.'],
+okNext:['تمام، كمّل','Got it, continue'],nextB:['التالي','Next'],hintL:['💡 تلميح','💡 Hint'],showSol:['👁 اعرض الحل','👁 Show solution'],
+lessonDone:['خلصت الدرس!','Lesson complete!'],nextLesson:['الدرس اللي بعده:','Next lesson:'],backUnits:['رجوع للوحدات','Back to units'],
+fbMove:['حرّك القطعة اللي عليها العلامة.','Move the marked piece.'],fbSol:['ده الحل (السهم الأخضر). نفّذه بنفسك.','This is the solution (green arrow). Play it yourself.'],
+fbWrong:['❌ مش دي. جرّب تاني','❌ Not that one. Try again'],fbWrongHint:[' (فيه تلميح تحت)',' (hint below)'],fbRight:['✅ صح! ','✅ Correct! '],fbGo:['✅ كمّل...','✅ Keep going...']});
+var LS=null;
+function lfield(st,k){if(UI.lang==='en'&&st[k+'En']!==undefined)return st[k+'En'];return st[k];}
+function learnHome(){
+  onSq=null;var p=store.get('prog',{done:{},xp:0});
+  var h=topbar(t('learnT'))+'<div class="xp">⭐ '+p.xp+' XP</div>';
+  var UICONS={u1:'wp',u2:'wn',u3:'wb',u4:'wr'};
+  UNITS.forEach(function(u,ui){
+    var d=u.lessons.filter(function(l){return p.done[l.id];}).length;
+    var ic=(UI.pieces!=='glyph'&&PIECES[UI.pieces]&&UICONS[u.id])?PIECES[UI.pieces][UICONS[u.id]]:u.ic;
+    h+='<div class="unit"><div class="uh"><span class="ui">'+ic+'</span><div><b>'+t('unitN')+' '+(ui+1)+': '+(UI.lang==='en'&&u.en?u.en:u.ar)+'</b><small>'+d+' / '+u.lessons.length+'</small></div></div><div class="path">';
+    u.lessons.forEach(function(l,li){h+='<button class="node'+(p.done[l.id]?' done':'')+'" style="margin-inline-start:'+(li%2?40:0)+'px" onclick="openLesson(\''+u.id+'\',\''+l.id+'\')">'+(p.done[l.id]?'✓':(li+1))+'<small>'+(UI.lang==='en'&&l.en?l.en:l.ar)+'</small></button>';});
+    h+='</div></div>';
+  });
+  h+='<p class="note">'+t('learnNote')+'</p>';
+  setApp(h);
+}
+function openLesson(uid,lid){
+  var u=UNITS.filter(function(x){return x.id===uid;})[0],l=u.lessons.filter(function(x){return x.id===lid;})[0];
+  LS={u:u,l:l,i:0,gained:0,P:null,q:false};
+  go(lessonView);
+}
+function lessonView(){
+  var st=LS.l.steps[LS.i],pct=Math.round(LS.i/LS.l.steps.length*100);
+  var h='<div class="top"><button class="back" onclick="go(learnHome)">✕</button><div class="pg flex"><div style="width:'+pct+'%"></div></div></div><h3 class="sec">'+(UI.lang==='en'&&LS.l.en?LS.l.en:LS.l.ar)+'</h3>';
+  onSq=null;
+  if(st.t==='info'){
+    var f=st.fen?parseFEN(st.fen):null;
+    h+='<div class="card">'+(f?boardHTML({s:f,flip:f.t==='b'}):'')+'<p class="big-p">'+lfield(st,'x')+'</p><button class="big" onclick="lnext()">'+t('okNext')+'</button></div>';
+  } else if(st.t==='quiz'){
+    var opts=lfield(st,'o');
+    h+='<div class="card"><p class="big-p">'+lfield(st,'q')+'</p>'+opts.map(function(o,i){return '<button class="opt" id="o'+i+'" onclick="qans('+i+')">'+o+'</button>';}).join('')+'<div id="fb"></div></div>';
+  } else {
+    LS.P={s:parseFEN(st.fen),idx:0,wrong:0,sel:null,last:null,done:false,hint:false,msg:'',show:null};
+    h+='<div class="card"><p class="big-p">'+lfield(st,'q')+'</p><div id="pz"></div></div>';
+    setApp(h);pz();return;
+  }
+  setApp(h);
+}
+function pz(){
+  var P=LS.P,st=LS.l.steps[LS.i],s=P.s,tg=P.sel!=null?legalTargets(s,P.sel):[];
+  var h=boardHTML({s:s,flip:parseFEN(st.fen).t==='b',sel:P.sel,targets:tg,last:P.last,arrows:P.show?[[P.show.f,P.show.t,'#2ecc71']]:[],mark:P.hint&&!P.done?P.hintSq:null});
+  h+='<div id="fb">'+(P.msg||'')+'</div>';
+  if(P.done)h+='<button class="big" onclick="lnext()">'+t('nextB')+'</button>';
+  else h+='<div class="ctl">'+(P.wrong>=1?'<button onclick="phint()">'+t('hintL')+'</button>':'')+(P.wrong>=2?'<button onclick="pshow()">'+t('showSol')+'</button>':'')+'</div>';
+  $('pz').innerHTML=h;
+  onSq=ptap;
+  animateLast(parseFEN(st.fen).t==='b');
+}
+function expMove(){var P=LS.P,st=LS.l.steps[LS.i];return parseSAN(P.s,st.sol[P.idx]);}
+function phint(){var m=expMove();LS.P.hint=true;LS.P.hintSq=m.f;LS.P.msg='<div class="fb hint">'+t('fbMove')+'</div>';pz();}
+function pshow(){var m=expMove();LS.P.show=m;LS.P.msg='<div class="fb hint">'+t('fbSol')+'</div>';pz();}
+function ptap(sq){
+  var P=LS.P;if(P.done)return;
+  var s=P.s,legal=genMoves(s);
+  if(P.sel!=null){
+    var c=legal.filter(function(m){return m.f===P.sel&&m.t===sq;});
+    if(c.length){if(c[0].pr){askPromo(c,s.t==='w',function(x){pcheck(x);});}else pcheck(c[0]);return;}
+  }
+  var p=s.b[sq];P.sel=(p!=='.'&&isW(p)===(s.t==='w')&&sq!==P.sel)?sq:null;pz();
+}
+function pcheck(m){
+  var P=LS.P,st=LS.l.steps[LS.i],s=P.s,legal=genMoves(s),sn=san(s,m,legal),exp=st.sol[P.idx];
+  var ns=make(s,m),mate=false,g=gameStatus(ns);if(g&&g.why==='مات')mate=true;
+  var ok=cleanSan(sn)===cleanSan(exp)||(st.mate&&mate);
+  P.sel=null;
+  if(!ok){P.wrong++;P.msg='<div class="fb bad">'+t('fbWrong')+(P.wrong>=1?t('fbWrongHint'):'')+'</div>';pz();return;}
+  P.s=ns;P.last=[m.f,m.t];P.idx++;P.show=null;P.hint=false;ANIM=[m.f,m.t];
+  if(P.idx>=st.sol.length){P.done=true;P.msg='<div class="fb good">'+t('fbRight')+lfield(st,'why')+'</div>';if(P.wrong===0)LS.gained+=10;pz();return;}
+  var rm=parseSAN(P.s,st.sol[P.idx]);P.msg='<div class="fb good">'+t('fbGo')+'</div>';pz();
+  setTimeout(function(){P.s=make(P.s,rm);P.last=[rm.f,rm.t];P.idx++;ANIM=[rm.f,rm.t];pz();},500);
+}
+function qans(i){
+  var st=LS.l.steps[LS.i];if(LS.q)return;LS.q=true;
+  $('o'+i).classList.add(i===st.a?'ok':'no');$('o'+st.a).classList.add('ok');
+  if(i===st.a)LS.gained+=10;
+  $('fb').innerHTML='<div class="fb '+(i===st.a?'good':'bad')+'">'+(i===st.a?'✅ ':'❌ ')+lfield(st,'why')+'</div><button class="big" onclick="lnext()">'+t('nextB')+'</button>';
+}
+function lnext(){
+  LS.q=false;LS.i++;
+  if(LS.i>=LS.l.steps.length){
+    var p=store.get('prog',{done:{},xp:0}),firstTime=!p.done[LS.l.id];p.done[LS.l.id]=1;p.xp+=LS.gained+(firstTime?20:0);store.set('prog',p);
+    var idx=LS.u.lessons.indexOf(LS.l),nx=LS.u.lessons[idx+1];
+    onSq=null;
+    setApp('<div class="card center"><div class="em">🎉</div><h2>'+t('lessonDone')+'</h2><p>+'+(LS.gained+(firstTime?20:0))+' XP</p>'+(nx?'<button class="big" onclick="openLesson(\''+LS.u.id+'\',\''+nx.id+'\')">'+t('nextLesson')+' '+(UI.lang==='en'&&nx.en?nx.en:nx.ar)+'</button>':'')+'<button class="big sec2" onclick="go(learnHome)">'+t('backUnits')+'</button></div>');
+    return;
+  }
+  lessonView();
+}
+// ---------- library
+Object.assign(T,{
+libPh:['دوّر: gambit، سيسيليان، فخ، شوكة...','Search: gambit, sicilian, trap, fork...'],
+libNote:['المكتبة جوه التطبيق وشغالة أوفلاين. مفيش بحث على النت.','The library lives inside the app and works offline. No web search.'],
+noRes:['مفيش نتيجة. جرّب كلمة تانية.','No results. Try another word.'],
+tryLine:['🎯 جرّب الخط (تدريب)','🎯 Try the line (drill)'],
+drillNoteW:['بتلعب بالأبيض والكمبيوتر بيلعب الخط التاني.','You play White and the computer plays the other side.'],
+drillNoteB:['بتلعب بالأسود والكمبيوتر بيلعب الخط التاني.','You play Black and the computer plays the other side.'],
+playFromHere:['♟ العب من هنا ضد الكمبيوتر','♟ Play from here vs computer'],
+drillT:['تدريب: ','Drill: '],moveOf:['من','of'],moveN:['النقلة','Move'],
+drillDone:['🎉 كمّلت الخط كله! دلوقتي تقدر تلعب من هنا ضد الكمبيوتر.','🎉 You completed the whole line! Now you can play from here vs the computer.'],
+retrain:['أعد التدريب','Restart drill'],notLine:['❌ دي مش نقلة الخط','❌ That is not the line move'],expected:['. المتوقع: ','. Expected: '],tryAgain:['. جرّب تاني','. Try again'],fbOk:['✅ صح','✅ Correct']});
+var LB={q:'',cat:'all'};
+function catName(c){return c[LI()+1];}
+function libHome(){
+  onSq=null;
+  var h=topbar(t('libT'))+'<input id="lq" class="search" placeholder="'+t('libPh')+'" value="'+esc(LB.q)+'" oninput="libQ(this.value)"><div class="cats">'+CATS.map(function(c){return '<button class="'+(LB.cat===c[0]?'on':'')+'" onclick="libCat(\''+c[0]+'\')">'+catName(c)+'</button>';}).join('')+'</div><div id="ll"></div><p class="note">'+t('libNote')+'</p>';
+  setApp(h);libList();
+}
+function libQ(v){LB.q=v;libList();}
+function libCat(c){LB.cat=c;libHome();}
+function libList(){
+  var q=LB.q.trim().toLowerCase(),a=LIB.filter(function(e){
+    if(LB.cat!=='all'&&e.cat!==LB.cat)return false;
+    if(!q)return true;
+    return (e.en+' '+e.ar+' '+(e.kw||'')+' '+e.desc+' '+(e.descEn||'')).toLowerCase().indexOf(q)>=0;
+  });
+  var h=a.map(function(e){
+    var nm=UI.lang==='en'?e.en:e.ar,sub=UI.lang==='en'?e.ar:e.en;
+    return '<div class="lcard" onclick="openEntry(\''+e.id+'\')"><div><b>'+nm+'</b><small dir="ltr">'+sub+'</small></div><span class="tag">'+catName(CATS.filter(function(c){return c[0]===e.cat;})[0])+'</span></div>';}).join('');
+  $('ll').innerHTML=h||'<p class="note">'+t('noRes')+'</p>';
+}
+var EN=null;
+function openEntry(id){
+  var e=LIB.filter(function(x){return x.id===id;})[0];
+  var st=[parseFEN(e.line?START_FEN:e.fen||START_FEN)],mv=[];
+  if(e.line){var s=st[0];e.line.split(' ').forEach(function(t2){var m=parseSAN(s,t2);mv.push(m);s=make(s,m);st.push(s);});}
+  EN={e:e,st:st,mv:mv,ply:e.line?st.length-1:0,drill:null};
+  go(entryView);
+}
+function eGo(p){EN.ply=Math.max(0,Math.min(EN.st.length-1,p));entryView();}
+function entryView(){
+  var E=EN,e=E.e,s=E.st[E.ply],m=E.ply>0?E.mv[E.ply-1]:null;
+  var nm=UI.lang==='en'?e.en:e.ar,sub=UI.lang==='en'?e.ar:e.en;
+  var h=topbar(nm,'go(libHome)')+'<div class="sub" dir="ltr">'+sub+'</div>';
+  if(e.line||e.fen)h+=boardHTML({s:s,flip:e.line?e.side==='b':s.t==='b',last:m?[m.f,m.t]:null});
+  if(e.line){
+    h+='<div class="ctl"><button onclick="eGo(0)">⏮</button><button onclick="eGo('+(E.ply-1)+')">◀</button><button onclick="eGo('+(E.ply+1)+')">▶</button><button onclick="eGo('+(E.st.length-1)+')">⏭</button></div>';
+    var tt='';e.line.split(' ').forEach(function(x,i){if(i%2===0)tt+='<span class="mn">'+(i/2+1)+'.</span>';tt+='<span class="mc'+(E.ply===i+1?' cur':'')+'" onclick="eGo('+(i+1)+')">'+x+'</span>';});
+    h+='<div class="ml">'+tt+'</div>';
+  }
+  var desc=UI.lang==='en'&&e.descEn?e.descEn:e.desc,ideas=UI.lang==='en'&&e.ideasEn?e.ideasEn:e.ideas;
+  h+='<div class="card"><p>'+desc+'</p><ul class="ideas">'+ideas.map(function(x){return '<li>'+x+'</li>';}).join('')+'</ul></div>';
+  if(e.line)h+='<button class="big" onclick="startDrill()">'+t('tryLine')+'</button><p class="note">'+t(e.side==='w'?'drillNoteW':'drillNoteB')+'</p>';
+  if(e.line||e.fen)h+='<button class="big sec2" onclick="playFromEntry()">'+t('playFromHere')+'</button>';
+  setApp(h);onSq=null;
+}
+function playFromEntry(){
+  var E=EN,s=E.st[E.st.length-1];
+  var human=E.e.line?E.e.side:s.t,c=store.get('cfg',{lvl:2,col:'w',mins:0});
+  newGame({mode:'cpu',human:human,lvl:c.lvl,mins:0,startFen:toFEN(s)});
+}
+function startDrill(){
+  var E=EN,D={i:0,s:E.st[0],sel:null,last:null,wrong:0,done:false,msg:'',hint:null};
+  E.drill=D;go(drillView);drillAuto();
+}
+function drillSide(){return EN.e.side;}
+function drillAuto(){
+  var D=EN.drill,a=EN.e.line.split(' ');
+  if(D.i>=a.length){D.done=true;D.msg='<div class="fb good">'+t('drillDone')+'</div>';drillView();return;}
+  if(D.s.t!==drillSide()){setTimeout(function(){if(EN.drill!==D)return;var m=parseSAN(D.s,a[D.i]);D.s=make(D.s,m);D.last=[m.f,m.t];D.i++;ANIM=[m.f,m.t];drillView();drillAuto();},550);}
+}
+function drillView(){
+  var E=EN,D=E.drill,a=E.e.line.split(' ');
+  var nm=UI.lang==='en'?E.e.en:E.e.ar;
+  var h=topbar(t('drillT')+nm,'go(entryView)')+boardHTML({s:D.s,flip:drillSide()==='b',sel:D.sel,targets:D.sel!=null?legalTargets(D.s,D.sel):[],last:D.last,arrows:D.hint?[[D.hint.f,D.hint.t,'#3498db']]:[]});
+  h+='<div id="fb">'+D.msg+'</div><p class="dim center">'+t('moveN')+' '+Math.min(Math.ceil((D.i+1)/2),Math.ceil(a.length/2))+' '+t('moveOf')+' '+Math.ceil(a.length/2)+'</p>';
+  if(D.done)h+='<button class="big" onclick="playFromEntry2()">'+t('playFromHere')+'</button><button class="big sec2" onclick="startDrill()">'+t('retrain')+'</button>';
+  else h+='<div class="ctl"><button onclick="dhint()">'+t('hintL')+'</button></div>';
+  setApp(h);onSq=dtap;
+  animateLast(drillSide()==='b');
+}
+function playFromEntry2(){var D=EN.drill,c=store.get('cfg',{lvl:2});newGame({mode:'cpu',human:drillSide(),lvl:c.lvl,mins:0,startFen:toFEN(D.s)});}
+function dhint(){var D=EN.drill,a=EN.e.line.split(' ');if(D.done||D.s.t!==drillSide())return;D.hint=parseSAN(D.s,a[D.i]);drillView();}
+function dtap(sq){
+  var D=EN.drill;if(D.done||D.s.t!==drillSide())return;
+  var s=D.s,legal=genMoves(s);
+  if(D.sel!=null){var c=legal.filter(function(m){return m.f===D.sel&&m.t===sq;});
+    if(c.length){if(c[0].pr)askPromo(c,s.t==='w',function(x){dcheck(x);});else dcheck(c[0]);return;}}
+  var p=s.b[sq];D.sel=(p!=='.'&&isW(p)===(s.t==='w')&&sq!==D.sel)?sq:null;drillView();
+}
+function dcheck(m){
+  var D=EN.drill,a=EN.e.line.split(' '),s=D.s,sn=san(s,m,genMoves(s));D.sel=null;
+  if(cleanSan(sn)!==cleanSan(a[D.i])){D.wrong++;D.msg='<div class="fb bad">'+t('notLine')+(D.wrong>=2?t('expected')+'<b dir="ltr">'+a[D.i]+'</b>':t('tryAgain'))+'</div>';drillView();return;}
+  D.s=make(s,m);D.last=[m.f,m.t];D.i++;ANIM=[m.f,m.t];D.msg='<div class="fb good">'+t('fbOk')+'</div>';D.hint=null;drillView();drillAuto();
+}
+// ---------- boot
+window.onerror=function(msg){var e=$('err');if(e){e.style.display='block';e.textContent=(UI.lang==='en'?'Error: ':'خطأ: ')+msg;}};
+applyUI();
+home();
+</script><script>if('serviceWorker' in navigator){window.addEventListener('load',function(){navigator.serviceWorker.register('sw.js').catch(function(){});});}</script></body></html>
